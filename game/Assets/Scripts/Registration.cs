@@ -1,47 +1,77 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Registration : MonoBehaviour
 {
-    public InputField Username;
-    public InputField Email;
-    public InputField Password;
-    public InputField ConfirmPassword;
-    public Button Send;
+    public InputField Username; //0
+    public InputField Email; //1
+    public InputField Password; //2
+    public InputField ConfirmPassword; //3
+    public Button Send; //4
+    public Button ToLogin; //5
     public Text Answer;
-    private readonly string registrationURL = "http://40.69.215.163/registration.php";
 
+    private readonly string registrationURL = "http://40.69.215.163/registration.php";
+    private int activeSwitchID;
 
     private void callRegistration()
     {
         StartCoroutine(registration());
     }
 
+    private void Start()
+    {
+        Username.Select();
+        activeSwitchID = 0;
+    }
+
     private void OnEnable()
     {
         Send.onClick.AddListener(callRegistration);
+        ToLogin.onClick.AddListener(toLogin);
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if(Username.isFocused == true)
+            switch (activeSwitchID)
             {
-                Email.Select();
-            }
-            else if(Email.isFocused == true)
-            {
-                Password.Select();
-            }
-            else if (Password.isFocused == true)
-            {
-                ConfirmPassword.Select();
-            }
-            else if (ConfirmPassword.isFocused == true)
-            {
-                Username.Select();
+                case 0:
+                    Email.Select();
+                    activeSwitchID = 1;
+                    break;
+                case 1:
+                    Password.Select();
+                    activeSwitchID = 2;
+                    break;
+                case 2:
+                    activeSwitchID = 3;
+                    ConfirmPassword.Select();
+                    break;
+                case 3:
+                    if (Send.interactable == true)
+                    {
+                        activeSwitchID = 4;
+                        Send.Select();
+                    }
+                    else
+                    {
+                        activeSwitchID = 5;
+                        ToLogin.Select();
+                    }   
+                    break;
+                case 4:
+                    activeSwitchID = 5;
+                    ToLogin.Select();
+                    break;
+                case 5:
+                    activeSwitchID = 0;
+                    Username.Select();
+                    break;
             }
         }
 
@@ -63,10 +93,11 @@ public class Registration : MonoBehaviour
         form.AddField("password", Password.text);
         form.AddField("confPassword", ConfirmPassword.text);
         form.AddField("username", Username.text);
-        WWW www = new WWW(registrationURL, form);
-        yield return www;
 
-        switch (www.text)
+        UnityWebRequest www = UnityWebRequest.Post(registrationURL, form);
+        yield return www.SendWebRequest();
+
+        switch (www.downloadHandler.text)
         {
             case "S2":
                 Answer.text = "New account created succesfully!";
@@ -97,8 +128,13 @@ public class Registration : MonoBehaviour
                 Answer.text = "Account with this username already exists!";
                 break;
             default:
-                Answer.text = "Error (Code: " + www.text + ")! Please try again later!";
+                Answer.text = "Error (Code: " + www.downloadHandler.text + ")! Please try again later!";
                 break;
         }
+    }
+
+    private void toLogin()
+    {
+        SceneManager.LoadScene(sceneName: "Log");
     }
 }

@@ -1,37 +1,68 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Login : MonoBehaviour
 {
-    public InputField Email;
-    public InputField Password;
-    public Button Send;
+    public InputField Email; //0
+    public InputField Password; //1
+    public Button Send; //2
+    public Button ToRegistration; //3
     public Text Answer;
-    private readonly string loginURL = "http://40.69.215.163/login.php";
 
+    private readonly string loginURL = "http://40.69.215.163/login.php";
+    private int activeSwitchID;
 
     private void callLogin()
     {
         StartCoroutine(login());
     }
 
+    private void Start()
+    {
+        Email.Select();
+        activeSwitchID = 0;
+    }
+
     private void OnEnable()
     {
         Send.onClick.AddListener(callLogin);
+        ToRegistration.onClick.AddListener(toRegistration);
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if(Email.isFocused == true)
+            switch (activeSwitchID)
             {
-                Password.Select();
-            }
-            else if(Password.isFocused == true)
-            {
-                Email.Select();
+                case 0:
+                    Password.Select();
+                    activeSwitchID = 1;
+                    break;
+                case 1:
+                    if(Send.interactable == true)
+                    {
+                        activeSwitchID = 2;
+                        Send.Select();
+                    }
+                    else
+                    {
+                        activeSwitchID = 3;
+                        ToRegistration.Select();
+                    }
+                    break;
+                case 2:
+                    activeSwitchID = 3;
+                    ToRegistration.Select();
+                    break;
+                case 3:
+                    activeSwitchID = 0;
+                    Email.Select();
+                    break;
             }
         }
 
@@ -42,7 +73,7 @@ public class Login : MonoBehaviour
             if(Send.interactable == true)
             {
                 callLogin();
-            } 
+            }
         }
     }
 
@@ -51,10 +82,11 @@ public class Login : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("email", Email.text);
         form.AddField("password", Password.text);
-        WWW www = new WWW(loginURL, form);
-        yield return www;
 
-        switch (www.text)
+        UnityWebRequest www = UnityWebRequest.Post(loginURL, form);
+        yield return www.SendWebRequest();
+
+        switch (www.downloadHandler.text)
         {
             case "S1":
                 Answer.text = "Login successful!";
@@ -65,8 +97,13 @@ public class Login : MonoBehaviour
                 Answer.text = "Incorrect login or password!";
                 break;
             default:
-                Answer.text = "Error (Code: " + www.text + ")! Please try again later!";
+                Answer.text = "Error (Code: " + www.downloadHandler.text + ")! Please try again later!";
                 break;
         }
+    }
+
+    private void toRegistration()
+    {
+        SceneManager.LoadScene(sceneName: "Reg");
     }
 }
