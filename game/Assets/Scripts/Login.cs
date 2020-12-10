@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Login : MonoBehaviour
@@ -58,7 +59,17 @@ public class Login : MonoBehaviour
         {
             case "S1":
                 Answer.text = "Login successful!";
-                //tutaj przejście do innej sceny!!
+
+                // Tutaj musisz wprowadzić dane
+                // PlayerInfo.Id
+                // PlayerInfo.Name
+                // PlayerInfo.EMail
+                // Jak przykładowo poniżej
+
+                PlayerInfo.Id = 1;
+                PlayerInfo.Name = "user_1";
+                PlayerInfo.EMail = "mail@wp.pl";
+                SceneManager.LoadScene("OfflineScene");
                 break;
             case "E4":
             case "E3":
