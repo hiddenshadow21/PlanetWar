@@ -59,7 +59,7 @@
 */crashlytics-build.properties
 
 #Mirror exaples
-*/Assets/Mirror/Exaples/*
+*/Assets/Mirror/Examples/*
 
 #Game clones
 *_clone*/
