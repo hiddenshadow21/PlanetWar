@@ -58,3 +58,8 @@
 # Crashlytics generated file
 */crashlytics-build.properties
 
+#Mirror exaples
+*/Assets/Mirror/Exaples/*
+
+#Game clones
+*_clone*/
