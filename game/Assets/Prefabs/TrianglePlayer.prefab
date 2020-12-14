@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  moveSpeed: 50
+  collider: {fileID: 3181704384020778682}
   rb: {fileID: 6445737654020582295}
 --- !u!50 &6445737654020582295
 Rigidbody2D:
@@ -149,14 +149,14 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!60 &3181704384020778682
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -183,7 +183,5 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0, y: 0.5}
-      - {x: -0.21098164, y: 0.113809004}
-      - {x: -0.44341537, y: -0.25232306}
-      - {x: 0.44075233, y: -0.25586042}
-      - {x: 0.2791257, y: 0.016242236}
+      - {x: 0.43693754, y: -0.25131667}
+      - {x: -0.43625614, y: -0.25232306}
