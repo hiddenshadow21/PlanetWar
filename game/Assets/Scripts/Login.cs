@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -13,7 +13,9 @@ public class Login : MonoBehaviour
     public Button ToRegistration; //3
     public Text Answer;
 
-    private readonly string loginURL = "http://40.69.215.163/login.php";
+    private const string loginURL = "http://40.69.215.163/login.php";
+    private const char fieldSeparator = ':';
+    
     private int activeSwitchID;
 
     private void callLogin()
@@ -86,14 +88,26 @@ public class Login : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Post(loginURL, form);
         yield return www.SendWebRequest();
 
-        switch (www.downloadHandler.text)
+        string[] dbResponse = www.downloadHandler.text.Split(fieldSeparator);
+
+        switch (dbResponse[0])
         {
-            case "S1":
-                Answer.text = "Login successful!";
-                //tutaj przejście do innej sceny!!
+            case "LS_1":
+                try
+                {
+                    PlayerInfo.Id = int.Parse(dbResponse[1]);
+                    PlayerInfo.Name = dbResponse[2];
+                    PlayerInfo.EMail = dbResponse[3];
+                    Answer.text = "Login successful!";
+                    //tutaj przejście do kolejnej sceny!
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    Answer.text = "Error (Code: CLIENT_DB_1)! " + e.Message;
+                }
                 break;
-            case "E4":
-            case "E3":
+            case "L_1":
+            case "L_2":
                 Answer.text = "Incorrect login or password!";
                 break;
             default:

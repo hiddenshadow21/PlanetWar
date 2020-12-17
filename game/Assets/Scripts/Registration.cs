@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -15,7 +14,7 @@ public class Registration : MonoBehaviour
     public Button ToLogin; //5
     public Text Answer;
 
-    private readonly string registrationURL = "http://40.69.215.163/registration.php";
+    private const string registrationURL = "http://40.69.215.163/registration.php";
     private int activeSwitchID;
 
     private void callRegistration()
@@ -99,33 +98,42 @@ public class Registration : MonoBehaviour
 
         switch (www.downloadHandler.text)
         {
-            case "S2":
-                Answer.text = "New account created succesfully!";
-                //tutaj przejście do innej sceny!!
-                break;
-            case "E6":
+            case "R_U_1":
                 Answer.text = "Username is too long! Maximum length is 20.";
                 break;
-            case "E7":
+            case "R_U_3":
+                Answer.text = "Username contains characters that are not allowed.";
+                break;
+            case "R_E_1":
                 Answer.text = "Email is incorrect! Please check the syntax.";
                 break;
-            case "E8":
+            case "R_E_2":
                 Answer.text = "Email address is too long! Maximum length is 20.";
                 break;
-            case "E9":
+            case "R_E_4":
+                Answer.text = "Email contains characters that are not allowed.";
+                break;
+            case "R_P_1":
                 Answer.text = "Password has the wrong length! Length is between 8 and 20.";
                 break;
-            case "E10":
+            case "R_P_2":
                 Answer.text = "Password has no number!";
                 break;
-            case "E11":
+            case "R_P_3":
+                Answer.text = "Password contains characters that are not allowed.";
+                break;
+            case "R_P_4":
                 Answer.text = "Both passwords are not equal!";
                 break;
-            case "E12":
-                Answer.text = "Account with this email already exists!";
+            case "RS_1":
+                Answer.text = "New account created succesfully!";
+                //tutaj powrót do sceny logowania!!
                 break;
-            case "E13":
+            case "R_U_2":
                 Answer.text = "Account with this username already exists!";
+                break;
+            case "R_E_3":
+                Answer.text = "Account with this email already exists!";
                 break;
             default:
                 Answer.text = "Error (Code: " + www.downloadHandler.text + ")! Please try again later!";
