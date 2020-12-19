@@ -1,21 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Registration : MonoBehaviour
-{
-    public InputField Username; //0
-    public InputField Email; //1
-    public InputField Password; //2
-    public InputField ConfirmPassword; //3
-    public Button Send; //4
-    public Button ToLogin; //5
+{ 
+    public InputField Username; 
+    public InputField Email; 
+    public InputField Password; 
+    public InputField ConfirmPassword; 
+    public Button Send; 
+    public Button ToLogin; 
     public Text Answer;
 
-    private const string registrationURL = "http://40.69.215.163/registration.php";
-    private int activeSwitchID;
+    private const string registrationURL = "http://40.69.215.163/logreg/registration.php";
 
     private void callRegistration()
     {
@@ -25,7 +25,6 @@ public class Registration : MonoBehaviour
     private void Start()
     {
         Username.Select();
-        activeSwitchID = 0;
     }
 
     private void OnEnable()
@@ -37,38 +36,31 @@ public class Registration : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            switch (activeSwitchID)
+            switch (EventSystem.current.currentSelectedGameObject.name)
             {
-                case 0:
+                case "Username_input":
                     Email.Select();
-                    activeSwitchID = 1;
                     break;
-                case 1:
+                case "Email_input":
                     Password.Select();
-                    activeSwitchID = 2;
                     break;
-                case 2:
-                    activeSwitchID = 3;
+                case "Password_input":
                     ConfirmPassword.Select();
                     break;
-                case 3:
+                case "PasswordConfirm_input":
                     if (Send.interactable == true)
                     {
-                        activeSwitchID = 4;
                         Send.Select();
                     }
                     else
                     {
-                        activeSwitchID = 5;
                         ToLogin.Select();
                     }   
                     break;
-                case 4:
-                    activeSwitchID = 5;
+                case "Register_button":
                     ToLogin.Select();
                     break;
-                case 5:
-                    activeSwitchID = 0;
+                case "ToLogin_button":
                     Username.Select();
                     break;
             }
@@ -76,7 +68,7 @@ public class Registration : MonoBehaviour
 
         Send.interactable = (Username.text != "" && Email.text != ""  && Password.text != "" && ConfirmPassword.text != "");
 
-        if(Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             if(Send.interactable == true)
             {
@@ -96,51 +88,55 @@ public class Registration : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Post(registrationURL, form);
         yield return www.SendWebRequest();
 
-        switch (www.downloadHandler.text)
+        outputInterpreter(www.downloadHandler.text);
+    }
+
+    private void outputInterpreter(string serverResponse)
+    {
+        switch (serverResponse)
         {
-            case "R_U_1":
+            case "R_UT_1":
                 Answer.text = "Username is too long! Maximum length is 20.";
                 break;
-            case "R_U_3":
+            case "R_UT_2":
                 Answer.text = "Username contains characters that are not allowed.";
                 break;
-            case "R_E_1":
+            case "R_ET_1":
                 Answer.text = "Email is incorrect! Please check the syntax.";
                 break;
-            case "R_E_2":
+            case "R_ET_2":
                 Answer.text = "Email address is too long! Maximum length is 20.";
                 break;
-            case "R_E_4":
+            case "R_ET_3":
                 Answer.text = "Email contains characters that are not allowed.";
                 break;
-            case "R_P_1":
+            case "R_PT_1":
                 Answer.text = "Password has the wrong length! Length is between 8 and 20.";
                 break;
-            case "R_P_2":
+            case "R_PT_2":
                 Answer.text = "Password has no number!";
                 break;
-            case "R_P_3":
+            case "R_PT_3":
                 Answer.text = "Password contains characters that are not allowed.";
                 break;
-            case "R_P_4":
+            case "R_PT_4":
                 Answer.text = "Both passwords are not equal!";
                 break;
-            case "RS_1":
-                Answer.text = "New account created succesfully!";
+            case "R_CNA_SUCCESSFUL":
+                Answer.text = "New account created succesfully! Please use link from your email to activate account!";
                 //tutaj powrót do sceny logowania!!
                 break;
-            case "R_U_2":
+            case "R_CNA_2":
                 Answer.text = "Account with this username already exists!";
                 break;
-            case "R_E_3":
+            case "R_CNA_3":
                 Answer.text = "Account with this email already exists!";
                 break;
             default:
-                Answer.text = "Error (Code: " + www.downloadHandler.text + ")! Please try again later!";
+                Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
                 break;
         }
     }
-
     private void toLogin()
     {
         SceneManager.LoadScene(sceneName: "Log");
