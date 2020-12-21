@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,14 @@ public class PlayerController : NetworkBehaviour
         get;
         private set;
     }
+    private Vector2 groundNormal;
+
+    public GameObject[] Grounds;
+
+    private void Start()
+    {
+        Grounds = GameObject.FindGameObjectsWithTag("Ground");
+    }
 
     void Update()
     {
@@ -25,6 +34,8 @@ public class PlayerController : NetworkBehaviour
     private void FixedUpdate()
     {
         CheckIfOnGround();
+        RotatePlayerOnGround();
+        RotatePlayerInAir();
     }
 
     void HandleMovement()
@@ -46,20 +57,52 @@ public class PlayerController : NetworkBehaviour
         if (!isLocalPlayer)
             return;
         isGrounded = false;
-        var t = transform.TransformDirection(
+        var pointBelowCollider = transform.TransformDirection(
             transform.InverseTransformDirection(transform.position)
             - new Vector3(0, collider.bounds.extents.y, 0)
         );
         RaycastHit2D hit = Physics2D.Raycast(
-            t,
+            pointBelowCollider,
             -transform.up);
         if (hit.collider != null)
         {
+            groundNormal = hit.normal;
 
             if (hit.distance <= 0.2f)
                 isGrounded = true;
         }
-            
     }
     
+    void RotatePlayerOnGround()
+    {
+        if (!isGrounded && !isLocalPlayer)
+            return;
+        Quaternion toRotation = Quaternion.FromToRotation(transform.up, groundNormal) * transform.rotation;
+        transform.rotation = toRotation;
+    }
+
+    void RotatePlayerInAir()
+    {
+        if (isGrounded && !isLocalPlayer)
+            return;
+
+        GameObject ground = GetClosestGround();
+        Vector3 vectorToTarget = (transform.position - ground.transform.position).normalized;
+
+        Quaternion toRotation = Quaternion.FromToRotation(transform.up, vectorToTarget) * transform.rotation;
+        transform.rotation = toRotation;
+    }
+
+    GameObject GetClosestGround()
+    {
+        GameObject closestGround = Grounds[0];
+        float closestDistance = Vector2.Distance(transform.position, closestGround.transform.position);
+        foreach (var ground in Grounds)
+        {
+            float distance = Vector2.Distance(transform.position, ground.transform.position);
+            if (distance < closestDistance)
+                closestGround = ground;
+        }
+        return closestGround;
+    }
 }
