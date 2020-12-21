@@ -12,6 +12,7 @@ if($response == "_SUCCESSFUL")
 		if($response == "V_UD_SUCCESSFUL")
 		{
 			echo "Your account has been activated.</br>You can now use it fully.";
+			mysqli_close($CONNECTION);
 			return;
 		}
 	}

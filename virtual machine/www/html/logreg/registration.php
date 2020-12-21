@@ -14,7 +14,7 @@ if($response == "_SUCCESSFUL")
 	{
 		if($responseTest[$i] != "_SUCCESSFUL")
 		{
-			//CloseConnection();
+			mysqli_close($CONNECTION);
 			exit($responseTest[$i]);
 		}
 	}

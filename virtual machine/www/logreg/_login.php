@@ -33,7 +33,7 @@ function AuthorizeUser()
 	require "/var/www/logreg/_init.php";
 	global $email, $password;
 
-	$emailRequest = "SELECT passwd, IDuser, username, verifed FROM user WHERE email = '".$email."';";
+	$emailRequest = "SELECT passwd, IDuser, username, verified FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $emailRequest);
 
 	if(mysqli_num_rows($results) == 1)
@@ -42,7 +42,7 @@ function AuthorizeUser()
         	{
 			if($requestLoop['passwd'] == $password)
 			{
-				if($requestLoop['verifed'] == "0")
+				if($requestLoop['verified'] == "0")
 				{
 					return("L_AU_4");
 				}

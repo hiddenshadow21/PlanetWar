@@ -33,7 +33,7 @@ function VerifyData()
 	global $email, $code;
 	require "/var/www/logreg/_init.php";
 
-	$request = "SELECT verifed, code FROM user WHERE email = '".$email."';";
+	$request = "SELECT verified, code FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $request);
 	
 	if(mysqli_num_rows($results) == 1)
@@ -41,7 +41,7 @@ function VerifyData()
 		while($requestLoop = mysqli_fetch_array($results))
 		{
 			if(strcmp($requestLoop['code'], $code) == 0
-			&& strcmp($requestLoop['verifed'], "0") == 0)
+			&& strcmp($requestLoop['verified'], "0") == 0)
 			{
 				return("_SUCCESSFUL");
 			}
@@ -56,7 +56,7 @@ function UpdateData()
 	global $email;
 	require "/var/www/logreg/_init.php";
 
-	$inputQuery = "UPDATE user SET verifed='1' WHERE email='".$email."';";
+	$inputQuery = "UPDATE user SET verified='1' WHERE email='".$email."';";
 
 	if(mysqli_query($CONNECTION, $inputQuery))
 	{
