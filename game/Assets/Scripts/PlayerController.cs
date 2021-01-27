@@ -68,7 +68,7 @@ public class PlayerController : NetworkBehaviour
         {
             groundNormal = hit.normal;
 
-            if (hit.distance <= 0.2f)
+            if (hit.distance <= 0.1f)
                 isGrounded = true;
         }
     }
