@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerController : NetworkBehaviour
 {
     private float moveSpeed = 10f;
-    private float jumpHeight = 3f;
+    private float jumpHeight = 100f;
     private Vector2 moveDir;
 
     public new Collider2D collider;
