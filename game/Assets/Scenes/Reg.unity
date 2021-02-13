@@ -1887,7 +1887,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2047021925}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78b3d209516b06441b6f2a5ea67fe3f4, type: 3}
+  m_Script: {fileID: 11500000, guid: e0f159476b5d64549bea1b54c59a8187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Username: {fileID: 1521256216}
@@ -1895,8 +1895,8 @@ MonoBehaviour:
   Password: {fileID: 796967452}
   ConfirmPassword: {fileID: 1837915064}
   Send: {fileID: 2047799044}
-  Answer: {fileID: 77040293}
   ToLogin: {fileID: 573798352}
+  Answer: {fileID: 77040293}
 --- !u!114 &2047021928
 MonoBehaviour:
   m_ObjectHideFlags: 0
