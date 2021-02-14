@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerController : NetworkBehaviour
 {
     private float moveSpeed = 10f;
-    private float jumpHeight = 3f;
+    private float jumpHeight = 100f;
     private Vector2 moveDir;
 
     public new Collider2D collider;
@@ -68,7 +68,7 @@ public class PlayerController : NetworkBehaviour
         {
             groundNormal = hit.normal;
 
-            if (hit.distance <= 0.2f)
+            if (hit.distance <= 0.1f)
                 isGrounded = true;
         }
     }

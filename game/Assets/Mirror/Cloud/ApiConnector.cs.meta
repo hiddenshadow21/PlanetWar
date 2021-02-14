@@ -1,6 +1,10 @@
 fileFormatVersion: 2
 <<<<<<< HEAD:game/Assets/Scripts/Login.cs.meta
+<<<<<<< HEAD
 guid: 7b3619439a5503f4398cb736b013624e
+=======
+guid: 02ff8f11875ab13409ea6b8f0c3f78a7
+>>>>>>> feature/fizykaGry
 =======
 guid: 8bdb99a29e179d14cb0acc43f175d9ad
 >>>>>>> feature/poruszanie:game/Assets/Mirror/Cloud/ApiConnector.cs.meta
