@@ -101,7 +101,10 @@ public class PlayerController : NetworkBehaviour
         {
             float distance = Vector2.Distance(transform.position, ground.transform.position);
             if (distance < closestDistance)
+            {
                 closestGround = ground;
+                closestDistance = distance;
+            }
         }
         return closestGround;
     }
