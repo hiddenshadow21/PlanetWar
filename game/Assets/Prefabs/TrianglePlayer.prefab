@@ -259,6 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 307065994894624251}
   - component: {fileID: 7733194161524654585}
+  - component: {fileID: 1740377457}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -274,7 +275,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524570386473513045}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.417, y: 0.04, z: 0}
+  m_LocalPosition: {x: 0.417, y: -0.007, z: 0}
   m_LocalScale: {x: 0.12998669, y: 0.12998669, z: 0.12998669}
   m_Children: []
   m_Father: {fileID: 2925542398580837912}
@@ -330,6 +331,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1740377457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524570386473513045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d687cf70b735114ab2f4b4a80a3d126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireRate: 20
+  reloadSpeed: 2
+  maxAmmo: 15
+  weaponBullet: {fileID: 0}
+  weaponFirePosition: {fileID: 0}
 --- !u!1 &6854225994983376502
 GameObject:
   m_ObjectHideFlags: 0

@@ -366,35 +366,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
---- !u!1 &476656783 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 476656783, guid: 9a9285bd3833153448e66a1e3147f04b,
-    type: 3}
-  m_PrefabInstance: {fileID: 5030373175244699470}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &476656784 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 476656784, guid: 9a9285bd3833153448e66a1e3147f04b,
-    type: 3}
-  m_PrefabInstance: {fileID: 5030373175244699470}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &476656785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 476656783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d687cf70b735114ab2f4b4a80a3d126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireRate: 40
-  reloadSpeed: 1
-  maxAmmo: 15
-  weaponBullet: {fileID: 0}
-  weaponFirePosition: {fileID: 899637515}
 --- !u!1001 &800295020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -484,36 +455,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 963d84ee9e3e7694e92a93d6bdcef99a, type: 3}
---- !u!1 &899637514
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 899637515}
-  m_Layer: 0
-  m_Name: BarrelEnd
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &899637515
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899637514}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.37, y: 1.03, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 476656784}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1877539734
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,28 +584,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 476656785, guid: 9a9285bd3833153448e66a1e3147f04b, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 476656785, guid: 9a9285bd3833153448e66a1e3147f04b, type: 3}
-      propertyPath: m_FlipY
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 213013488172764608, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
       propertyPath: m_Name
       value: TrianglePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 307065994894624251, guid: 9a9285bd3833153448e66a1e3147f04b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.033
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925542398580837912, guid: 9a9285bd3833153448e66a1e3147f04b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6564099926785808149, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.63
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6564099926785808149, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.97
+      value: 1.49
       objectReference: {fileID: 0}
     - target: {fileID: 6564099926785808149, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
@@ -709,6 +652,11 @@ PrefabInstance:
     - target: {fileID: 6564099926785808149, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7733194161524654585, guid: 9a9285bd3833153448e66a1e3147f04b,
+        type: 3}
+      propertyPath: m_FlipY
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8724354498832848633, guid: 9a9285bd3833153448e66a1e3147f04b,
