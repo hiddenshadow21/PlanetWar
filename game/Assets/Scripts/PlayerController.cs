@@ -24,6 +24,8 @@ public class PlayerController : NetworkBehaviour
     private void Start()
     {
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
+        if(isLocalPlayer)
+            Camera.main.GetComponent<CameraController>().player = gameObject;
     }
 
     void Update()
