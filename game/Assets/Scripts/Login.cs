@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
@@ -73,11 +74,29 @@ public class Login : MonoBehaviour
         }
     }
 
+    private bool passwordTest(string serverData, string passwd)
+    {
+        byte[] mergedData = Convert.FromBase64String(serverData);
+        byte[] salt = new byte[16];
+
+        Array.Copy(mergedData, 0, salt, 0, 16);
+        var rfc2989db = new Rfc2898DeriveBytes(passwd, salt, 10000);
+        byte[] hash = rfc2989db.GetBytes(20);
+
+        for (int i = 0; i < 20; i++)
+        {
+            if (hash[i] != mergedData[i + 16])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private IEnumerator login()
     {
         WWWForm form = new WWWForm();
         form.AddField("email", Email.text);
-        form.AddField("password", Password.text);
 
         UnityWebRequest www = UnityWebRequest.Post(loginURL, form);
         yield return www.SendWebRequest();
@@ -94,11 +113,18 @@ public class Login : MonoBehaviour
             case "L_AU_SUCCESSFUL":
                 try
                 {
-                    PlayerInfo.Id = int.Parse(response[1]);
-                    PlayerInfo.Name = response[2];
-                    PlayerInfo.EMail = response[3];
-                    Answer.text = "Login successful!";
-                    //tutaj przejście do kolejnej sceny!
+                    if(passwordTest(response[1], Password.text) == true)
+                    {
+                        PlayerInfo.Id = int.Parse(response[2]);
+                        PlayerInfo.Name = response[3];
+                        PlayerInfo.EMail = response[4];
+                        Answer.text = "Login successful!";
+                        //tutaj przejście do kolejnej sceny!
+                    }
+                    else
+                    {
+                        goto case "L_AU_1";
+                    }
                 }
                 catch (IndexOutOfRangeException e)
                 {
