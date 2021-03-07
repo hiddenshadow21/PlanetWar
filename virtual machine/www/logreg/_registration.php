@@ -2,13 +2,12 @@
 
 $email = "";
 $password = "";
-$confPassword = "";
 $username = "";
 $code = "";
 
 function DownloadDataFromUnity()
 {
-	global $email, $password, $confPassword, $username;
+	global $email, $password, $username;
 
 	if(isset($_POST["email"]))
 	{
@@ -28,101 +27,22 @@ function DownloadDataFromUnity()
 		return("R_DDFU_2");
 	}
 	
-	if(isset($_POST["confPassword"]))
-	{
-		$confPassword = $_POST["confPassword"];
-	}
-	else
-	{
-		return("R_DDFU_3");
-	}
-	
 	if(isset($_POST["username"]))
 	{
 		$username = $_POST["username"];
 	}
 	else
 	{
-		return("R_DDFU_4");
+		return("R_DDFU_3");
 	}
 	
 	return("_SUCCESSFUL");
 }
-
-function UsernameTest()
-{
-	require "/var/www/logreg/_consts.php";
-	global $username;
-
-	if(strlen($username) > 20) 
-	{ 
-		return("R_UT_1"); 
-	} 
-	
-	if(strpos($username, $RESTRICTED_MARK) == true)
-	{
-		return("R_UT_2"); 
-	}	
-	
-	return("_SUCCESSFUL");
-}
-
-function EmailTest()
-{
-	require "/var/www/logreg/_consts.php";
-	global $email;
-
-	if(!filter_var($email, FILTER_VALIDATE_EMAIL))
-    	{
-		return("R_ET_1"); 
-	}
-	
-	if(strlen($email) > 20) 
-	{ 
-		return("R_ET_2"); 
-	}
-	
-	if(strpos($email, $RESTRICTED_MARK) == true)
-    	{
-		return("R_ET_3");
-	}
-	
-	return("_SUCCESSFUL");
-}
-
-function PasswordTest()
-{	
-	require "/var/www/logreg/_consts.php";
-	global $password, $confPassword;
-
-	if(strlen($password) <= 7 || strlen($password) > 20) 
-	{ 
-		return("R_PT_1"); 
-	}
-	
-	if(strcspn($password, '0123456789') == strlen($password))
-	{ 
-		return("R_PT_2"); 
-	}
-	
-    	if(strpos($password, $RESTRICTED_MARK) == true)
-	{
-		return("R_PT_3");
-	}
-	
-	if($password != $confPassword)
-	{ 
-		return("R_PT_4"); 
-	}
-	
-	return("_SUCCESSFUL");
-}
-
 
 function CreateNewAccount()
 {
 	require "/var/www/logreg/_init.php";
-	global $username, $email, $password, $confPassword, $code;
+	global $username, $email, $password, $code;
 
 	$emailRequest = "SELECT email FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $emailRequest);
@@ -152,7 +72,7 @@ function SendVerificationMail()
 	require "/var/www/logreg/_newAccountAuthentication.php";
 	global $username, $email, $code;
 
-	$response = SendAuthenticationMail($username, $email, $code); //3-rd parameter to-do!! new function!
+	$response = SendAuthenticationMail($username, $email, $code);
 				
 	if($response != "SM_SM_SUCCESSFUL_1")
 	{

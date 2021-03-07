@@ -9,7 +9,6 @@ SERVER:
 	//////////////////////////////////////////////////
 	www/logreg/_login.php:
 		L_DDFU_1 -> failed to get email string from Unity
-		L_DDFU_2 -> failet to get password string from Unity
 		
 		L_AU_1 -> invalid username or password
 		L_AU_2 -> user with this email not found in database
@@ -24,27 +23,13 @@ SERVER:
 	www/logreg/_registration.php:
 		R_DDFU_1 -> failed to get email string from Unity
 		R_DDFU_2 -> failed to get password string from Unity
-		R_DDFU_3 -> failed to get confPassword string from Unity
-		R_DDFU_4 -> failed to get username string from Unity
-	
-		R_UT_1 -> username is too long
-		R_UT_2 -> restricted mark detected
-		
-		R_ET_1 -> email has syntax error
-		R_ET_2 -> email is too long
-		R_ET_3 -> restricted mark detected
-		
-		R_PT_1 -> password is too short or too long
-		R_PT_2 -> password has no number
-		R_PT_3 -> restricted mark detected
-		R_PT_4 -> both passwords are not equal
+		R_DDFU_3 -> failed to get username string from Unity
 		
 		R_CNA_1 -> insert into database error
 		R_CNA_2 -> account with this username already exists
 		R_CNA_3 -> account with this email already exists
 		
 		R_DNA_1 -> delete into database error
-		 
 		
 		R_CNA_SUCCESSFUL -> new account created succesfully
 	//////////////////////////////////////////////////
@@ -69,8 +54,27 @@ SERVER:
 		V_UD_1 -> update database error
 
 		V_UD_SUCCESSFUL -> authentication process successfully
-
-		
 	//////////////////////////////////////////////////
+
+
 CLIENT:
-	L_OI_1 -> incomplete data from server
+	//////////////////////////////////////////////////
+	Login.cs:
+		L_OI_1 -> incomplete data from server
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	Registration.cs:
+		R_UT_1 -> username is too long
+		R_UT_2 -> restricted mark detected
+
+		R_PT_1 -> password is too short or too long
+		R_PT_2 -> password has no number
+		R_PT_3 -> restricted mark detected
+		R_PT_4 -> both passwords are not equal
+
+		R_ET_1 -> restricted mark detected
+		R_ET_2 -> email is too long
+		R_ET_3 -> email has syntax error
+	//////////////////////////////////////////////////	
