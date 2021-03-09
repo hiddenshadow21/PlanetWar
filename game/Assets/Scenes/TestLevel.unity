@@ -589,16 +589,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrianglePlayer
       objectReference: {fileID: 0}
-    - target: {fileID: 307065994894624251, guid: 9a9285bd3833153448e66a1e3147f04b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.033
-      objectReference: {fileID: 0}
-    - target: {fileID: 2925542398580837912, guid: 9a9285bd3833153448e66a1e3147f04b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6564099926785808149, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -652,11 +642,6 @@ PrefabInstance:
     - target: {fileID: 6564099926785808149, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7733194161524654585, guid: 9a9285bd3833153448e66a1e3147f04b,
-        type: 3}
-      propertyPath: m_FlipY
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8724354498832848633, guid: 9a9285bd3833153448e66a1e3147f04b,
