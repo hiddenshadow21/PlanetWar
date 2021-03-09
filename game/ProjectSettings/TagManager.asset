@@ -6,6 +6,8 @@ TagManager:
   tags:
   - InputRoomKeyText
   - RoomManager
+  - RoomPlayer
+  - PanelRoomPlayer
   layers:
   - Default
   - TransparentFX

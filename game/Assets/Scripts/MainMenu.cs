@@ -12,20 +12,21 @@ public class MainMenu : MonoBehaviour
 
     public Button ButtonCreateRoom;
     public Button ButtonJoinRoom;
+    public Button ButtonExitGame;
     public InputField InputRoomKey;
     public Text TextPlayerName;
 
     KcpTransport kcpTransport;
-    NetworkRoomManagerExt manager;
+    NetworkRoomManagerExt networkRoomManagerExt;
 
     private const string networkAddress = "40.69.215.163";
-    private ushort port = 7000;
-    private string key = "";
+    private ushort port = 7006;
+    private string key = "ABC12";
 
     void Awake()
     {
         kcpTransport = RoomManager.GetComponent<KcpTransport>();
-        manager = RoomManager.GetComponent<NetworkRoomManagerExt>();
+        networkRoomManagerExt = RoomManager.GetComponent<NetworkRoomManagerExt>();
         TextPlayerName.text = PlayerInfo.Name;
     }
 
@@ -33,6 +34,7 @@ public class MainMenu : MonoBehaviour
     {
         ButtonCreateRoom.onClick.AddListener(CreateRoom);
         ButtonJoinRoom.onClick.AddListener(JoinRoom);
+        ButtonExitGame.onClick.AddListener(ExitGame);
     }
 
     void OnGUI()
@@ -50,32 +52,34 @@ public class MainMenu : MonoBehaviour
 
     public void ExitGame()
     {
-        // TO DO - exit game
+        Application.Quit();
     }
 
-    // TO DO - popraw kod
+    // TO DO - popraw kod bo jest prawie taki sam jak join
     public void CreateRoom()
     {
-        generateRandomKey();
-        StartCoroutine(createRoomPHP());
+/*        generateRandomKey();
+        StartCoroutine(createRoomPHP());*/
         kcpTransport.Port = port;
-        manager.networkAddress = networkAddress;
-        manager.StartClient();
+        networkRoomManagerExt.networkAddress = networkAddress;
+        networkRoomManagerExt.Key = key;
+        networkRoomManagerExt.StartClient();
     }
     public void JoinRoom()
     {
         key = InputRoomKey.text;
         StartCoroutine(joinRoomPHP());
         kcpTransport.Port = port;
-        manager.networkAddress = networkAddress;
-        manager.StartClient();
+        networkRoomManagerExt.networkAddress = networkAddress;
+        networkRoomManagerExt.Key = key;
+        networkRoomManagerExt.StartClient();
     }
     private IEnumerator createRoomPHP()
     {
         var form = new WWWForm();
         form.AddField("key", key);
 
-        var www = new WWW($"http://{networkAddress}/createRoomByKey.php", form);
+        var www = new WWW($"http://{networkAddress}/roomManager/createRoomByKey.php", form);
         yield return www;
 
         switch (www.text)
@@ -102,7 +106,7 @@ public class MainMenu : MonoBehaviour
         var form = new WWWForm();
         form.AddField("key", key);
 
-        var www = new WWW($"http://{networkAddress}/findRoomByKey.php", form);
+        var www = new WWW($"http://{networkAddress}/roomManager/findRoomByKey.php", form);
         yield return www;
 
         switch (www.text)
@@ -119,8 +123,6 @@ public class MainMenu : MonoBehaviour
             default:
                 port = Convert.ToUInt16(www.text);
                 kcpTransport.Port = port;
-                manager.networkAddress = networkAddress;
-                manager.StartClient();
                 break;
         }
     }

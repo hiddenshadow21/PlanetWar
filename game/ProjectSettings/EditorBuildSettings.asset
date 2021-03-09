@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LogReg.unity
-    guid: eaca8b8f0a4caad44a981afa38372cef
-  - enabled: 1
     path: Assets/Scenes/OfflineScene.unity
     guid: 00fafc1e24ea4104baadbead34bff784
   - enabled: 1

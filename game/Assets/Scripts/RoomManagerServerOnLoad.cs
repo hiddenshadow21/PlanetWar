@@ -14,15 +14,14 @@ public class RoomManagerServerOnLoad : MonoBehaviour
     NetworkRoomManagerExt manager;
     KcpTransport kcpTransport;
 
-    private ushort port = 7000;
-    private string key = "";
+    private ushort port;
+    private string key;
 
     void Awake()
     {
-        manager = GetComponent<NetworkRoomManagerExt>();
-        kcpTransport = GetComponent<KcpTransport>();
-
         #if UNITY_SERVER
+            manager = GetComponent<NetworkRoomManagerExt>();
+            kcpTransport = GetComponent<KcpTransport>();
             ParseCommandLineArguments();
             HostRoom(); 
         #endif

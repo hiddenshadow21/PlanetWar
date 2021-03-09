@@ -1,100 +1,173 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Mirror.Examples.NetworkRoom
 {
     [AddComponentMenu("")]
     public class NetworkRoomPlayerExt : NetworkRoomPlayer
     {
-        static readonly ILogger logger = LogFactory.GetLogger(typeof(NetworkRoomPlayerExt));
+        // UI Elements
 
-        [Tooltip("Name of the player.")]
-        [SyncVar]
-        public string playerName;
+        public Image ImagePlayerColor;
+        public Text TextPlayerName;
+        public Text TextReadyState;
+
+        public Button ButtonKick;
+
+
+        /// NetworkRoomPlayerExt singleton
+        public static NetworkRoomPlayerExt singleton { get; private set; }
+
+        static readonly ILogger logger = LogFactory.GetLogger(typeof(NetworkRoomPlayerExt));
+        NetworkRoomManager room;
+
+
+        [SyncVar(hook = nameof(PlayerNameChanged))]
+        public string PlayerName;
+
+
+        [SyncVar(hook = nameof(PlayerColorChanged))]
+        public Color32 PlayerColor;
+
+        #region Commands
+
+        [Command]
+        public void CmdChangePlayerName(string playerName)
+        {
+            room = NetworkManager.singleton as NetworkRoomManager;
+            foreach (NetworkRoomPlayerExt item in room.roomSlots)
+            {
+                if (item == this)
+                {
+                    item.PlayerName = playerName;
+                }
+            }
+        }
+
+        [Command]
+        public void CmdChangePlayerColor()
+        {
+            room = NetworkManager.singleton as NetworkRoomManager;
+            foreach (NetworkRoomPlayerExt item in room.roomSlots)
+            {
+                if (item == this)
+                {
+                    Debug.Log("---item.index = " + item.index);
+                    Color32 color = item.getPlayerColor(item.index);
+                    item.PlayerColor = color;
+                }
+            }
+        }
+
+        [Command]
+        public void CmdChangeReadyState()
+        {
+            room = NetworkManager.singleton as NetworkRoomManager;
+            foreach (NetworkRoomPlayerExt item in room.roomSlots)
+            {
+                if (item == this)
+                {
+                    item.readyToBegin = true;
+                }
+            }
+        }
+        #endregion
+
+        #region SyncVar Hooks
+
+        private void PlayerNameChanged(string oldName, string newName)
+        {
+            Debug.Log("---Hook PlayerNameChanged---");
+            Debug.Log(oldName);
+            Debug.Log(newName);
+            TextPlayerName.text = newName;
+        }
+
+        private void PlayerColorChanged(Color32 oldColor, Color32 newColor)
+        {
+            Debug.Log("---Hook PlayerNameColor---");
+            ImagePlayerColor.color = newColor;
+        }
+
+        public override void IndexChanged(int oldIndex, int newIndex) 
+        {
+            Debug.Log("---IndexChanged---");
+            Debug.Log(oldIndex);
+            Debug.Log(newIndex);
+            // chyba nie zadziala
+            var panel = GameObject.FindGameObjectWithTag("PanelRoomPlayer");
+            panel.transform.position = new Vector3(Screen.width / 2f, Screen.height - (newIndex * 160f) - 40f, 0);
+
+            CmdChangePlayerColor();
+        }
+
+        public override void ReadyStateChanged(bool _, bool newReadyState)
+        {
+            if (newReadyState == true)
+            {
+                TextReadyState.text = "Ready";
+                TextReadyState.color = new Color32(0, 114, 0, 0);
+            }
+            else
+            {
+                TextReadyState.text = "Not ready";
+                TextReadyState.color = new Color32(114, 0, 0, 0);
+            }
+        }
+
+        #endregion
 
         public override void OnStartClient()
         {
-            if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "OnStartClient {0}", SceneManager.GetActiveScene().path);
+            Debug.Log("---OnStartClient()---");
+            showRoomGUI = false;
+            singleton = this;
 
-            name = PlayerInfo.Name;
+            CmdChangePlayerName(PlayerInfo.Name);
 
             base.OnStartClient();
         }
 
         public override void OnClientEnterRoom()
         {
-            if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "OnClientEnterRoom {0}", SceneManager.GetActiveScene().path);
+            Debug.Log("---OnClientEnterRoom()---");
         }
 
-        public override void OnClientExitRoom()
+        public override void OnClientExitRoom(){}
+
+
+        private void OnEnable()
         {
-            if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "OnClientExitRoom {0}", SceneManager.GetActiveScene().path);
+            ButtonKick.onClick.AddListener(kickPlayer);
+      
+        }
+        private void kickPlayer()
+        {
+            // TO DO - FIX
+            GetComponent<NetworkIdentity>().connectionToClient.Disconnect();
         }
 
-        public override void ReadyStateChanged(bool _, bool newReadyState)
+        private Color32 getPlayerColor(int index)
         {
-            if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "ReadyStateChanged {0}", newReadyState);
-        }
-
-
-        /// Render a UI for the room
-        public override void OnGUI()
-        {
-            NetworkRoomManager room = NetworkManager.singleton as NetworkRoomManager;
-            if (room)
+            switch(index)
             {
-                if (!NetworkManager.IsSceneActive(room.RoomScene))
-                    return;
-
-                DrawPlayerReadyStateExt();
-                DrawPlayerReadyButtonExt();
+                case 0:
+                    return new Color32(255, 0, 0, 0);
+                case 1:
+                    return new Color32(255, 128, 0, 0);
+                case 2:
+                    return new Color32(255, 255, 0, 0);
+                case 3:
+                    return new Color32(0, 255, 0, 0);
+                case 4:
+                    return new Color32(0, 0, 255, 0);
+                case 5:
+                    return new Color32(255, 51, 153, 0);
+                default:
+                    return new Color32(0, 0, 0, 0);
             }
-        }
-
-        // TO DO - Change view
-        void DrawPlayerReadyStateExt()
-        {
-            GUILayout.BeginArea(new Rect(20f + (index * 100), 200f, 90f, 130f));
-
-            GUILayout.Label(playerName);
-
-            if (readyToBegin)
-                GUILayout.Label("Ready");
-            else
-                GUILayout.Label("Not Ready");
-
-            if (((isServer && index > 0) || isServerOnly) && GUILayout.Button("REMOVE"))
-            {
-                // This button only shows on the Host for all players other than the Host
-                // Host and Players can't remove themselves (stop the client instead)
-                // Host can kick a Player this way.
-                GetComponent<NetworkIdentity>().connectionToClient.Disconnect();
-            }
-
-            GUILayout.EndArea();
-        }
-
-        // TO DO - Change view
-        void DrawPlayerReadyButtonExt()
-        {
-            if (NetworkClient.active && isLocalPlayer)
-            {
-                GUILayout.BeginArea(new Rect(20f, 300f, 120f, 20f));
-
-                if (readyToBegin)
-                {
-                    if (GUILayout.Button("Cancel"))
-                        CmdChangeReadyState(false);
-                }
-                else
-                {
-                    if (GUILayout.Button("Ready"))
-                        CmdChangeReadyState(true);
-                }
-
-                GUILayout.EndArea();
-            }
-
         }
     }
 }
