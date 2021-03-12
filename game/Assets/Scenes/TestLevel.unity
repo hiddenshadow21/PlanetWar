@@ -562,7 +562,8 @@ MonoBehaviour:
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 2912613800490833474, guid: 9b7feea6ad4f22d469d6c7d0bdb13cef, type: 3}
 --- !u!4 &1877539738
 Transform:
   m_ObjectHideFlags: 0
@@ -584,6 +585,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1740377457, guid: 9a9285bd3833153448e66a1e3147f04b, type: 3}
+      propertyPath: fireRate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 213013488172764608, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}
       propertyPath: m_Name

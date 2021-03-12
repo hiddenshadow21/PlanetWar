@@ -9,6 +9,7 @@ public class PlayerWeaponController : NetworkBehaviour
     private Transform aimTransform;
     private int selectedWeaponLocal = 1;
     public Gun[] weapons;
+    private Gun activeWeapon;
 
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced = 1;
@@ -27,6 +28,7 @@ public class PlayerWeaponController : NetworkBehaviour
         if (_New < weapons.Length && weapons[_New] != null)
         {
             weapons[_New].gameObject.SetActive(true);
+            activeWeapon = weapons[_New];
         }
     }
 
@@ -36,6 +38,9 @@ public class PlayerWeaponController : NetworkBehaviour
         activeWeaponSynced = newIndex;
     }
 
+    private void Start()
+    {
+    }
 
     private void Awake()
     {
@@ -77,8 +82,25 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            //TODO: Shooting
+            CmdCanShoot();
         }
+    }
+
+    [Command]
+    private void CmdCanShoot()
+    {
+        if (Time.time >= activeWeapon.nextShootTime)
+        {
+            activeWeapon.nextShootTime = Time.time + 1.0f / activeWeapon.fireRate;
+            RpcFireWeapon();
+        }
+    }
+
+    [ClientRpc]
+    void RpcFireWeapon()
+    {
+        var bullet = Instantiate(activeWeapon.weaponBullet, activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
+        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * activeWeapon.weaponBullet.GetComponent<Bullet>().speed;
     }
 
     private void HandleAiming()
