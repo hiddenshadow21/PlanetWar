@@ -23,7 +23,7 @@ function AuthorizeUser()
 	require "/var/www/logreg/_init.php";
 	global $email;
 
-	$emailRequest = "SELECT passwd, IDuser, username, verified FROM user WHERE email = '".$email."';";
+	$emailRequest = "SELECT password, IDuser, username, verified FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $emailRequest);
 
 	if(mysqli_num_rows($results) == 1)
@@ -35,7 +35,7 @@ function AuthorizeUser()
 				return("L_AU_4");
 			}
 			$finalResponse = "L_AU_SUCCESSFUL";
-			$finalResponse .= $RESTRICTED_MARK.$requestLoop['passwd'];
+			$finalResponse .= $RESTRICTED_MARK.$requestLoop['password'];
                		$finalResponse .= $RESTRICTED_MARK.$requestLoop['IDuser'];
 	                $finalResponse .= $RESTRICTED_MARK.$requestLoop['username'];
 	                $finalResponse .= $RESTRICTED_MARK.$email;
@@ -55,4 +55,4 @@ function AuthorizeUser()
     	return("L_AU_2");	
 }
 
-
+?>
