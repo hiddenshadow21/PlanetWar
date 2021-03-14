@@ -25,14 +25,14 @@ function SearchUnverifiedAccounts()
 	echo date("Y-m-d H:i:s", strtotime("+".$TIME_OFFSET." seconds")); 
 
 	$currentDate = strtotime(date("Y-m-d H:i:s"));
-	echo "\r\nCD: ".$currentDate."\r\n";
 
 	while($requestLoop = mysqli_fetch_array($results))
 	{
 		echo "\r\nID: ".$requestLoop['IDuser'];
 
 		$accountDate = strtotime($requestLoop['created']);
-		echo " | AD: ".$accountDate;
+  
+  		echo " | created: ".$requestLoop['created'];
 		
 		if($accountDate + $ADUA_TIME < $currentDate + $TIME_OFFSET)
 		{
@@ -45,6 +45,11 @@ function SearchUnverifiedAccounts()
 			{
 				echo " >> ERR: ".$response;
 			}
+		}
+		else
+		{
+			$diff = round(($accountDate + $ADUA_TIME - $currentDate + $TIME_OFFSET) / 60 / 60);
+			echo " | remaining ".$diff."hours";
 		}
 	}
 	echo "\r\n-------------------------\r\n";
