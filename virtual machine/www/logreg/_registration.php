@@ -55,7 +55,8 @@ function CreateNewAccount()
 		if(mysqli_num_rows($results) == 0)
 		{
 			$code = md5(rand(0, 1000));
-			$inputQuery = "INSERT INTO user (username, password, email, code) VALUES ('".$username."', '".$password."', '".$email."', '".$code."')";
+			$inputQuery = "INSERT INTO user (username, password, email, code, created)
+				VALUES ('".$username."', '".$password."', '".$email."', '".$code."', '".date('Y-m-d H:i:s', strtotime('+'.$TIME_OFFSET.' seconds'))."')";
 			if(mysqli_query($CONNECTION, $inputQuery)) 
 			{
 				return("_SUCCESSFUL");

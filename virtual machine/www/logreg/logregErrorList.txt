@@ -29,7 +29,7 @@ SERVER:
 		R_CNA_2 -> account with this username already exists
 		R_CNA_3 -> account with this email already exists
 		
-		R_DNA_1 -> delete into database error
+		R_DNA_1 -> delete from database error
 		
 		R_CNA_SUCCESSFUL -> new account created succesfully
 	//////////////////////////////////////////////////
@@ -54,6 +54,13 @@ SERVER:
 		V_UD_1 -> update database error
 
 		V_UD_SUCCESSFUL -> authentication process successfully
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	www/logreg/cron/_autoDeleteUnverifiedAccounts.php:
+		ADUA_DA_1 -> delete from database error
+
 	//////////////////////////////////////////////////
 
 
