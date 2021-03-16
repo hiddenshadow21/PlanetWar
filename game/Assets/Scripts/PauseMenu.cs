@@ -25,7 +25,7 @@ public class PauseMenu : MonoBehaviour
                     Pause();
                 }
             }
-      
+  
 
     }
     public void Resume()
@@ -52,6 +52,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         OptionsIsOff = true;
+        GameIsPaused = false;
         SceneManager.LoadScene("Main");
     }
 
