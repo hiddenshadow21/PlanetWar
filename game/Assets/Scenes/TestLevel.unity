@@ -346,11 +346,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet
       objectReference: {fileID: 0}
-    - target: {fileID: 2912613800490833474, guid: 9b7feea6ad4f22d469d6c7d0bdb13cef,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b7feea6ad4f22d469d6c7d0bdb13cef, type: 3}
 --- !u!1 &470176295
@@ -673,11 +668,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TrianglePlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 213013488172764608, guid: 9a9285bd3833153448e66a1e3147f04b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6564099926785808149, guid: 9a9285bd3833153448e66a1e3147f04b,
         type: 3}

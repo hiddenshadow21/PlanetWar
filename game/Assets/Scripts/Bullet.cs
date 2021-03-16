@@ -11,13 +11,16 @@ public class Bullet : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!isServer)
+            return;
+
         Debug.Log("Hit: " + other);
         var player = other.gameObject.GetComponent<PlayerController>();
         if(player != null)
         {
             player.TakeDamage(damage);
         }
-        Destroy(gameObject);
+        NetworkServer.Destroy(gameObject);
     }
 
     private void Start()

@@ -35,7 +35,10 @@ public class PlayerWeaponController : NetworkBehaviour
     [Command]
     public void CmdChangeActiveWeapon(int newIndex)
     {
+        activeWeapon?.gameObject.SetActive(false);
         activeWeaponSynced = newIndex;
+        activeWeapon = weapons[newIndex];
+        activeWeapon.gameObject.SetActive(true);
     }
 
     private void Start()
@@ -92,15 +95,19 @@ public class PlayerWeaponController : NetworkBehaviour
         if (Time.time >= activeWeapon.nextShootTime)
         {
             activeWeapon.nextShootTime = Time.time + 1.0f / activeWeapon.fireRate;
-            RpcFireWeapon();
+
+            var bullet = Instantiate(activeWeapon.weaponBullet, activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
+            bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * activeWeapon.weaponBullet.GetComponent<Bullet>().speed;
+            NetworkServer.Spawn(bullet);
+
+            RpcOnShoot();
         }
     }
 
     [ClientRpc]
-    void RpcFireWeapon()
+    void RpcOnShoot()
     {
-        var bullet = Instantiate(activeWeapon.weaponBullet, activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
-        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * activeWeapon.weaponBullet.GetComponent<Bullet>().speed;
+        
     }
 
     private void HandleAiming()
