@@ -1,12 +1,1 @@
 
--------------------------
-LOGREG ADUA REPORT: 2021-03-14 19:02:01
-ID: 38 | created: 2021-03-14 14:50:34 | remaining 46hours
-ID: 41 | created: 2021-03-14 18:58:13 | remaining 50hours
--------------------------
-
--------------------------
-LOGREG ADUA REPORT: 2021-03-14 19:03:01
-ID: 38 | created: 2021-03-14 14:50:34 | remaining 46hours
-ID: 41 | created: 2021-03-14 18:58:13 | remaining 50hours
--------------------------
