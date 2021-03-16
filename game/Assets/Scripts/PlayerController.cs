@@ -10,6 +10,10 @@ public class PlayerController : NetworkBehaviour
     private float jumpHeight = 100f;
     private Vector2 moveDir;
 
+    public float maxHealth = 100;
+    [SerializeField]
+    private float health;
+
     public new Collider2D collider;
     public Rigidbody2D rb;
 
@@ -17,6 +21,13 @@ public class PlayerController : NetworkBehaviour
         get;
         private set;
     }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        Debug.Log(health);
+    }
+
     private Vector2 groundNormal;
 
     public GameObject[] Grounds;
@@ -26,6 +37,8 @@ public class PlayerController : NetworkBehaviour
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
         if(isLocalPlayer)
             Camera.main.GetComponent<CameraController>().player = gameObject;
+
+        health = maxHealth;
     }
 
     void Update()

@@ -188,6 +188,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  maxHealth: 100
+  health: 0
   collider: {fileID: 3181704384020778682}
   rb: {fileID: 6445737654020582295}
   Grounds: []
@@ -368,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d687cf70b735114ab2f4b4a80a3d126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 20
+  fireRate: 1
   reloadSpeed: 2
   maxAmmo: 15
   nextShootTime: 0
