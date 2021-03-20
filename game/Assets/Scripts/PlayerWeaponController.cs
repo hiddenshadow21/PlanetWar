@@ -64,6 +64,21 @@ public class PlayerWeaponController : NetworkBehaviour
         HandleAiming();
         HandleShooting();
         HandleWeaponSwitching();
+        HandleReloading();
+    }
+
+    private void HandleReloading()
+    {
+        if (Input.GetButtonDown("Reload"))
+        {
+            CmdReload();
+        }
+    }
+
+    [Command]
+    private void CmdReload()
+    {
+        activeWeapon.Reload();
     }
 
     private void HandleWeaponSwitching()
@@ -85,20 +100,18 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            CmdCanShoot();
+            CmdShoot();
         }
     }
 
     [Command]
-    private void CmdCanShoot()
+    private void CmdShoot()
     {
-        if (Time.time >= activeWeapon.nextShootTime)
+        if (Time.time >= activeWeapon.nextShootTime && activeWeapon.Ammo > 0)
         {
-            activeWeapon.nextShootTime = Time.time + 1.0f / activeWeapon.fireRate;
+            activeWeapon.nextShootTime = Time.time + 1.0f / activeWeapon.FireRate;
 
-            var bullet = Instantiate(activeWeapon.weaponBullet, activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
-            bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * activeWeapon.weaponBullet.GetComponent<Bullet>().speed;
-            NetworkServer.Spawn(bullet);
+            activeWeapon.Shoot();
 
             RpcOnShoot();
         }
@@ -107,7 +120,8 @@ public class PlayerWeaponController : NetworkBehaviour
     [ClientRpc]
     void RpcOnShoot()
     {
-        
+        //muzzle flash
+        //audio
     }
 
     private void HandleAiming()

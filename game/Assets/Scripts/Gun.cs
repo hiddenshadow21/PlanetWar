@@ -1,24 +1,27 @@
-﻿using System;
+﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public abstract class Gun : NetworkBehaviour
 {
-    public int fireRate = 1;
-    public float reloadSpeed = 1f;
+    [SerializeField]
+    protected int fireRate = 1;
+    public int FireRate { get { return fireRate; } }
+
+    [SerializeField]
+    protected float reloadTime = 1f;
+    public float ReloadSpeed { get { return reloadTime; } }
+
     public int maxAmmo = 15;
 
-    private int ammo;
+    protected int ammo;
     public int Ammo { get { return ammo; } }
     public float nextShootTime;
 
-    public GameObject weaponBullet;
-    public Transform weaponFirePosition;
+    protected bool isReloading;
 
-    private void Start()
-    {
-        nextShootTime = Time.time;
-        ammo = maxAmmo;
-    }
+    public abstract void Shoot();
+
+    public abstract void Reload();
 }
