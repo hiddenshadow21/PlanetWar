@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Gun : NetworkBehaviour
@@ -15,13 +16,36 @@ public abstract class Gun : NetworkBehaviour
 
     public int maxAmmo = 15;
 
+    [SyncVar(hook = nameof(Test))]
     protected int ammo;
     public int Ammo { get { return ammo; } }
     public float nextShootTime;
 
     protected bool isReloading;
 
+    [SerializeField]
+    protected Transform weaponFirePosition;
+
+    [SyncVar]
+    public uint parentNetId;
+
+    private void Test(int _old, int _new)
+    {
+        Debug.Log(_old + "->" + _new);
+    }
+
     public abstract void Shoot();
 
     public abstract void Reload();
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        NetworkIdentity parentObject = FindObjectsOfType<NetworkIdentity>().Where(x => x.netId == parentNetId).FirstOrDefault();
+        PlayerWeaponController playerWeaponController = parentObject.GetComponent<PlayerWeaponController>();
+        transform.SetParent(playerWeaponController.hand);
+        transform.localPosition = new Vector3(0, 0, 0);
+        transform.localRotation = new Quaternion(0, 0, 0, 1);
+        playerWeaponController.SetGun(this);
+    }
 }

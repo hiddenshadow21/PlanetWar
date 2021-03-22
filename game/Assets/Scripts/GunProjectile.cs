@@ -7,7 +7,6 @@ using UnityEngine;
 public class GunProjectile : Gun
 {
     public GameObject weaponBullet;
-    public Transform weaponFirePosition;
 
     [Server]
     public override void Reload()
@@ -30,13 +29,21 @@ public class GunProjectile : Gun
     [Server]
     public override void Shoot()
     {
-        if(isReloading)
+        if (isReloading)
             return;
 
         ammo--;
         var bullet = Instantiate(weaponBullet, weaponFirePosition.position, weaponFirePosition.rotation);
         bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * weaponBullet.GetComponent<Bullet>().speed;
         NetworkServer.Spawn(bullet);
+
+        RpcOnShoot();
+    }
+
+    [ClientRpc]
+    private void RpcOnShoot()
+    {
+
     }
 
     private void Start()
