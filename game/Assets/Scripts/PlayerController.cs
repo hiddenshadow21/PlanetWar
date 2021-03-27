@@ -9,6 +9,10 @@ public class PlayerController : NetworkBehaviour
     private float moveSpeed = 10f;
     private float jumpHeight = 100f;
     private Vector2 moveDir;
+    
+    public float maxHealth = 100;
+    [SyncVar]
+    private float health;
 
     public new Collider2D collider;
     public Rigidbody2D rb;
@@ -17,6 +21,8 @@ public class PlayerController : NetworkBehaviour
         get;
         private set;
     }
+
+
     private Vector2 groundNormal;
 
     public GameObject[] Grounds;
@@ -26,6 +32,8 @@ public class PlayerController : NetworkBehaviour
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
         if(isLocalPlayer)
             Camera.main.GetComponent<CameraController>().player = gameObject;
+
+        health = maxHealth;
     }
 
     void Update()
@@ -40,6 +48,7 @@ public class PlayerController : NetworkBehaviour
         RotatePlayerInAir();
     }
 
+    #region Movement
     void HandleMovement()
     {
         if (!isLocalPlayer)
@@ -109,5 +118,20 @@ public class PlayerController : NetworkBehaviour
             }
         }
         return closestGround;
+    }
+    #endregion
+
+    [Server]
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        Debug.Log(health);
+    }
+
+    [Server]
+    public void AddHealth(float amount)
+    {
+        health += amount;
+        Debug.Log(health);
     }
 }

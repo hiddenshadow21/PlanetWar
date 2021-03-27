@@ -2,16 +2,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerWeaponController : NetworkBehaviour
 {
     private Transform aimTransform;
-    private int selectedWeaponLocal = 1;
-    public Gun[] weapons;
+    private int selectedWeaponLocal = 0;
+    private Gun[] weapons = new Gun[2];
+    public Gun[] weaponsPrefabs;
+    private Gun activeWeapon;
+    public Transform hand;
 
     [SyncVar(hook = nameof(OnWeaponChanged))]
-    public int activeWeaponSynced = 1;
+    public int activeWeaponSynced;
+
 
     void OnWeaponChanged(int _Old, int _New)
     {
@@ -19,33 +24,63 @@ public class PlayerWeaponController : NetworkBehaviour
         // in range and not null
         if (_Old < weapons.Length && weapons[_Old] != null)
         {
-            weapons[_Old].gameObject.SetActive(false);
+            weapons[_Old].GetComponent<SpriteRenderer>().enabled = false;
         }
 
         // enable new weapon
         // in range and not null
         if (_New < weapons.Length && weapons[_New] != null)
         {
-            weapons[_New].gameObject.SetActive(true);
+            weapons[_New].GetComponent<SpriteRenderer>().enabled = true;
+            activeWeapon = weapons[_New];
         }
     }
 
     [Command]
     public void CmdChangeActiveWeapon(int newIndex)
     {
+        if(activeWeapon != null)
+            activeWeapon.GetComponent<SpriteRenderer>().enabled = false;
         activeWeaponSynced = newIndex;
+        activeWeapon = weapons[newIndex];
+        activeWeapon.GetComponent<SpriteRenderer>().enabled = true;
     }
-
 
     private void Awake()
     {
         aimTransform = transform.Find("Aim");
-        foreach (var item in weapons)
+
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        CmdSpawnSelectedWeapons();
+        CmdChangeActiveWeapon(0);
+    }
+
+    internal void SetGun(Gun gun)
+    {
+        if(weapons[0] == null)
         {
-            if (item != null)
-            {
-                item.gameObject.SetActive(false);
-            }
+            weapons[0] = gun;
+        }
+        else
+        {
+            weapons[1] = gun;
+        }
+    }
+
+    [Command]
+    private void CmdSpawnSelectedWeapons()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject obj = Instantiate(weaponsPrefabs[i].gameObject, hand.position, hand.rotation) as GameObject;
+            var gun = weapons[i] = obj.GetComponent<Gun>();
+            obj.transform.SetParent(hand);
+            gun.parentNetId = this.netId;
+            NetworkServer.Spawn(obj, connectionToClient);
         }
     }
 
@@ -56,6 +91,21 @@ public class PlayerWeaponController : NetworkBehaviour
         HandleAiming();
         HandleShooting();
         HandleWeaponSwitching();
+        HandleReloading();
+    }
+
+    private void HandleReloading()
+    {
+        if (Input.GetButtonDown("Reload"))
+        {
+            CmdReload();
+        }
+    }
+
+    [Command]
+    private void CmdReload()
+    {
+        activeWeapon.Reload();
     }
 
     private void HandleWeaponSwitching()
@@ -77,9 +127,22 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            //TODO: Shooting
+            CmdShoot();
         }
     }
+
+    [Command]
+    private void CmdShoot()
+    {
+        if (Time.time >= activeWeapon.nextShootTime && activeWeapon.Ammo > 0)
+        {
+            activeWeapon.nextShootTime = Time.time + 1.0f / activeWeapon.FireRate;
+
+            activeWeapon.Shoot();
+        }
+        
+    }
+
 
     private void HandleAiming()
     {
@@ -101,5 +164,6 @@ public class PlayerWeaponController : NetworkBehaviour
         }
         aimTransform.localScale = aimLocalScale;
     }
+    
 }
 
