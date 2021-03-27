@@ -9,6 +9,7 @@ public class Bullet : NetworkBehaviour
     [SerializeField]
     private float lifeTime = 15;
 
+    [Server]
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!isServer)

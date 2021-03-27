@@ -56,17 +56,7 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         base.OnStartClient();
         CmdSpawnSelectedWeapons();
-        //CmdSpawnInactiveWeapons();
         CmdChangeActiveWeapon(0);
-    }
-
-    [Command]
-    private void CmdSpawnInactiveWeapons()
-    {
-        foreach (var inactiveGun in FindObjectsOfType<Gun>().Where(x=> x.gameObject.activeSelf == false))
-        {
-            NetworkServer.Spawn(inactiveGun.gameObject);
-        }
     }
 
     internal void SetGun(Gun gun)
@@ -91,18 +81,7 @@ public class PlayerWeaponController : NetworkBehaviour
             obj.transform.SetParent(hand);
             gun.parentNetId = this.netId;
             NetworkServer.Spawn(obj, connectionToClient);
-            //RpcSetParent(obj, gameObject, i);
         }
-    }
-
-    [ClientRpc]
-    void RpcSetParent(GameObject obj, GameObject parent, int index)
-    {
-        var weaponCotroller = parent.GetComponent<PlayerWeaponController>();
-        obj.transform.parent = weaponCotroller.hand;
-        weaponCotroller.weapons[index] = obj.GetComponent<Gun>();
-        obj.transform.localPosition = new Vector3(0, 0, 0);
-        obj.transform.localRotation = new Quaternion(0, 0, 0, 1);
     }
 
     private void Update()

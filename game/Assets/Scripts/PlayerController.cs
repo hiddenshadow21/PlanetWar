@@ -9,9 +9,9 @@ public class PlayerController : NetworkBehaviour
     private float moveSpeed = 10f;
     private float jumpHeight = 100f;
     private Vector2 moveDir;
-
+    
     public float maxHealth = 100;
-    [SerializeField]
+    [SyncVar]
     private float health;
 
     public new Collider2D collider;
@@ -22,11 +22,6 @@ public class PlayerController : NetworkBehaviour
         private set;
     }
 
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-        Debug.Log(health);
-    }
 
     private Vector2 groundNormal;
 
@@ -53,6 +48,7 @@ public class PlayerController : NetworkBehaviour
         RotatePlayerInAir();
     }
 
+    #region Movement
     void HandleMovement()
     {
         if (!isLocalPlayer)
@@ -122,5 +118,20 @@ public class PlayerController : NetworkBehaviour
             }
         }
         return closestGround;
+    }
+    #endregion
+
+    [Server]
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        Debug.Log(health);
+    }
+
+    [Server]
+    public void AddHealth(float amount)
+    {
+        health += amount;
+        Debug.Log(health);
     }
 }
