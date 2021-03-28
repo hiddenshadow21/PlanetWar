@@ -1,21 +1,16 @@
 <?php
 
-require "/var/www/logreg/_registration.php";
+require "/var/www/logreg/_newPasswordEmailVerify.php";
 
 $response = DownloadDataFromUnity();
 
 if($response == "_SUCCESSFUL")
 {
-	$response = CreateNewAccount();
+	$response = SetCode();
 		
 	if($response == "_SUCCESSFUL")
 	{
 		$response = SendVerificationMail();
-		
-		if($response != "R_SVM_SUCCESSFUL")
-		{
-			$response = DeleteNewAccount();
-		}
 	}
 }
 

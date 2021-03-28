@@ -47,10 +47,22 @@ function CreateNewAccount()
 	$emailRequest = "SELECT email FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $emailRequest);
 
+	if($results == false)
+	{
+		mysqli_close($CONNECTION);
+		return("R_CNA_4");
+	}
+
 	if(mysqli_num_rows($results) == 0)
     	{
 		$usernameRequest = "SELECT username FROM user WHERE username = '".$username."';";
 		$results = mysqli_query($CONNECTION, $usernameRequest);
+
+		if($results == false)
+		{
+			mysqli_close($CONNECTION);
+			return("R_CNA_4");
+		}
 
 		if(mysqli_num_rows($results) == 0)
 		{
@@ -59,12 +71,16 @@ function CreateNewAccount()
 				VALUES ('".$username."', '".$password."', '".$email."', '".$code."', '".date('Y-m-d H:i:s', strtotime('+'.$TIME_OFFSET.' seconds'))."')";
 			if(mysqli_query($CONNECTION, $inputQuery)) 
 			{
+				mysqli_close($CONNECTION);
 				return("_SUCCESSFUL");
 			} 
+			mysqli_close($CONNECTION);
 			return("R_CNA_1"); 
 		} 
+		mysqli_close($CONNECTION);
 		return("R_CNA_2"); 
 	} 
+	mysqli_close($CONNECTION);
 	return("R_CNA_3");
 }
 
@@ -79,7 +95,7 @@ function SendVerificationMail()
 	{
 		return($response);
 	}
-	return("R_CNA_SUCCESSFUL");		
+	return("R_SVM_SUCCESSFUL");		
 }
 
 function DeleteNewAccount()
@@ -91,8 +107,11 @@ function DeleteNewAccount()
 					
 	if(mysqli_query($CONNECTION, $deleteQuery))
 	{
+		mysqli_close($CONNECTION);
 		return("_SUCCESSFUL");
 	}
+
+	mysqli_close($CONNECTION);
 	return("R_DNA_1");
 }
 

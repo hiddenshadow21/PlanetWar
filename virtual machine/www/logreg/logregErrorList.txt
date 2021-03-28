@@ -14,6 +14,7 @@ SERVER:
 		L_AU_2 -> user with this email not found in database
 		L_AU_3 -> more than one user with this email found in database
 		L_AU_4 -> the account is not verified
+		L_AU_5 -> select from database error
 		
 		L_AU_SUCCESSFUL$RESTRICTED_MARKIDuserRESTRICTED_MARKusernameRESTRICTED_MARKemail -> authentication successful
 	//////////////////////////////////////////////////
@@ -28,10 +29,49 @@ SERVER:
 		R_CNA_1 -> insert into database error
 		R_CNA_2 -> account with this username already exists
 		R_CNA_3 -> account with this email already exists
+		R_CNA_4 -> select from database error
 		
 		R_DNA_1 -> delete from database error
 		
-		R_CNA_SUCCESSFUL -> new account created succesfully
+		R_SVM_SUCCESSFUL -> new account created succesfully
+	//////////////////////////////////////////////////
+	
+
+	//////////////////////////////////////////////////
+	www/logreg/_newPasswordEmailVerify.php:
+		NPEV_DDFU_1 -> failed to get email string from Unity
+
+		NPEV_SC_1 -> select from database error
+		NPEV_SC_2 -> user with this email not found or more than one user in database
+		NPEV_SC_3 -> update database error
+		NPEV_SC_4 -> the account is not verified
+
+		NPEV_SVM_SUCCESSFUL -> new code updated succesfully
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	www/logreg/_newPasswordCodeVerify.php:
+		NPCV_DDFU_1 -> failed to get code string from Unity
+		NPCV_DDFU_2 -> failed to get email string from Unity
+			
+		NPCV_VC_1 -> select from database error
+		NPCV_VC_2 -> user with this email and code not found or more than one user in database	
+
+		NPCV_VC_SUCCESSFUL -> user passed correct code
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	www/logreg/_newPasswordVerify.php:
+		NPV_DDFU_1 -> failed to get email string from Unity
+		NPV_DDFU_2 -> failed to get password string from Unity
+
+		NPV_SP_1 -> select from database error
+		NPV_SP_2 -> user with this email and code not found or more than one user in database
+		NPV_SP_3 -> update database error
+
+		NPV_SP_SUCCESSFUL -> password changed succesfully	
 	//////////////////////////////////////////////////
 	
 	
@@ -44,7 +84,7 @@ SERVER:
 
 
 	//////////////////////////////////////////////////
-	www/mail/logreg/_verify.php:
+	www/mail/logreg/_newAccountVerify.php:
 		V_DDFU_1 -> failed to get email string from URL
 		V_DDFU_2 -> failet do get code string from URL
 
@@ -60,7 +100,6 @@ SERVER:
 	//////////////////////////////////////////////////
 	www/logreg/cron/_autoDeleteUnverifiedAccounts.php:
 		ADUA_DA_1 -> delete from database error
-
 	//////////////////////////////////////////////////
 
 
@@ -85,3 +124,12 @@ CLIENT:
 		R_ET_2 -> email is too long
 		R_ET_3 -> email has syntax error
 	//////////////////////////////////////////////////	
+
+
+	//////////////////////////////////////////////////
+	PasswordCheck.cs:
+		PC_PT_1 -> password is too short or too long
+		PC_PT_2 -> password has no number
+		PC_PR_3 -> restricted mark detected
+		PC_PR_4 -> both passwords are not equal
+	//////////////////////////////////////////////////
