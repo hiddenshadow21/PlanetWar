@@ -8,14 +8,14 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Registration : MonoBehaviour
+public class Reg : MonoBehaviour
 { 
     public InputField Username; 
     public InputField Email; 
     public InputField Password; 
-    public InputField ConfirmPassword; 
-    public Button Send; 
-    public Button ToLogin; 
+    public InputField ConfirmPassword;
+    public Button ToLog;
+    public Button Register; 
     public Text Answer;
 
     private const string registrationURL = "http://40.69.215.163/logreg/registration.php";
@@ -33,8 +33,8 @@ public class Registration : MonoBehaviour
 
     private void OnEnable()
     {
-        Send.onClick.AddListener(callRegistration);
-        ToLogin.onClick.AddListener(toLogin);
+        Register.onClick.AddListener(callRegistration);
+        ToLog.onClick.AddListener(toLog);
     }
 
     private void Update()
@@ -52,30 +52,30 @@ public class Registration : MonoBehaviour
                 case "Password_input":
                     ConfirmPassword.Select();
                     break;
-                case "PasswordConfirm_input":
-                    if (Send.interactable == true)
+                case "ConfirmPassword_input":
+                    if (Register.interactable == true)
                     {
-                        Send.Select();
+                        Register.Select();
                     }
                     else
                     {
-                        ToLogin.Select();
+                        ToLog.Select();
                     }   
                     break;
                 case "Register_button":
-                    ToLogin.Select();
+                    ToLog.Select();
                     break;
-                case "ToLogin_button":
+                case "ToLog_button":
                     Username.Select();
                     break;
             }
         }
 
-        Send.interactable = (Username.text != "" && Email.text != ""  && Password.text != "" && ConfirmPassword.text != "");
+        Register.interactable = (Username.text != "" && Email.text != ""  && Password.text != "" && ConfirmPassword.text != "");
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if(Send.interactable == true)
+            if(Register.interactable == true)
             {
                 callRegistration();
             } 
@@ -233,7 +233,7 @@ public class Registration : MonoBehaviour
     {
         switch (serverResponse)
         {   
-            case "R_CNA_SUCCESSFUL":
+            case "R_SVM_SUCCESSFUL":
                 Answer.text = "New account created succesfully! Please use link from your email to activate account!";
                 //tutaj powrót do sceny logowania!!
                 break;
@@ -249,7 +249,7 @@ public class Registration : MonoBehaviour
         }
     }
 
-    private void toLogin()
+    private void toLog()
     {
         SceneManager.LoadScene(sceneName: "Log");
     }

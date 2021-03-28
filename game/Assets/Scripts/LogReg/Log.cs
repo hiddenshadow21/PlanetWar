@@ -7,18 +7,18 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Login : MonoBehaviour
+public class Log : MonoBehaviour
 {
     public InputField Email; 
     public InputField Password; 
-    public Button Send; 
-    public Button ToRegistration; 
+    public Button Login;
     public Text Answer;
+    public Button ToEmailCheck;
+    public Button ToReg;
 
     private const string loginURL = "http://40.69.215.163/logreg/login.php";
     private const char fieldSeparator = ':';
     
-
     private void callLogin()
     {
         StartCoroutine(login());
@@ -27,12 +27,15 @@ public class Login : MonoBehaviour
     private void Start()
     {
         Email.Select();
+        ValuesTransfer.Email = "";
+        ValuesTransfer.Code = "";
     }
 
     private void OnEnable()
     {
-        Send.onClick.AddListener(callLogin);
-        ToRegistration.onClick.AddListener(toRegistration);
+        Login.onClick.AddListener(callLogin);
+        ToReg.onClick.AddListener(toReg);
+        ToEmailCheck.onClick.AddListener(toEmailCheck);
     }
 
     private void Update()
@@ -45,29 +48,32 @@ public class Login : MonoBehaviour
                     Password.Select();
                     break;
                 case "Password_input":
-                    if(Send.interactable == true)
+                    if(Login.interactable == true)
                     {
-                        Send.Select();
+                        Login.Select();
                     }
                     else
                     {
-                        ToRegistration.Select();
+                        ToEmailCheck.Select();
                     }
                     break;
                 case "Login_button":
-                    ToRegistration.Select();
+                    ToEmailCheck.Select();
                     break;
-                case "ToRegistration_button":
+                case "ToEmailCheck_button":
+                    ToReg.Select();
+                    break;
+                case "ToReg_button":
                     Email.Select();
                     break;
             }
         }
 
-        Send.interactable = (Email.text != "" && Password.text != "");
+        Login.interactable = (Email.text != "" && Password.text != "");
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if(Send.interactable == true)
+            if(Login.interactable == true)
             {
                 callLogin();
             }
@@ -144,8 +150,13 @@ public class Login : MonoBehaviour
         }
     }
 
-    private void toRegistration()
+    private void toReg()
     {
         SceneManager.LoadScene(sceneName: "Reg");
+    }
+
+    private void toEmailCheck()
+    {
+        SceneManager.LoadScene(sceneName: "EmailCheck");
     }
 }
