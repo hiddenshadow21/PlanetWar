@@ -66,6 +66,7 @@ SERVER:
 	www/logreg/_newPasswordVerify.php:
 		NPV_DDFU_1 -> failed to get email string from Unity
 		NPV_DDFU_2 -> failed to get password string from Unity
+		NPV_DDFU_3 -> failed to get code string from Unity
 
 		NPV_SP_1 -> select from database error
 		NPV_SP_2 -> user with this email and code not found or more than one user in database

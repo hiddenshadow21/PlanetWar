@@ -44,7 +44,7 @@ function CreateNewAccount()
 	require "/var/www/logreg/_init.php";
 	global $username, $email, $password, $code;
 
-	$emailRequest = "SELECT email FROM user WHERE email = '".$email."';";
+	$emailRequest = "SELECT 1 FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $emailRequest);
 
 	if($results == false)
@@ -55,7 +55,7 @@ function CreateNewAccount()
 
 	if(mysqli_num_rows($results) == 0)
     	{
-		$usernameRequest = "SELECT username FROM user WHERE username = '".$username."';";
+		$usernameRequest = "SELECT 1 FROM user WHERE username = '".$username."';";
 		$results = mysqli_query($CONNECTION, $usernameRequest);
 
 		if($results == false)
@@ -69,6 +69,7 @@ function CreateNewAccount()
 			$code = md5(rand(0, 1000));
 			$inputQuery = "INSERT INTO user (username, password, email, code, created)
 				VALUES ('".$username."', '".$password."', '".$email."', '".$code."', '".date('Y-m-d H:i:s', strtotime('+'.$TIME_OFFSET.' seconds'))."')";
+
 			if(mysqli_query($CONNECTION, $inputQuery)) 
 			{
 				mysqli_close($CONNECTION);

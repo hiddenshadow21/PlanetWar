@@ -25,7 +25,7 @@ function SetCode()
 	require "/var/www/logreg/_init.php";
 	global $email, $code, $username;
 
-	$emailRequest = "SELECT email, username, verified FROM user WHERE email = '".$email."';";
+	$emailRequest = "SELECT username, verified FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $emailRequest);
 
 	if($results == false)

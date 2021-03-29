@@ -43,7 +43,7 @@ function SetPassword()
 	require "/var/www/logreg/_init.php";
 	global $email, $password, $code;
 
-	$emailRequest = "SELECT username FROM user WHERE email = '".$email."' AND code = '".$code."';";
+	$emailRequest = "SELECT 1 FROM user WHERE email = '".$email."' AND code = '".$code."';";
 	$results = mysqli_query($CONNECTION, $emailRequest);
 
 	if($results == false)
