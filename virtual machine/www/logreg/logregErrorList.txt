@@ -85,15 +85,16 @@ SERVER:
 
 	//////////////////////////////////////////////////
 	www/mail/logreg/_newAccountVerify.php:
-		V_DDFU_1 -> failed to get email string from URL
-		V_DDFU_2 -> failet do get code string from URL
+		NAV_DDFU_1 -> failed to get email string from URL
+		NAV_DDFU_2 -> failet do get code string from URL
 
-		V_VD_1 -> incorrect data in db
-		V_VD_2 -> user with this email not found or more than one user in database
+		NAV_VD_1 -> incorrect data in db
+		NAV_VD_2 -> user with this email not found or more than one user in database
+		NAV_VD_3 -> select from database error
 
-		V_UD_1 -> update database error
+		NAV_UD_1 -> update database error
 
-		V_UD_SUCCESSFUL -> authentication process successfully
+		NAV_UD_SUCCESSFUL -> authentication process successfully
 	//////////////////////////////////////////////////
 
 

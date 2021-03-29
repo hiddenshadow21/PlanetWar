@@ -9,7 +9,7 @@ if($response == "_SUCCESSFUL")
 	if($response == "_SUCCESSFUL")
 	{
 		$response = UpdateData();
-		if($response == "V_UD_SUCCESSFUL")
+		if($response == "NAV_UD_SUCCESSFUL")
 		{
 			echo "Your account has been activated.</br>You can now use it fully.";
 			return;

@@ -13,7 +13,7 @@ function DownloadDataFromUrl()
 	}
 	else
 	{
-		return("V_DDFU_1");
+		return("NAV_DDFU_1");
 	}
 	
 	if(isset($_GET['code']))
@@ -22,7 +22,7 @@ function DownloadDataFromUrl()
 	}
 	else
 	{
-		return("V_DDFU_2");
+		return("NAV_DDFU_2");
 	}
 
 	return("_SUCCESSFUL");
@@ -35,6 +35,12 @@ function VerifyData()
 
 	$request = "SELECT verified, code FROM user WHERE email = '".$email."';";
 	$results = mysqli_query($CONNECTION, $request);
+
+	if($results == false)
+	{
+		mysqli_close($CONNECTION);
+		return("NAV_VD_3");
+	}
 	
 	if(mysqli_num_rows($results) == 1)
 	{
@@ -48,10 +54,10 @@ function VerifyData()
 			}
 		}
 		mysqli_close($CONNECTION);
-		return("V_VD_1"); 
+		return("NAV_VD_1"); 
 	}
 	mysqli_close($CONNECTION);
-	return("V_VD_2");
+	return("NAV_VD_2");
 }
 
 function UpdateData()
@@ -64,10 +70,10 @@ function UpdateData()
 	if(mysqli_query($CONNECTION, $inputQuery))
 	{
 		mysqli_close($CONNECTION);
-		return("V_UD_SUCCESSFUL");
+		return("NAV_UD_SUCCESSFUL");
 	}
 	mysqli_close($CONNECTION);
-	return("V_UD_1");
+	return("NAV_UD_1");
 }
 
 ?>
