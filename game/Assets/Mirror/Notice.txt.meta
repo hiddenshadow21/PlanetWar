@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<< HEAD:game/Assets/Mirror/Notice.txt.meta
 guid: 1a7b49ad188074707b004e7bb8824857
+=======
+guid: f6d84e019c68446f28415a923b460a03
+>>>>>>> feature/MainMenu:game/Assets/Mirror/Readme.txt.meta
+=======
+guid: 1a7b49ad188074707b004e7bb8824857
+>>>>>>> feature/MainMenu
 TextScriptImporter:
   externalObjects: {}
   userData: 

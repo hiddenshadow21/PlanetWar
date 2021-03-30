@@ -569,16 +569,22 @@ namespace Mirror
             // handle and broadcast
             // host should have already the trigger
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
             bool isHostOwner = isClient && hasAuthority;
             if (!isHostOwner)
             {
                 HandleAnimTriggerMsg(hash);
             }
 
+<<<<<<< HEAD
 =======
             if (!isClient)
                 HandleAnimTriggerMsg(hash);
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
             RpcOnAnimationTriggerClientMessage(hash);
         }
 
@@ -592,16 +598,22 @@ namespace Mirror
             // handle and broadcast
             // host should have already the trigger
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
             bool isHostOwner = isClient && hasAuthority;
             if (!isHostOwner)
             {
                 HandleAnimResetTriggerMsg(hash);
             }
 
+<<<<<<< HEAD
 =======
             if (!isClient)
                 HandleAnimResetTriggerMsg(hash);
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
             RpcOnAnimationResetTriggerClientMessage(hash);
         }
 

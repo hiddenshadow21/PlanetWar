@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:game/Assets/AnimationControllers.meta
 guid: 4969918300bfa9a4a8c733975df74016
+=======
+guid: 3f34c32971e65984c93a15376ec11c65
+>>>>>>> feature/MainMenu:game/Assets/Mirror/Cloud/Core.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

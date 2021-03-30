@@ -1,5 +1,6 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:game/Assets/Scripts/Registration.cs.meta
 <<<<<<< HEAD
 guid: 430c24bb04099aa458c03326711f31ad
@@ -12,6 +13,13 @@ guid: c7c472a3ea1bc4348bd5a0b05bf7cc3b
 =======
 guid: c7c472a3ea1bc4348bd5a0b05bf7cc3b
 >>>>>>> feature/MenuEsc
+=======
+<<<<<<< HEAD:game/Assets/Mirror/Cloud/Core/IRequestCreator.cs.meta
+guid: b80b95532a9d6e8418aa676a261e4f69
+=======
+guid: c7c472a3ea1bc4348bd5a0b05bf7cc3b
+>>>>>>> feature/MainMenu:game/Assets/Mirror/Cloud/Core/Events.cs.meta
+>>>>>>> feature/MainMenu
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -1,8 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 using System;
 using System.ComponentModel;
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
 using UnityEngine;
 
 namespace Mirror
@@ -113,6 +116,7 @@ namespace Mirror
         /// </summary>
         /// <param name="newReadyState">New Ready State</param>
 <<<<<<< HEAD
+<<<<<<< HEAD
         public virtual void ReadyStateChanged(bool oldReadyState, bool newReadyState) { }
 =======
         public virtual void ReadyStateChanged(bool _, bool newReadyState)
@@ -122,6 +126,9 @@ namespace Mirror
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 >>>>>>> feature/MenuEsc
+=======
+        public virtual void ReadyStateChanged(bool oldReadyState, bool newReadyState) { }
+>>>>>>> feature/MainMenu
 
         #endregion
 
@@ -139,6 +146,7 @@ namespace Mirror
         public virtual void OnClientExitRoom() { }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         // Deprecated 05/18/2020
         /// <summary>
@@ -148,6 +156,8 @@ namespace Mirror
         public virtual void OnClientReady(bool readyState) { }
 
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         #endregion
 
         #region Optional UI

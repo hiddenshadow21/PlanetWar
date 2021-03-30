@@ -17,9 +17,12 @@
 //   interpolation. interpolation over time is never that good.
 //
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 using System.ComponentModel;
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
 using UnityEngine;
 
 namespace Mirror
@@ -77,9 +80,12 @@ namespace Mirror
         // serialization is needed by OnSerialize and by manual sending from authority
         // public only for tests
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         [EditorBrowsable(EditorBrowsableState.Never)]
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         public static void SerializeIntoWriter(NetworkWriter writer, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             // serialize position, rotation, scale
@@ -422,10 +428,14 @@ namespace Mirror
             // To prevent applying the position updates received from client (if they have ClientAuth) while being teleported.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             // clientAuthorityBeforeTeleport defaults to false when not teleporting, if it is true then it means that teleport was previously called but not finished
 =======
             // clientAuthorityBeforeTeleport defaults to false when not teleporting, if it is true then it means hat teleport was previously called but not finished
 >>>>>>> feature/MenuEsc
+=======
+            // clientAuthorityBeforeTeleport defaults to false when not teleporting, if it is true then it means that teleport was previously called but not finished
+>>>>>>> feature/MainMenu
             // therefore we should keep it as true so that 2nd teleport call doesn't clear authority
             clientAuthorityBeforeTeleport = clientAuthority || clientAuthorityBeforeTeleport;
             clientAuthority = false;

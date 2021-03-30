@@ -110,11 +110,17 @@ namespace Mirror.Experimental
         public DataPoint goal = new DataPoint();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // We need to store this locally on the server so clients can't request Authority when ever they like
         bool clientAuthorityBeforeTeleport;
 
 =======
 >>>>>>> feature/MenuEsc
+=======
+        // We need to store this locally on the server so clients can't request Authority when ever they like
+        bool clientAuthorityBeforeTeleport;
+
+>>>>>>> feature/MainMenu
         void FixedUpdate()
         {
             // if server then always sync to others.
@@ -122,10 +128,14 @@ namespace Mirror.Experimental
             if (isServer && HasEitherMovedRotatedScaled())
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 ServerUpdate();
 =======
                 RpcMove(targetTransform.localPosition, targetTransform.localRotation, targetTransform.localScale);
 >>>>>>> feature/MenuEsc
+=======
+                ServerUpdate();
+>>>>>>> feature/MainMenu
             }
 
             if (isClient)
@@ -135,6 +145,9 @@ namespace Mirror.Experimental
                 if (IsOwnerWithClientAuthority)
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
                     ClientAuthorityUpdate();
                 }
                 else if (goal.isValid)
@@ -178,6 +191,7 @@ namespace Mirror.Experimental
                 ApplyPositionRotationScale(InterpolatePosition(start, goal, targetTransform.localPosition),
                                            InterpolateRotation(start, goal, targetTransform.localRotation),
                                            InterpolateScale(start, goal, targetTransform.localScale));
+<<<<<<< HEAD
 =======
                     if (!isServer && HasEitherMovedRotatedScaled())
                     {
@@ -209,6 +223,8 @@ namespace Mirror.Experimental
 
                 }
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
             }
         }
 
@@ -446,6 +462,9 @@ namespace Mirror.Experimental
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
         #region Server Teleport (force move player)
 
         /// <summary>
@@ -528,8 +547,11 @@ namespace Mirror.Experimental
 
         #endregion
 
+<<<<<<< HEAD
 =======
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         #region Debug Gizmos
 
         // draw the data points for easier debugging

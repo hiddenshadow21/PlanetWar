@@ -4,7 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
+<<<<<<< HEAD
   - Ground
+=======
+  - InputRoomKeyText
+  - RoomManager
+>>>>>>> feature/MainMenu
   layers:
   - Default
   - TransparentFX

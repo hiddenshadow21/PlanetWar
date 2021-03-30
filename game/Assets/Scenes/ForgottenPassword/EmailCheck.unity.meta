@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 8ad5a42857913cd4794f1cf451404d9a
+=======
+<<<<<<< HEAD:game/Assets/Scenes/Gameplay.unity.meta
+guid: de19b5e22b477cf40b63136625e846fb
+=======
+guid: 8ad5a42857913cd4794f1cf451404d9a
+>>>>>>> feature/MainMenu:game/Assets/Scenes/ForgottenPassword/EmailCheck.unity.meta
+>>>>>>> feature/MainMenu
 DefaultImporter:
   externalObjects: {}
   userData: 

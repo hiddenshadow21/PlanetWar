@@ -1,7 +1,20 @@
 {
+<<<<<<< HEAD
     "name": "Mirror.Cloud",
     "references": [
         "Mirror"
+=======
+<<<<<<< HEAD:game/Assets/Mirror/Examples/Mirror.Examples.asmdef
+    "name": "Mirror.Examples",
+    "references": [
+        "Mirror",
+        "Mirror.Components"
+=======
+    "name": "Mirror.Cloud",
+    "references": [
+        "Mirror"
+>>>>>>> feature/MainMenu:game/Assets/Mirror/Cloud/Mirror.Cloud.asmdef
+>>>>>>> feature/MainMenu
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

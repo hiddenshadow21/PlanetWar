@@ -25,9 +25,12 @@ namespace Mirror.Weaver
             writeFuncs[typeReference.FullName] = newWriterFunc;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             Weaver.WeaveLists.ConfirmGeneratedCodeClass();
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
             Weaver.WeaveLists.generateContainerClass.Methods.Add(newWriterFunc);
         }
 
@@ -90,10 +93,14 @@ namespace Mirror.Weaver
             if (variableReference.Is(typeof(ArraySegment<>)))
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 GenericInstanceType genericInstance = (GenericInstanceType)variableReference;
 =======
                 var genericInstance = (GenericInstanceType)variableReference;
 >>>>>>> feature/MenuEsc
+=======
+                GenericInstanceType genericInstance = (GenericInstanceType)variableReference;
+>>>>>>> feature/MainMenu
                 TypeReference elementType = genericInstance.GenericArguments[0];
 
                 return GenerateCollectionWriter(variableReference, elementType, nameof(NetworkWriterExtensions.WriteArraySegment));
@@ -101,10 +108,14 @@ namespace Mirror.Weaver
             if (variableReference.Is(typeof(List<>)))
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 GenericInstanceType genericInstance = (GenericInstanceType)variableReference;
 =======
                 var genericInstance = (GenericInstanceType)variableReference;
 >>>>>>> feature/MenuEsc
+=======
+                GenericInstanceType genericInstance = (GenericInstanceType)variableReference;
+>>>>>>> feature/MainMenu
                 TypeReference elementType = genericInstance.GenericArguments[0];
 
                 return GenerateCollectionWriter(variableReference, elementType, nameof(NetworkWriterExtensions.WriteList));
@@ -210,10 +221,14 @@ namespace Mirror.Weaver
             worker.Append(worker.Create(OpCodes.Ldarg_0));
             worker.Append(worker.Create(OpCodes.Ldc_I4_0));
 <<<<<<< HEAD
+<<<<<<< HEAD
             worker.Append(worker.Create(OpCodes.Call, GetWriteFunc(WeaverTypes.Import<bool>())));
 =======
             worker.Append(worker.Create(OpCodes.Call,  GetWriteFunc(WeaverTypes.Import<bool>())));
 >>>>>>> feature/MenuEsc
+=======
+            worker.Append(worker.Create(OpCodes.Call, GetWriteFunc(WeaverTypes.Import<bool>())));
+>>>>>>> feature/MainMenu
             worker.Append(worker.Create(OpCodes.Ret));
             worker.Append(labelNotNull);
 
@@ -253,10 +268,14 @@ namespace Mirror.Weaver
         static MethodDefinition GenerateCollectionWriter(TypeReference variable, TypeReference elementType, string writerFunction)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
            
 >>>>>>> feature/MenuEsc
+=======
+
+>>>>>>> feature/MainMenu
             MethodDefinition writerFunc = GenerateWriterFunc(variable);
 
             MethodReference elementWriteFunc = GetWriteFunc(elementType);
@@ -274,10 +293,14 @@ namespace Mirror.Weaver
             MethodReference collectionWriter = Resolvers.ResolveMethod(readerExtensions, Weaver.CurrentAssembly, writerFunction);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             GenericInstanceMethod methodRef = new GenericInstanceMethod(collectionWriter);
 =======
             var methodRef = new GenericInstanceMethod(collectionWriter);
 >>>>>>> feature/MenuEsc
+=======
+            GenericInstanceMethod methodRef = new GenericInstanceMethod(collectionWriter);
+>>>>>>> feature/MainMenu
             methodRef.GenericArguments.Add(elementType);
 
             // generates

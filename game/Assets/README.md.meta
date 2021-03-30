@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:game/Assets/README.md.meta
 guid: 0a023e0d7315ac74094703ab69348733
+=======
+guid: bf81e376b88e68e48a47531b8bfeb0f4
+>>>>>>> feature/MainMenu:game/Assets/Mirror/Cloud/version.txt.meta
 TextScriptImporter:
   externalObjects: {}
   userData: 

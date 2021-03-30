@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<< HEAD:game/Assets/Mirror/Cloud/Core/IUnityEqualCheck.cs.meta
 guid: 05185b973ba389a4588fc8a99c75a4f6
+=======
+guid: 97501e783fc67a4459b15d10e6c63563
+>>>>>>> feature/MainMenu:game/Assets/Mirror/Cloud/Core/Extensions.cs.meta
+=======
+guid: 05185b973ba389a4588fc8a99c75a4f6
+>>>>>>> feature/MainMenu
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -31,11 +31,15 @@ namespace Mirror.Weaver
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
         public WeaverLists()
         {
             generateContainerClass = new TypeDefinition("Mirror", "GeneratedNetworkCode",
                     TypeAttributes.BeforeFieldInit | TypeAttributes.Class | TypeAttributes.AnsiClass | TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Abstract | TypeAttributes.Sealed,
                     WeaverTypes.Import<object>());
+<<<<<<< HEAD
 =======
         public void ConfirmGeneratedCodeClass()
         {
@@ -46,6 +50,8 @@ namespace Mirror.Weaver
                         WeaverTypes.Import<object>());
             }
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         }
     }
 
@@ -162,12 +168,15 @@ namespace Mirror.Weaver
                 Console.WriteLine("Weave behaviours and messages took" + watch.ElapsedMilliseconds + " milliseconds");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
                 if (modified)
                     PropertySiteProcessor.Process(moduleDefinition);
 
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
                 return modified;
             }
             catch (Exception ex)
@@ -194,6 +203,9 @@ namespace Mirror.Weaver
 
                 WeaverTypes.SetupTargetTypes(CurrentAssembly);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
                 // WeaverList depends on WeaverTypes setup because it uses Import
                 WeaveLists = new WeaverLists();
 
@@ -201,10 +213,13 @@ namespace Mirror.Weaver
                 System.Diagnostics.Stopwatch rwstopwatch = System.Diagnostics.Stopwatch.StartNew();
                 // Need to track modified from ReaderWriterProcessor too because it could find custom read/write functions or create functions for NetworkMessages
                 bool modified = ReaderWriterProcessor.Process(CurrentAssembly);
+<<<<<<< HEAD
 =======
                 System.Diagnostics.Stopwatch rwstopwatch = System.Diagnostics.Stopwatch.StartNew();
                 ReaderWriterProcessor.Process(CurrentAssembly);
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
                 rwstopwatch.Stop();
                 Console.WriteLine($"Find all reader and writers took {rwstopwatch.ElapsedMilliseconds} milliseconds");
 
@@ -212,10 +227,14 @@ namespace Mirror.Weaver
                 Console.WriteLine($"Script Module: {moduleDefinition.Name}");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 modified |= WeaveModule(moduleDefinition);
 =======
                 bool modified = WeaveModule(moduleDefinition);
 >>>>>>> feature/MenuEsc
+=======
+                modified |= WeaveModule(moduleDefinition);
+>>>>>>> feature/MainMenu
 
                 if (WeavingFailed)
                 {
@@ -225,13 +244,19 @@ namespace Mirror.Weaver
                 if (modified)
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
                     PropertySiteProcessor.Process(moduleDefinition);
 
                     // add class that holds read/write functions
                     moduleDefinition.Types.Add(WeaveLists.generateContainerClass);
 
+<<<<<<< HEAD
 =======
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
                     ReaderWriterProcessor.InitializeReaderAndWriters(CurrentAssembly);
 
                     // write to outputDir if specified, otherwise perform in-place write
@@ -247,9 +272,12 @@ namespace Mirror.Weaver
         {
             WeavingFailed = false;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             WeaveLists = new WeaverLists();
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
 
             try
             {

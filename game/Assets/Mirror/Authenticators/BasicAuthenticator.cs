@@ -15,10 +15,15 @@ namespace Mirror.Authenticators
         public string password;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         #region Messages
 
 =======
 >>>>>>> feature/MenuEsc
+=======
+        #region Messages
+
+>>>>>>> feature/MainMenu
         public struct AuthRequestMessage : NetworkMessage
         {
             // use whatever credentials make sense for your game
@@ -34,6 +39,9 @@ namespace Mirror.Authenticators
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
         #endregion
 
         #region Server
@@ -42,8 +50,11 @@ namespace Mirror.Authenticators
         /// Called on server from StartServer to initialize the Authenticator
         /// <para>Server message handlers should be registered in this method.</para>
         /// </summary>
+<<<<<<< HEAD
 =======
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         public override void OnStartServer()
         {
             // register a handler for the authentication request we expect from client
@@ -51,10 +62,14 @@ namespace Mirror.Authenticators
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
         /// <summary>
         /// Called on server from OnServerAuthenticateInternal when a client needs to authenticate
         /// </summary>
         /// <param name="conn">Connection to client.</param>
+<<<<<<< HEAD
 =======
         public override void OnStartClient()
         {
@@ -63,17 +78,23 @@ namespace Mirror.Authenticators
         }
 
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         public override void OnServerAuthenticate(NetworkConnection conn)
         {
             // do nothing...wait for AuthRequestMessage from client
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
         /// <summary>
         /// Called on server when the client's AuthRequestMessage arrives
         /// </summary>
         /// <param name="conn">Connection to client.</param>
         /// <param name="msg">The message payload</param>
+<<<<<<< HEAD
 =======
         public override void OnClientAuthenticate(NetworkConnection conn)
         {
@@ -87,6 +108,8 @@ namespace Mirror.Authenticators
         }
 
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         public void OnAuthRequestMessage(NetworkConnection conn, AuthRequestMessage msg)
         {
             if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "Authentication Request: {0} {1}", msg.authUsername, msg.authPassword);
@@ -104,12 +127,17 @@ namespace Mirror.Authenticators
                 conn.Send(authResponseMessage);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 // Accept the successful authentication
                 ServerAccept(conn);
 =======
                 // Invoke the event to complete a successful authentication
                 OnServerAuthenticated.Invoke(conn);
 >>>>>>> feature/MenuEsc
+=======
+                // Accept the successful authentication
+                ServerAccept(conn);
+>>>>>>> feature/MainMenu
             }
             else
             {
@@ -131,6 +159,9 @@ namespace Mirror.Authenticators
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
         IEnumerator DelayedDisconnect(NetworkConnection conn, float waitTime)
         {
             yield return new WaitForSeconds(waitTime);
@@ -173,6 +204,7 @@ namespace Mirror.Authenticators
         /// </summary>
         /// <param name="conn">Connection to client.</param>
         /// <param name="msg">The message payload</param>
+<<<<<<< HEAD
 =======
         public IEnumerator DelayedDisconnect(NetworkConnection conn, float waitTime)
         {
@@ -181,6 +213,8 @@ namespace Mirror.Authenticators
         }
 
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
         public void OnAuthResponseMessage(NetworkConnection conn, AuthResponseMessage msg)
         {
             if (msg.code == 100)
@@ -188,24 +222,33 @@ namespace Mirror.Authenticators
                 if (logger.LogEnabled()) logger.LogFormat(LogType.Log, "Authentication Response: {0}", msg.message);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 // Authentication has been accepted
                 ClientAccept(conn);
 =======
                 // Invoke the event to complete a successful authentication
                 OnClientAuthenticated.Invoke(conn);
 >>>>>>> feature/MenuEsc
+=======
+                // Authentication has been accepted
+                ClientAccept(conn);
+>>>>>>> feature/MainMenu
             }
             else
             {
                 logger.LogFormat(LogType.Error, "Authentication Response: {0}", msg.message);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature/MainMenu
                 // Authentication has been rejected
                 ClientReject(conn);
             }
         }
 
         #endregion
+<<<<<<< HEAD
 =======
                 // Set this on the client for local reference
                 conn.isAuthenticated = false;
@@ -215,5 +258,7 @@ namespace Mirror.Authenticators
             }
         }
 >>>>>>> feature/MenuEsc
+=======
+>>>>>>> feature/MainMenu
     }
 }
