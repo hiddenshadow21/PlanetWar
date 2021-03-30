@@ -1,9 +1,0 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-26.2.2
-=======
-23.0.3
->>>>>>> feature/MenuEsc
-=======
-26.2.2
->>>>>>> feature/MainMenu
