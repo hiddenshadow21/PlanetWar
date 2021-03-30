@@ -48,7 +48,7 @@ public class PlayerController : NetworkBehaviour
         RotatePlayerInAir();
     }
 
-    #region Movement
+    #region Movement&Rotation
     void HandleMovement()
     {
         if (!isLocalPlayer)
@@ -125,13 +125,24 @@ public class PlayerController : NetworkBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        if (health < 0)
+        {
+            DestroyPlayer();
+        }
         Debug.Log(health);
     }
+
 
     [Server]
     public void AddHealth(float amount)
     {
         health += amount;
         Debug.Log(health);
+    }
+
+    [Server]
+    private void DestroyPlayer()
+    {
+        NetworkServer.Destroy(gameObject);
     }
 }
