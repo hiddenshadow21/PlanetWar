@@ -19,6 +19,14 @@ namespace Mirror.Weaver
                 }
             }
 
+<<<<<<< HEAD
+=======
+            if (Weaver.WeaveLists.generateContainerClass != null)
+            {
+                moduleDef.Types.Add(Weaver.WeaveLists.generateContainerClass);
+            }
+
+>>>>>>> feature/MenuEsc
             Console.WriteLine("  ProcessSitesModule " + moduleDef.Name + " elapsed time:" + (DateTime.Now - startTime));
         }
 

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:game/Assets/Art/2D_sci-fi_weapon.meta
 guid: 710d11440591ad84aabee347fdf3d313
+=======
+guid: b84b2a39b3027c747b21ad714a439214
+>>>>>>> feature/MenuEsc:game/Assets/Mirror/Examples/AdditiveScenes.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

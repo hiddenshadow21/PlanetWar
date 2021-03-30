@@ -109,16 +109,23 @@ namespace Mirror.Experimental
         public DataPoint start = new DataPoint();
         public DataPoint goal = new DataPoint();
 
+<<<<<<< HEAD
         // We need to store this locally on the server so clients can't request Authority when ever they like
         bool clientAuthorityBeforeTeleport;
 
+=======
+>>>>>>> feature/MenuEsc
         void FixedUpdate()
         {
             // if server then always sync to others.
             // let the clients know that this has moved
             if (isServer && HasEitherMovedRotatedScaled())
             {
+<<<<<<< HEAD
                 ServerUpdate();
+=======
+                RpcMove(targetTransform.localPosition, targetTransform.localRotation, targetTransform.localScale);
+>>>>>>> feature/MenuEsc
             }
 
             if (isClient)
@@ -127,6 +134,7 @@ namespace Mirror.Experimental
                 // -> only if connectionToServer has been initialized yet too
                 if (IsOwnerWithClientAuthority)
                 {
+<<<<<<< HEAD
                     ClientAuthorityUpdate();
                 }
                 else if (goal.isValid)
@@ -170,6 +178,37 @@ namespace Mirror.Experimental
                 ApplyPositionRotationScale(InterpolatePosition(start, goal, targetTransform.localPosition),
                                            InterpolateRotation(start, goal, targetTransform.localRotation),
                                            InterpolateScale(start, goal, targetTransform.localScale));
+=======
+                    if (!isServer && HasEitherMovedRotatedScaled())
+                    {
+                        // serialize
+                        // local position/rotation for VR support
+                        // send to server
+                        CmdClientToServerSync(targetTransform.localPosition, targetTransform.localRotation, targetTransform.localScale);
+                    }
+                }
+                else if (goal.isValid)
+                {
+                    // teleport or interpolate
+                    if (NeedsTeleport())
+                    {
+                        // local position/rotation for VR support
+                        ApplyPositionRotationScale(goal.localPosition, goal.localRotation, goal.localScale);
+
+                        // reset data points so we don't keep interpolating
+                        start = new DataPoint();
+                        goal = new DataPoint();
+                    }
+                    else
+                    {
+                        // local position/rotation for VR support
+                        ApplyPositionRotationScale(InterpolatePosition(start, goal, targetTransform.localPosition),
+                                                   InterpolateRotation(start, goal, targetTransform.localRotation),
+                                                   InterpolateScale(start, goal, targetTransform.localScale));
+                    }
+
+                }
+>>>>>>> feature/MenuEsc
             }
         }
 
@@ -406,6 +445,7 @@ namespace Mirror.Experimental
             return 1;
         }
 
+<<<<<<< HEAD
         #region Server Teleport (force move player)
 
         /// <summary>
@@ -488,6 +528,8 @@ namespace Mirror.Experimental
 
         #endregion
 
+=======
+>>>>>>> feature/MenuEsc
         #region Debug Gizmos
 
         // draw the data points for easier debugging

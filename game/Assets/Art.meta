@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:game/Assets/Art.meta
 guid: 43fba81133a8b2b449361395d2f45617
+=======
+guid: a08b1f591326642d1b140fc818c9c6b1
+>>>>>>> feature/MenuEsc:game/Assets/Mirror/Examples.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

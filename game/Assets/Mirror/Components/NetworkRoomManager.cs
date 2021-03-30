@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 using System.Collections.Generic;
+=======
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+>>>>>>> feature/MenuEsc
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -302,9 +308,12 @@ namespace Mirror
             base.OnServerDisconnect(conn);
         }
 
+<<<<<<< HEAD
         // Sequential index used in round-robin deployment of players into instances and score positioning
         public int clientIndex;
 
+=======
+>>>>>>> feature/MenuEsc
         /// <summary>
         /// Called on the server when a client adds a new player with ClientScene.AddPlayer.
         /// <para>The default implementation for this function creates a new player object from the playerPrefab.</para>
@@ -312,9 +321,12 @@ namespace Mirror
         /// <param name="conn">Connection from client.</param>
         public override void OnServerAddPlayer(NetworkConnection conn)
         {
+<<<<<<< HEAD
             // increment the index before adding the player, so first player starts at 1
             clientIndex++;
 
+=======
+>>>>>>> feature/MenuEsc
             if (IsSceneActive(RoomScene))
             {
                 if (roomSlots.Count == maxConnections)
@@ -566,6 +578,21 @@ namespace Mirror
             return null;
         }
 
+<<<<<<< HEAD
+=======
+        // Deprecated 12/17/2019
+        /// <summary>
+        /// Obsolete: Use <see cref="OnRoomServerCreateGamePlayer(NetworkConnection, GameObject)">OnRoomServerCreateGamePlayer(NetworkConnection, GameObject)</see> instead.
+        /// </summary>
+        /// <param name="conn">The connection the player object is for.</param>
+        /// <returns>A new GamePlayer object.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer) instead", true)]
+        public virtual GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn)
+        {
+            return null;
+        }
+
+>>>>>>> feature/MenuEsc
         /// <summary>
         /// This allows customization of the creation of the GamePlayer object on the server.
         /// <para>By default the gamePlayerPrefab is used to create the game-player, but this function allows that behaviour to be customized. The object returned from the function will be used to replace the room-player on the connection.</para>
@@ -589,6 +616,19 @@ namespace Mirror
             base.OnServerAddPlayer(conn);
         }
 
+<<<<<<< HEAD
+=======
+        // Deprecated 02/22/2020
+        /// <summary>
+        /// Obsolete: Use <see cref="OnRoomServerSceneLoadedForPlayer(NetworkConnection, GameObject, GameObject)">OnRoomServerSceneLoadedForPlayer(NetworkConnection, GameObject, GameObject)</see> instead.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer) instead")]
+        public virtual bool OnRoomServerSceneLoadedForPlayer(GameObject roomPlayer, GameObject gamePlayer)
+        {
+            return true;
+        }
+
+>>>>>>> feature/MenuEsc
         // for users to apply settings from their room player object to their in-game player object
         /// <summary>
         /// This is called on the server when it is told that a client has finished switching from the room scene to a game player scene.
