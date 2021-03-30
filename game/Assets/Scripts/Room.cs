@@ -47,16 +47,16 @@ public class Room : MonoBehaviour
 
     private void ChangeReadyState()
     {
+        Debug.Log("networkRoomPlayerExt.readyToBegin = " + networkRoomPlayerExt.readyToBegin);
         if (networkRoomPlayerExt.readyToBegin)
         {
-            ButtonReadyState.GetComponentInChildren<Text>().text = "Ready";
-            networkRoomPlayerExt.CmdChangeReadyState(false);
+            ButtonReadyState.GetComponentInChildren<Text>().text = "Ready";  
         }
         else
         {
             ButtonReadyState.GetComponentInChildren<Text>().text = "Not ready";
-            networkRoomPlayerExt.CmdChangeReadyState(true);
         }
+        networkRoomPlayerExt.CmdChangeReadyState(!networkRoomPlayerExt.readyToBegin);
     }
 
     private void StartGame()

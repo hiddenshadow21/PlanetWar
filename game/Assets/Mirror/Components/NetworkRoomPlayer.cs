@@ -29,7 +29,7 @@ namespace Mirror
         /// </summary>
         [Tooltip("Diagnostic flag indicating whether this player is ready for the game to begin")]
         [SyncVar(hook = nameof(ReadyStateChanged))]
-        public bool readyToBegin;
+        public bool readyToBegin = false;
 
         /// <summary>
         /// Diagnostic index of the player, e.g. Player1, Player2, etc.

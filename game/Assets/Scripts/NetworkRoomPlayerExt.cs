@@ -55,21 +55,9 @@ namespace Mirror.Examples.NetworkRoom
                 if (item == this)
                 {
                     Debug.Log("---item.index = " + item.index);
-                    Color32 color = item.getPlayerColor(item.index);
+                    Color32 color = getPlayerColor(item.index);
                     item.PlayerColor = color;
-                }
-            }
-        }
-
-        [Command]
-        public void CmdChangeReadyState()
-        {
-            room = NetworkManager.singleton as NetworkRoomManager;
-            foreach (NetworkRoomPlayerExt item in room.roomSlots)
-            {
-                if (item == this)
-                {
-                    item.readyToBegin = true;
+                    item.ImagePlayerColor.color = color;
                 }
             }
         }
@@ -105,15 +93,16 @@ namespace Mirror.Examples.NetworkRoom
 
         public override void ReadyStateChanged(bool _, bool newReadyState)
         {
+            Debug.Log("---Hook ReadyStateChanged---");
             if (newReadyState == true)
             {
                 TextReadyState.text = "Ready";
-                TextReadyState.color = new Color32(0, 114, 0, 0);
+                TextReadyState.color = new Color32(0, 183, 0, 255);
             }
             else
             {
                 TextReadyState.text = "Not ready";
-                TextReadyState.color = new Color32(114, 0, 0, 0);
+                TextReadyState.color = new Color32(183, 0, 0, 255);
             }
         }
 
@@ -154,17 +143,17 @@ namespace Mirror.Examples.NetworkRoom
             switch(index)
             {
                 case 0:
-                    return new Color32(255, 0, 0, 0);
+                    return new Color32(255, 0, 0, 255);
                 case 1:
-                    return new Color32(255, 128, 0, 0);
+                    return new Color32(255, 128, 0, 255);
                 case 2:
-                    return new Color32(255, 255, 0, 0);
+                    return new Color32(255, 255, 0, 255);
                 case 3:
-                    return new Color32(0, 255, 0, 0);
+                    return new Color32(0, 255, 0, 255);
                 case 4:
-                    return new Color32(0, 0, 255, 0);
+                    return new Color32(0, 0, 255, 255);
                 case 5:
-                    return new Color32(255, 51, 153, 0);
+                    return new Color32(255, 51, 153, 255);
                 default:
                     return new Color32(0, 0, 0, 0);
             }

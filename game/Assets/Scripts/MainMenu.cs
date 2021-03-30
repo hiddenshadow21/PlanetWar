@@ -20,8 +20,8 @@ public class MainMenu : MonoBehaviour
     NetworkRoomManagerExt networkRoomManagerExt;
 
     private const string networkAddress = "40.69.215.163";
-    private ushort port = 7006;
-    private string key = "ABC12";
+    private ushort port;
+    private string key;
 
     void Awake()
     {
@@ -58,21 +58,17 @@ public class MainMenu : MonoBehaviour
     // TO DO - popraw kod bo jest prawie taki sam jak join
     public void CreateRoom()
     {
-/*        generateRandomKey();
-        StartCoroutine(createRoomPHP());*/
-        kcpTransport.Port = port;
+        generateRandomKey();
         networkRoomManagerExt.networkAddress = networkAddress;
         networkRoomManagerExt.Key = key;
-        networkRoomManagerExt.StartClient();
+        StartCoroutine(createRoomPHP());
     }
     public void JoinRoom()
     {
         key = InputRoomKey.text;
-        StartCoroutine(joinRoomPHP());
-        kcpTransport.Port = port;
         networkRoomManagerExt.networkAddress = networkAddress;
         networkRoomManagerExt.Key = key;
-        networkRoomManagerExt.StartClient();
+        StartCoroutine(joinRoomPHP());
     }
     private IEnumerator createRoomPHP()
     {
@@ -95,10 +91,12 @@ public class MainMenu : MonoBehaviour
                 // repeat 
                 break;
             default:
-                Debug.Log(www.text);
                 port = Convert.ToUInt16(www.text);
+                kcpTransport.Port = port;
+                networkRoomManagerExt.StartClient();
                 break;
         }
+        
     }
 
     private IEnumerator joinRoomPHP()
@@ -113,18 +111,23 @@ public class MainMenu : MonoBehaviour
         {
             case "KeyIsEmpty":
                 // TO DO - show error
+                Debug.Log("!! KeyIsEmpty !!");
                 break;
             case "KeyLengthError":
                 // TO DO - show error
+                Debug.Log("!! KeyLengthError !!");
                 break;
             case "KeyNotFound":
                 // TO DO - show error
+                Debug.Log("!! KeyNotFound !!");
                 break;
             default:
                 port = Convert.ToUInt16(www.text);
                 kcpTransport.Port = port;
+                networkRoomManagerExt.StartClient();
                 break;
         }
+
     }
     private void generateRandomKey()
     {
