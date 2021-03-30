@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:game/Assets/Scripts/PlayerInfo.cs.meta
-guid: 8e11c25e44cd0c64b824139f27ef74df
+<<<<<<< HEAD:game/Assets/Scripts/Login.cs.meta
+guid: 6e9b56fab798d1e45adbccffd3277b56
 =======
-guid: 70f563b7a7210ae43bbcde5cb7721a94
->>>>>>> feature/poruszanie:game/Assets/Mirror/Cloud/Core/BaseApi.cs.meta
+guid: 8bdb99a29e179d14cb0acc43f175d9ad
+>>>>>>> feature/poruszanie:game/Assets/Mirror/Cloud/ApiConnector.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

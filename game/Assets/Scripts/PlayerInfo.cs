@@ -1,6 +1,6 @@
 ﻿public static class PlayerInfo
 {
-    public static int Id { get; set; }
-    public static string Name { get; set; }
-    public static string EMail { get; set; }
+    public static int Id { set; get; }
+    public static string Name { set; get; }
+    public static string EMail { set; get; }
 }
