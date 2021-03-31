@@ -107,13 +107,13 @@ SERVER:
 
 CLIENT:
 	//////////////////////////////////////////////////
-	Login.cs:
+	LogReg/Log.cs:
 		L_OI_1 -> incomplete data from server
 	//////////////////////////////////////////////////
 
 
 	//////////////////////////////////////////////////
-	Registration.cs:
+	LogReg/Reg.cs:
 		R_UT_1 -> username is too long
 		R_UT_2 -> restricted mark detected
 
@@ -129,7 +129,7 @@ CLIENT:
 
 
 	//////////////////////////////////////////////////
-	PasswordCheck.cs:
+	ForgottenPassword/PasswordCheck.cs:
 		PC_PT_1 -> password is too short or too long
 		PC_PT_2 -> password has no number
 		PC_PR_3 -> restricted mark detected
