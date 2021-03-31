@@ -75,6 +75,7 @@ public class GunRaycast : Gun
 
     private void Start()
     {
+        base.AssignToPlayer();
         nextShootTime = Time.time;
         ammo = maxAmmo;
     }

@@ -48,6 +48,7 @@ public class GunProjectile : Gun
 
     private void Start()
     {
+        base.AssignToPlayer();
         nextShootTime = Time.time;
         ammo = maxAmmo;
     }

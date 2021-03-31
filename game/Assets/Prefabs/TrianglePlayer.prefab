@@ -189,7 +189,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   maxHealth: 100
-  health: 0
   collider: {fileID: 3181704384020778682}
   rb: {fileID: 6445737654020582295}
   Grounds: []

@@ -38,14 +38,17 @@ public abstract class Gun : NetworkBehaviour
 
     public abstract void Reload();
 
-    public override void OnStartClient()
+    protected void AssignToPlayer()
     {
-        base.OnStartClient();
         NetworkIdentity parentObject = FindObjectsOfType<NetworkIdentity>().Where(x => x.netId == parentNetId).FirstOrDefault();
         PlayerWeaponController playerWeaponController = parentObject.GetComponent<PlayerWeaponController>();
         transform.SetParent(playerWeaponController.hand);
         transform.localPosition = new Vector3(0, 0, 0);
-        transform.localRotation = new Quaternion(0, 0, 0, 1);
+        transform.localRotation = Quaternion.identity;
+        if (transform.localScale.y < 0)
+        {
+            transform.localScale += new Vector3(0, 2*Mathf.Abs(transform.localScale.y), 0);
+        }
         playerWeaponController.SetGun(this);
     }
 }

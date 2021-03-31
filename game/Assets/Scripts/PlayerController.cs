@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerController : NetworkBehaviour
 {
     private float moveSpeed = 10f;
-    private float jumpHeight = 100f;
+    private float jumpHeight = 5f;
     private Vector2 moveDir;
     
     public float maxHealth = 100;
@@ -48,7 +48,7 @@ public class PlayerController : NetworkBehaviour
         RotatePlayerInAir();
     }
 
-    #region Movement
+    #region Movement&Rotation
     void HandleMovement()
     {
         if (!isLocalPlayer)
@@ -59,7 +59,9 @@ public class PlayerController : NetworkBehaviour
 
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            rb.AddForce(transform.up * 1000 * jumpHeight * Time.deltaTime);
+            float x = 6 * jumpHeight;
+            rb.AddForce(transform.up * x, ForceMode2D.Impulse);
+            Debug.Log(x);
         }
     }
 
@@ -125,13 +127,24 @@ public class PlayerController : NetworkBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        if (health < 0)
+        {
+            DestroyPlayer();
+        }
         Debug.Log(health);
     }
+
 
     [Server]
     public void AddHealth(float amount)
     {
         health += amount;
         Debug.Log(health);
+    }
+
+    [Server]
+    private void DestroyPlayer()
+    {
+        NetworkServer.Destroy(gameObject);
     }
 }

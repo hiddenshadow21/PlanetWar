@@ -7,7 +7,7 @@ public class GravityAttractor : MonoBehaviour
 {
     public Rigidbody2D rb;
     private static List<GravityAttractor> Attractors = new List<GravityAttractor>();
-    private const float G = 6.67f;
+    private const float G = 20f;
 
     private void OnEnable()
     {
