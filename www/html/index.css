@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: black;
+  background-image: url("graphics/bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  margin-left: 8%;
+  margin-right: 8%;
+  color: white;
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+#title {
+  font-family: Courier, monospace;
+  text-shadow: white 0.1em 0.1em 0.5em;
+  font-size: 10.0vw;
+  color: #444D68;
+  font-weight: bold;
+}
+
+#subtitle {
+  font-size: 2.5vw;
+  color: white;
+}
+
+.container {
+  overflow: auto;
+}
+
+.menu {
+  float: left;
+  width: 100%;
+  text-align: center;
+}
+
+.header {
+  margin-top: 3%;
+  text-align: center;
+}
+
+.menu a {
+  background-color: #58659F;
+  padding: 10px;
+  margin-top: 7px;
+  display: block;
+  width: 33%;
+  float: left;
+  color: white;
+  text-decoration: none;
+  font-size: 1.5vw;
+}
+
+.menu a:hover {
+  background-color: #6396D2;
+}
+
+.galleryContainer {
+  display: table; 
+  width: 100%;
+  clear: both;
+  padding: 10px;
+}
+
+.galleryTitle {
+  font-size: 4.0vw;
+  font-weight: bold;
+  width: 40%;
+  display: table-cell;
+}
+
+.galleryTitle.left {
+  text-align: left;
+  float: left;
+}
+
+.galleryTitle.right {
+  text-align: right;
+  float: right;
+}
+
+.gallery {
+  width: 60%;   
+  height: 60%; 
+  overflow: hidden;
+  display: table-cell; 
+}
+
+.gallery.left {
+  float: right;
+}
+
+.gallery.right {
+  float: left;
+}
+
+.galleryDescription {
+  font-size: 2.0vw;
+  font-weight: bold;
+  width: 40%;
+  display: table-cell;
+  padding-top: 2%;
+}
+
+.galleryDescription.left {
+  text-align: left;
+  float: left;
+}
+
+.galleryDescription.right {
+  text-align: right;
+  float: right;
+}
+
+.footer {
+  background-color: #58659F;
+  text-align: center;
+  padding: 10px;
+  font-size: 1.0vw;
+}
