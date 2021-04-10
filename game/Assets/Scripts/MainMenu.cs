@@ -11,10 +11,14 @@ public class MainMenu : MonoBehaviour
     public GameObject RoomManager;
 
     public Button ButtonCreateRoom;
-    public Button ButtonJoinRoom;
+    public Button ButtonShowJoinPanel;
     public Button ButtonExitGame;
+    public Button ButtonBackFromJoin;
+    public Button ButtonJoinRoom;
     public InputField InputRoomKey;
     public Text TextPlayerName;
+
+    public GameObject JoinPanel;
 
     KcpTransport kcpTransport;
     NetworkRoomManagerExt networkRoomManagerExt;
@@ -33,7 +37,9 @@ public class MainMenu : MonoBehaviour
     private void OnEnable()
     {
         ButtonCreateRoom.onClick.AddListener(CreateRoom);
+        ButtonShowJoinPanel.onClick.AddListener(ShowJoinPanel);
         ButtonJoinRoom.onClick.AddListener(JoinRoom);
+        ButtonBackFromJoin.onClick.AddListener(HideJoinPanel);
         ButtonExitGame.onClick.AddListener(ExitGame);
     }
 
@@ -137,5 +143,16 @@ public class MainMenu : MonoBehaviour
 
         for (int i = 0; i < N; i++)
             key += chars[random.Next(chars.Length)];
+    }
+
+    private void ShowJoinPanel()
+    {
+        JoinPanel.gameObject.SetActive(true);
+        gameObject.SetActive(false);
+    }
+    private void HideJoinPanel()
+    {
+        JoinPanel.gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 }
