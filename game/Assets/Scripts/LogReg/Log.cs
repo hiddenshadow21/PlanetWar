@@ -125,7 +125,7 @@ public class Log : MonoBehaviour
                         PlayerInfo.Name = response[3];
                         PlayerInfo.EMail = response[4];
                         Answer.text = "Login successful!";
-                        //tutaj przejście do kolejnej sceny!
+                        SceneManager.LoadScene(sceneName: "OfflineScene");
                     }
                     else
                     {
