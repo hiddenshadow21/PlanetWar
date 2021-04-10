@@ -27,6 +27,25 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         return true;
     }
 
+    public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling)
+    {
+        base.OnClientChangeScene(newSceneName, sceneOperation, customHandling);
+        if (newSceneName != RoomScene)
+        {
+            foreach (NetworkRoomPlayerExt item in roomSlots)
+            {
+                item.Panel.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (NetworkRoomPlayerExt item in roomSlots)
+            {
+                item.Panel.SetActive(true);
+            }
+        }
+    }
+
     public override void OnRoomStopClient()
     {
         // Demonstrates how to get the Network Manager out of DontDestroyOnLoad when
@@ -65,6 +84,7 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     public override void OnRoomServerPlayersReady()
     {
         // calling the base method calls ServerChangeScene as soon as all players are in Ready state.
+
         #if UNITY_SERVER
                 base.OnRoomServerPlayersReady();
         #endif
@@ -77,8 +97,17 @@ public class NetworkRoomManagerExt : NetworkRoomManager
 
     public override void OnRoomClientDisconnect(NetworkConnection conn) 
     {
-        conn.Disconnect();
         // TO DO - exit
-        // CMD kill proccess
+        // wraca do mainmenu
+    }
+
+    public override void OnRoomServerDisconnect(NetworkConnection conn)
+    {
+        base.OnRoomServerDisconnect(conn);
+
+        if (roomSlots.Count == 0)
+        {
+            Application.Quit();
+        }
     }
 }

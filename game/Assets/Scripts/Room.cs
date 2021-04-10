@@ -1,54 +1,53 @@
-﻿using Mirror;
-using Mirror.Examples.NetworkRoom;
+﻿using Mirror.Examples.NetworkRoom;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Room : MonoBehaviour
 {
     public Button ButtonReadyState;
     public Button ButtonExitRoom;
-    public Button ButtonStartGame;
+    //public Button ButtonStartGame;
     public Text TextRoomKey;
 
-    NetworkRoomManagerExt networkRoomManagerExt;
-    NetworkRoomPlayerExt networkRoomPlayerExt;
+    NetworkRoomManagerExt roomManager;
+    NetworkRoomPlayerExt roomPlayer;
 
 
     void Start()
     {
         changeShowGuiStatus(false);
-        networkRoomManagerExt = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<NetworkRoomManagerExt>();
+        roomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<NetworkRoomManagerExt>();
         StartCoroutine(GetNetworkRoomPlayerExtSingleton(2));
-        TextRoomKey.text += networkRoomManagerExt.Key;
+        TextRoomKey.text += roomManager.Key;
     }
 
     IEnumerator GetNetworkRoomPlayerExtSingleton(float time)
     {
         yield return new WaitForSeconds(time);
-        networkRoomPlayerExt = NetworkRoomPlayerExt.singleton;
+        roomPlayer = NetworkRoomPlayerExt.singleton;
         changeShowGuiStatus(true);
     }
 
     private void changeShowGuiStatus(bool status)
     {
-        ButtonReadyState.enabled = status;
-        ButtonExitRoom.enabled = status;
-        ButtonStartGame.enabled = status;
+        ButtonReadyState.gameObject.SetActive(status);
+        ButtonExitRoom.gameObject.SetActive(status);
+        //ButtonStartGame.enabled = status;
     }
 
     private void OnEnable()
     {
         ButtonReadyState.onClick.AddListener(ChangeReadyState);
         ButtonExitRoom.onClick.AddListener(ExitRoom);
-        ButtonStartGame.onClick.AddListener(StartGame);
+        //ButtonStartGame.onClick.AddListener(StartGame);
     }
 
     private void ChangeReadyState()
     {
-        Debug.Log("networkRoomPlayerExt.readyToBegin = " + networkRoomPlayerExt.readyToBegin);
-        if (networkRoomPlayerExt.readyToBegin)
+        Debug.Log("networkRoomPlayerExt.readyToBegin = " + roomPlayer.readyToBegin);
+        if (roomPlayer.readyToBegin)
         {
             ButtonReadyState.GetComponentInChildren<Text>().text = "Ready";  
         }
@@ -56,22 +55,31 @@ public class Room : MonoBehaviour
         {
             ButtonReadyState.GetComponentInChildren<Text>().text = "Not ready";
         }
-        networkRoomPlayerExt.CmdChangeReadyState(!networkRoomPlayerExt.readyToBegin);
+        roomPlayer.CmdChangeReadyState(!roomPlayer.readyToBegin);
     }
 
-    private void StartGame()
+/*    private void StartGame()
     {
-        if (networkRoomManagerExt.allPlayersReady)
-        {
-            changeShowGuiStatus(false);
-            networkRoomManagerExt.ServerChangeScene(networkRoomManagerExt.GameplayScene);
-        }
-    }
+        int i = 0;
+
+        foreach (var item in roomManager.roomSlots)
+            if (item.readyToBegin)
+                i++;
+        if (i == roomManager.roomSlots.Count)
+            roomManager.ServerChangeScene(roomManager.GameplayScene);
+    }*/
 
     // TO DO - fix
     private void ExitRoom()
     {
-        networkRoomManagerExt.GetComponent<NetworkIdentity>().connectionToClient.Disconnect();
+        // TO DO
+        // tu jesszcze usun polaczenie z serwerem
+        roomManager.roomSlots.Remove(roomPlayer);
+        Destroy(roomPlayer.gameObject);
+        SceneManager.LoadScene(sceneName: "OfflineScene");
+        roomManager.OnRoomServerDisconnect(roomPlayer.connectionToServer);
+        Debug.Log($"connectionToServer: {roomPlayer.connectionToServer}");
+        Debug.Log($"connectionToServer: {roomPlayer.connectionToClient}");
     }
 
 }
