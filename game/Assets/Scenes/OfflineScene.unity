@@ -1436,7 +1436,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Kalczur
 --- !u!222 &1414689994
 CanvasRenderer:
   m_ObjectHideFlags: 0
