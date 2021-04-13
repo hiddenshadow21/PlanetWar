@@ -23,6 +23,7 @@ public class Reg : MonoBehaviour
 
     private void callRegistration()
     {
+        Register.interactable = false;
         StartCoroutine(registration());
     }
 
@@ -247,6 +248,7 @@ public class Reg : MonoBehaviour
                 Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
                 break;
         }
+        Register.interactable = true;
     }
 
     private void toLog()
