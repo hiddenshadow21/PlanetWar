@@ -48,6 +48,9 @@ public class GunProjectile : Gun
 
     private void Start()
     {
+        base.AssignToPlayer();
+        Kolory kolor = transform.root.GetComponent<PlayerController>().Kolor;
+        base.SetSprite(kolor);
         nextShootTime = Time.time;
         ammo = maxAmmo;
     }

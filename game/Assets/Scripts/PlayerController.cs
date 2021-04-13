@@ -7,12 +7,19 @@ using UnityEngine;
 public class PlayerController : NetworkBehaviour
 {
     private float moveSpeed = 10f;
-    private float jumpHeight = 100f;
+    private float jumpHeight = 5f;
     private Vector2 moveDir;
     
     public float maxHealth = 100;
     [SyncVar]
     private float health;
+
+    [SyncVar]
+    private Kolory color;
+    public Kolory Kolor { get { return color; } }
+
+    [SyncVar]
+    private string playerName;
 
     public new Collider2D collider;
     public Rigidbody2D rb;
@@ -59,7 +66,9 @@ public class PlayerController : NetworkBehaviour
 
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            rb.AddForce(transform.up * 1000 * jumpHeight * Time.deltaTime);
+            float x = 6 * jumpHeight;
+            rb.AddForce(transform.up * x, ForceMode2D.Impulse);
+            Debug.Log(x);
         }
     }
 

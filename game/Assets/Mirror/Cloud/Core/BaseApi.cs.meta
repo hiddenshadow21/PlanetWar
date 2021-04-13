@@ -1,13 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:game/Assets/Scripts/PlayerInfo.cs.meta
-<<<<<<< HEAD
-guid: 7f2417fcad0b56046879e53c8f1ed978
-=======
-guid: 24dbaab0b76e62f4795c7f3d0f30285e
->>>>>>> feature/fizykaGry
-=======
 guid: 70f563b7a7210ae43bbcde5cb7721a94
->>>>>>> feature/poruszanie:game/Assets/Mirror/Cloud/Core/BaseApi.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

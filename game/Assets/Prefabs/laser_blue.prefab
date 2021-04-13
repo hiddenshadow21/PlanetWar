@@ -98,11 +98,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  spriteRenderer: {fileID: 8820394845338702258}
+  spriteColors:
+  - {fileID: 21300000, guid: 8dd5ed28898c91b4a80fe789ce11ae7e, type: 3}
+  - {fileID: 21300000, guid: 09706c49e2557b343ba2a56efef6e9cf, type: 3}
+  - {fileID: 21300000, guid: 1ea35ec24302396478d8e695689d7db3, type: 3}
+  - {fileID: 21300000, guid: 7521869f693741945b657267ed7961bc, type: 3}
+  - {fileID: 21300000, guid: c2c5f0aac4d694b49a807f61f15baa85, type: 3}
   fireRate: 1
   reloadTime: 3
   maxAmmo: 8
   nextShootTime: 0
   weaponFirePosition: {fileID: 5536959287491536139}
+  parentNetId: 0
   range: 100
   damage: 35
   LaserLine: {fileID: 2252974129997229715, guid: 0b9c31f3b90d8db4ca513770ca92cdaf,
