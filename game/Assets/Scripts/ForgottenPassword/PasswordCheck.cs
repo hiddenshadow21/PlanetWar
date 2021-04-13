@@ -20,6 +20,7 @@ public class PasswordCheck : MonoBehaviour
 
     private void callPasswordVerify()
     {
+        PasswordVerify.interactable = false;
         StartCoroutine(passwordVerify());
     }
 
@@ -164,10 +165,11 @@ public class PasswordCheck : MonoBehaviour
                 Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
                 break;
         }
+        PasswordVerify.interactable = true;
     }
 
     private void toLog()
     {
-        SceneManager.LoadScene(sceneName: "CodeCheck");
+        SceneManager.LoadScene(sceneName: "Log");
     }
 }

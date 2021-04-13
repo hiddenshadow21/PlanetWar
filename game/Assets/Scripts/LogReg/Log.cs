@@ -15,12 +15,14 @@ public class Log : MonoBehaviour
     public Text Answer;
     public Button ToEmailCheck;
     public Button ToReg;
+    public Button Exit;
 
     private const string loginURL = "http://40.69.215.163/logreg/login.php";
     private const char fieldSeparator = ':';
     
     private void callLogin()
     {
+        Login.interactable = false;
         StartCoroutine(login());
     }
 
@@ -36,6 +38,7 @@ public class Log : MonoBehaviour
         Login.onClick.AddListener(callLogin);
         ToReg.onClick.AddListener(toReg);
         ToEmailCheck.onClick.AddListener(toEmailCheck);
+        Exit.onClick.AddListener(QuitGame);
     }
 
     private void Update()
@@ -64,6 +67,9 @@ public class Log : MonoBehaviour
                     ToReg.Select();
                     break;
                 case "ToReg_button":
+                    Exit.Select();
+                    break;
+                case "Exit_button":
                     Email.Select();
                     break;
             }
@@ -148,6 +154,7 @@ public class Log : MonoBehaviour
                 Answer.text = "Error (Code: " + response[0] + ")! Please try again later!";
                 break;
         }
+        Login.interactable = true;
     }
 
     private void toReg()
@@ -158,5 +165,10 @@ public class Log : MonoBehaviour
     private void toEmailCheck()
     {
         SceneManager.LoadScene(sceneName: "EmailCheck");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
