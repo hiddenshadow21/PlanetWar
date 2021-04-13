@@ -14,6 +14,13 @@ public class PlayerController : NetworkBehaviour
     [SyncVar]
     private float health;
 
+    [SyncVar]
+    private Kolory color;
+    public Kolory Kolor { get { return color; } }
+
+    [SyncVar]
+    private string playerName;
+
     public new Collider2D collider;
     public Rigidbody2D rb;
 

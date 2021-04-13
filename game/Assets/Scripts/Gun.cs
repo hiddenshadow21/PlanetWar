@@ -4,8 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum Kolory
+{
+    niebieski,
+    zielony,
+    pomarańczowy,
+    fioletowy,
+    czerwony
+}
+
 public abstract class Gun : NetworkBehaviour
 {
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    private Sprite[] spriteColors;
+
     [SerializeField]
     protected int fireRate = 1;
     public int FireRate { get { return fireRate; } }
@@ -50,5 +65,10 @@ public abstract class Gun : NetworkBehaviour
             transform.localScale += new Vector3(0, 2*Mathf.Abs(transform.localScale.y), 0);
         }
         playerWeaponController.SetGun(this);
+    }
+
+    public void SetSprite(Kolory kolor)
+    {
+        spriteRenderer.sprite = spriteColors[(int)kolor];
     }
 }
