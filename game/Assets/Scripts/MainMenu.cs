@@ -18,7 +18,8 @@ public class MainMenu : MonoBehaviour
     public InputField InputRoomKey;
     public Text TextPlayerName;
 
-    public GameObject JoinPanel;
+    public GameObject PanelJoin;
+    public GameObject PanelMainMenu;
 
     KcpTransport kcpTransport;
     NetworkRoomManagerExt networkRoomManagerExt;
@@ -147,12 +148,12 @@ public class MainMenu : MonoBehaviour
 
     private void ShowJoinPanel()
     {
-        JoinPanel.gameObject.SetActive(true);
-        gameObject.SetActive(false);
+        PanelJoin.gameObject.SetActive(true);
+        PanelMainMenu.gameObject.SetActive(false);
     }
     private void HideJoinPanel()
     {
-        JoinPanel.gameObject.SetActive(false);
-        gameObject.SetActive(true);
+        PanelJoin.gameObject.SetActive(false);
+        PanelMainMenu.gameObject.SetActive(true);
     }
 }

@@ -1034,6 +1034,7 @@ GameObject:
   - component: {fileID: 823835421}
   - component: {fileID: 823835426}
   - component: {fileID: 823835425}
+  - component: {fileID: 823835427}
   m_Layer: 5
   m_Name: CanvasMainMenu
   m_TagString: Untagged
@@ -1159,6 +1160,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 823835420}
   m_CullTransparentMesh: 0
+--- !u!114 &823835427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823835420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7cf93ab5ca9784dbbeb7799b5527d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RoomManager: {fileID: 2008127829}
+  ButtonCreateRoom: {fileID: 1426287385}
+  ButtonShowJoinPanel: {fileID: 1932476791}
+  ButtonExitGame: {fileID: 166901099}
+  ButtonBackFromJoin: {fileID: 983166173}
+  ButtonJoinRoom: {fileID: 749149331}
+  InputRoomKey: {fileID: 13973396}
+  TextPlayerName: {fileID: 1414689993}
+  PanelJoin: {fileID: 164955325}
+  PanelMainMenu: {fileID: 1841433532}
 --- !u!1 &983166171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,7 +1459,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Kalczur
 --- !u!222 &1414689994
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1680,7 +1703,6 @@ GameObject:
   - component: {fileID: 1841433533}
   - component: {fileID: 1841433535}
   - component: {fileID: 1841433534}
-  - component: {fileID: 1841433536}
   m_Layer: 5
   m_Name: PanelMainMenu
   m_TagString: Untagged
@@ -1749,27 +1771,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841433532}
   m_CullTransparentMesh: 0
---- !u!114 &1841433536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1841433532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec7cf93ab5ca9784dbbeb7799b5527d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RoomManager: {fileID: 2008127829}
-  ButtonCreateRoom: {fileID: 1426287385}
-  ButtonShowJoinPanel: {fileID: 1932476791}
-  ButtonExitGame: {fileID: 166901099}
-  ButtonBackFromJoin: {fileID: 983166173}
-  ButtonJoinRoom: {fileID: 749149331}
-  InputRoomKey: {fileID: 13973396}
-  TextPlayerName: {fileID: 1414689993}
-  JoinPanel: {fileID: 164955325}
 --- !u!1 &1851282603
 GameObject:
   m_ObjectHideFlags: 0
