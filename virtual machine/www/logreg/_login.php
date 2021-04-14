@@ -45,7 +45,7 @@ function AuthorizeUser()
 			$finalResponse .= $RESTRICTED_MARK.$requestLoop['password'];
                		$finalResponse .= $RESTRICTED_MARK.$requestLoop['IDuser'];
 	                $finalResponse .= $RESTRICTED_MARK.$requestLoop['username'];
-	                $finalResponse .= $RESTRICTED_MARK.$email;
+			$finalResponse .= $RESTRICTED_MARK.$email;
 
 			mysqli_close($CONNECTION);
 			return($finalResponse);
