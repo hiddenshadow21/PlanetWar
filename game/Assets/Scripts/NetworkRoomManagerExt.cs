@@ -20,10 +20,33 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     /// <returns>true unless some code in here decides it needs to abort the replacement</returns>
     public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)
     {
-        /*PlayerScore playerScore = gamePlayer.GetComponent<PlayerScore>();
-        playerScore.index = roomPlayer.GetComponent<NetworkRoomPlayer>().index;*/
+        var rP = roomPlayer.GetComponent<NetworkRoomPlayerExt>();
+        var gP = gamePlayer.GetComponent<PlayerController>();
 
-        // TO DO
+        gP.playerName = rP.PlayerName;
+
+        switch (rP.index)
+        {
+            case 0:
+                gP.color = Kolory.niebieski;
+                break;
+            case 1:
+                gP.color = Kolory.zielony;
+                break;
+            case 2:
+                gP.color = Kolory.pomarañczowy;
+                break;
+            case 3:
+                gP.color = Kolory.fioletowy;
+                break;
+            case 4:
+                gP.color = Kolory.czerwony;
+                break;
+            default:
+                gP.color = Kolory.niebieski;
+                break;
+        }
+
         return true;
     }
 

@@ -15,11 +15,11 @@ public class PlayerController : NetworkBehaviour
     private float health;
 
     [SyncVar]
-    private Kolory color;
+    public Kolory color;
     public Kolory Kolor { get { return color; } }
 
     [SyncVar]
-    private string playerName;
+    public string playerName;
 
     public new Collider2D collider;
     public Rigidbody2D rb;
@@ -41,6 +41,7 @@ public class PlayerController : NetworkBehaviour
             Camera.main.GetComponent<CameraController>().player = gameObject;
 
         health = maxHealth;
+        Debug.Log($"--- PlayerController.color: {color} ---");
     }
 
     void Update()
