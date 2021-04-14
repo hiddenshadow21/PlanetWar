@@ -198,19 +198,17 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
         switch(index)
         {
             case 0:
-                return new Color32(255, 0, 0, 255);
-            case 1:
-                return new Color32(255, 128, 0, 255);
-            case 2:
-                return new Color32(255, 255, 0, 255);
-            case 3:
-                return new Color32(0, 255, 0, 255);
-            case 4:
                 return new Color32(0, 0, 255, 255);
-            case 5:
-                return new Color32(255, 51, 153, 255);
+            case 1:
+                return new Color32(0, 255, 0, 255);
+            case 2:
+                return new Color32(255, 128, 0, 255);
+            case 3:
+                return new Color32(128, 0, 255, 255);
+            case 4:
+                return new Color32(255, 0, 0, 255);
             default:
-                return new Color32(0, 0, 0, 0);
+                return new Color32(0, 0, 255, 255);
         }
     }
 }
