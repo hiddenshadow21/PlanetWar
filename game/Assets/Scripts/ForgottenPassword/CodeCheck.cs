@@ -16,6 +16,7 @@ public class CodeCheck : MonoBehaviour
 
     private void callCodeVerify()
     {
+        CodeVerify.interactable = false;
         StartCoroutine(codeVerify());
     }
 
@@ -94,10 +95,11 @@ public class CodeCheck : MonoBehaviour
                 Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
                 break;
         }
+        CodeVerify.interactable = true;
     }
 
     private void toLog()
     {
-        SceneManager.LoadScene(sceneName: "EmailCheck");
+        SceneManager.LoadScene(sceneName: "Log");
     }
 }

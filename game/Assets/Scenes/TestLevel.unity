@@ -413,7 +413,7 @@ PrefabInstance:
     - target: {fileID: 8678214718661955935, guid: 963d84ee9e3e7694e92a93d6bdcef99a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8678214718661955935, guid: 963d84ee9e3e7694e92a93d6bdcef99a,
         type: 3}
@@ -2532,7 +2532,7 @@ PrefabInstance:
     - target: {fileID: 8678214718661955935, guid: 963d84ee9e3e7694e92a93d6bdcef99a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8678214718661955935, guid: 963d84ee9e3e7694e92a93d6bdcef99a,
         type: 3}
@@ -3494,8 +3494,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.5, y: 0}
-  m_SizeDelta: {x: -35, y: -13}
+  m_AnchoredPosition: {x: -11.25, y: 0.12075043}
+  m_SizeDelta: {x: -27.496826, y: -3.7583885}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1260990612
 GameObject:
@@ -5106,10 +5106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

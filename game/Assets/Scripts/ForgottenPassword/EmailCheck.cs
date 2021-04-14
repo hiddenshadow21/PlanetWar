@@ -16,6 +16,7 @@ public class EmailCheck : MonoBehaviour
 
     private void callEmailVerify()
     {
+        EmailVerify.interactable = false;
         StartCoroutine(emailVerify());
     }
 
@@ -97,6 +98,7 @@ public class EmailCheck : MonoBehaviour
                 Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
                 break;
         }
+        EmailVerify.interactable = true;
     }
 
     private void toLog()
