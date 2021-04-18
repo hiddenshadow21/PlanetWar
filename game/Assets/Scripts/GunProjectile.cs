@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GunProjectile : Gun
 {
+    [SerializeField]
+    private int force;
+
     public GameObject weaponBullet;
 
     [Server]
@@ -34,10 +37,18 @@ public class GunProjectile : Gun
 
         ammo--;
         var bullet = Instantiate(weaponBullet, weaponFirePosition.position, weaponFirePosition.rotation);
+        bullet.GetComponent<Bullet>().SetShooterId(parentNetId);
         bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * weaponBullet.GetComponent<Bullet>().speed;
         NetworkServer.Spawn(bullet);
-
+        AddForce(weaponFirePosition.rotation.normalized);
         RpcOnShoot();
+    }
+
+    [TargetRpc]
+    private void AddForce(Quaternion rotation)
+    {
+        Vector2 v = new Vector2(-1,0);
+        transform.root.GetComponent<Rigidbody2D>().AddForce(rotation * v * force);
     }
 
     [ClientRpc]
@@ -53,5 +64,6 @@ public class GunProjectile : Gun
         base.SetSprite(kolor);
         nextShootTime = Time.time;
         ammo = maxAmmo;
+        force = 100;
     }
 }

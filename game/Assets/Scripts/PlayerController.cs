@@ -173,8 +173,9 @@ public class PlayerController : NetworkBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
-        if (health < 0)
+        if (health <= 0)
         {
+            rb.velocity = Vector2.zero;
             DisableComponents();
             Die();
         }
