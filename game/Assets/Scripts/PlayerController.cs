@@ -94,13 +94,13 @@ public class PlayerController : NetworkBehaviour
     #region Movement&Rotation
     void HandleMovement()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || !isGrounded)
             return;
         float moveHorizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         moveDir = new Vector2(moveHorizontal, 0);
         transform.Translate(moveDir);
 
-        if (isGrounded && Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             float x = 6 * jumpHeight;
             rb.AddForce(transform.up * x, ForceMode2D.Impulse);
@@ -112,7 +112,8 @@ public class PlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
-        isGrounded = false;
+
+        
         var pointBelowCollider = transform.TransformDirection(
             transform.InverseTransformDirection(transform.position)
             - new Vector3(0, collider.bounds.extents.y, 0)
@@ -126,6 +127,8 @@ public class PlayerController : NetworkBehaviour
 
             if (hit.distance <= 0.1f)
                 isGrounded = true;
+            else
+                isGrounded = false;
         }
     }
     
