@@ -1,27 +1,59 @@
 ﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerRespawnSystem : NetworkBehaviour
 {
-    [SerializeField]
-    private GameObject playerPrefab;
-
-    [SerializeField]
-    private Transform[] spawnPoints;
-
-    [SerializeField]
     private Button spawnButton;
-    [SerializeField]
     private Canvas canvas;
+    private bool isActive=false;
 
-    public void SpawnPlayer()
+    private PlayerController playerController;
+
+    private void Start()
     {
-        ClientScene.AddPlayer(connectionToClient);
-        canvas.gameObject.SetActive(false);
-        //var playerGO = Instantiate<GameObject>(playerPrefab, spawnPoints[0].position, spawnPoints[0].rotation);
-        //NetworkServer.Spawn(playerGO, connectionToClient);
+        canvas = Resources.FindObjectsOfTypeAll<Canvas>().Where(x => x.tag == "Respawn").FirstOrDefault();
+        spawnButton = canvas.GetComponentInChildren<Button>();
+        spawnButton.onClick.AddListener(delegate ()
+        {
+            SpawnPlayerLocal();
+        });
+        playerController = gameObject.GetComponent<PlayerController>();
+    }
+
+    private void SpawnPlayerLocal()
+    {
+        if (!isLocalPlayer)
+            return;
+        ToogleCanvas();
+        var random = new Random();
+        var spawnPoints = SpawnPoint.GetSpawnPoints();
+        int k = (int)Random.Range(0, spawnPoints.Count);
+        transform.position = spawnPoints[k];
+        CmdSpawnPlayer(k);
+    }
+
+    [Command]
+    public void CmdSpawnPlayer(int k)
+    {
+        transform.position = SpawnPoint.GetSpawnPoints()[k];
+        playerController.EnableComponents();
+        RpcSpawnPlayer(k);
+    }
+
+    [ClientRpc]
+    private void RpcSpawnPlayer(int k)
+    {
+        transform.position = SpawnPoint.GetSpawnPoints()[k];
+        playerController.EnableComponents();
+    }
+
+    public void ToogleCanvas()
+    {
+        isActive = !isActive;
+        canvas.gameObject.SetActive(isActive);
     }
 }

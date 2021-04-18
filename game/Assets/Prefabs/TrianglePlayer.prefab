@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 6445737654020582295}
   - component: {fileID: 3181704384020778682}
   - component: {fileID: 1724816308}
+  - component: {fileID: -2769286814264129173}
   m_Layer: 8
   m_Name: TrianglePlayer
   m_TagString: Player
@@ -277,6 +278,23 @@ MonoBehaviour:
   - {fileID: 2850046616984087986, guid: 3807acdcc97f12a43ac20ef7a1b1897a, type: 3}
   hand: {fileID: 6672463869887104926}
   activeWeaponSynced: 1
+--- !u!114 &-2769286814264129173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213013488172764608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99c3850074b38a449be4289ea53656f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  spawnPoints: []
+  spawnButton: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!1 &553027421712690579
 GameObject:
   m_ObjectHideFlags: 0

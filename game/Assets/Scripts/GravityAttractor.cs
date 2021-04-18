@@ -6,24 +6,24 @@ using UnityEngine;
 public class GravityAttractor : MonoBehaviour
 {
     public Rigidbody2D rb;
-    private static List<GravityAttractor> Attractors = new List<GravityAttractor>();
+    private static List<GravityAttractor> attractors = new List<GravityAttractor>();
     private const float G = 20f;
 
     private void OnEnable()
     {
-        if(!Attractors.Contains(this))
-            Attractors.Add(this);
+        if(!attractors.Contains(this))
+            attractors.Add(this);
     }
 
     private void OnDisable()
     {
-        if(Attractors.Contains(this))
-            Attractors.Remove(this);
+        if(attractors.Contains(this))
+            attractors.Remove(this);
     }
 
     public static List<GravityAttractor> GetListOfAttractors()
     {
-        return Attractors;
+        return attractors;
     }
 
 

@@ -73,6 +73,12 @@ public class PlayerController : NetworkBehaviour
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
     }
 
+    private void OnEnable()
+    {
+        if (isServer)
+            health = maxHealth;
+    }
+
     void Update()
     {
         HandleMovement();
@@ -166,11 +172,11 @@ public class PlayerController : NetworkBehaviour
         health -= damage;
         if (health < 0)
         {
-            DestroyPlayer();
+            DisableComponents();
+            Die();
         }
         Debug.Log(health);
     }
-
 
     [Server]
     public void AddHealth(float amount)
@@ -179,9 +185,40 @@ public class PlayerController : NetworkBehaviour
         Debug.Log(health);
     }
 
-    [Server]
-    private void DestroyPlayer()
+    public void DisableComponents()
     {
-        NetworkServer.Destroy(gameObject);
+        if (isServer)
+        {
+            Gun[] guns = gameObject.GetComponentsInChildren<Gun>();
+            foreach (var gun in guns)
+            {
+                NetworkServer.Destroy(gun.gameObject);
+            }
+        }
+        gameObject.GetComponent<PlayerWeaponController>().enabled = false;
+        gameObject.GetComponent<GravityBody>().enabled = false;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        this.enabled = false;
+    }
+
+    public void EnableComponents()
+    {
+        this.enabled = true;
+        gameObject.GetComponent<PlayerWeaponController>().enabled = true;
+        gameObject.GetComponent<Collider2D>().enabled = true;
+        gameObject.GetComponent<GravityBody>().enabled = true;
+        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
+
+    }
+
+    [ClientRpc]
+    private void Die()
+    {
+        DisableComponents();
+        if (isLocalPlayer)
+        {
+            gameObject.GetComponent<PlayerRespawnSystem>().ToogleCanvas();
+        }
     }
 }
