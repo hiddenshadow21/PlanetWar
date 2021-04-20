@@ -28,22 +28,22 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         switch (rP.index)
         {
             case 0:
-                gP.color = Kolory.niebieski;
+                gP.Kolor = Kolory.niebieski;
                 break;
             case 1:
-                gP.color = Kolory.zielony;
+                gP.Kolor = Kolory.zielony;
                 break;
             case 2:
-                gP.color = Kolory.pomarañczowy;
+                gP.Kolor = Kolory.pomarañczowy;
                 break;
             case 3:
-                gP.color = Kolory.fioletowy;
+                gP.Kolor = Kolory.fioletowy;
                 break;
             case 4:
-                gP.color = Kolory.czerwony;
+                gP.Kolor = Kolory.czerwony;
                 break;
             default:
-                gP.color = Kolory.niebieski;
+                gP.Kolor = Kolory.niebieski;
                 break;
         }
 
