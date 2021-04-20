@@ -69,6 +69,16 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             weapons[1] = gun;
         }
+
+        if(activeWeaponSynced == 0)
+        {
+            if(weapons[1] != null)
+                weapons[1].GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else
+        {
+            weapons[0].GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 
     [Command]

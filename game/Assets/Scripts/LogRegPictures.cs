@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -14,37 +13,50 @@ public class LogRegPictures : MonoBehaviour
     public Text ImageDescription;
 
     private const string dataUrl = "http://40.69.215.163/logreg/clientData/";
-    private const int maxPictureNumber = 2;
+    private int maxPictureNumber = 0;
     private int pictureNumber = 0;
+    private WebClient client = new WebClient();
     private List<Sprite> sprites = new List<Sprite>();
     private List<string> titles = new List<string>();
     private List<string> descriptions = new List<string>();
 
     void Start()
     {
-        getDataFromServer();
-        InvokeRepeating("setNewPicture", 1.0f, 10.0f);
+        try
+        {
+            getImagesNumberFromServer();
+            getDataFromServer();
+            InvokeRepeating(nameof(setNewPicture), 1.0f, 10.0f);
+        }
+        catch(Exception e)
+        {
+            ImageTitle.text = "Connection error";
+            ImageDescription.text = e.Message;
+        }
     }
 
-    void Update()
+    private void getImagesNumberFromServer()
     {
-        
+        string output = client.DownloadString(new Uri(dataUrl + "getImagesNumber.php"));
+        maxPictureNumber = int.Parse(output);
+        if(maxPictureNumber == 0)
+        {
+            throw new Exception("Unable to get data from server");
+        }
     }
+
 
     private void getDataFromServer()
     {
-        for(int i = 0; i < maxPictureNumber; i++)
+        for (int i = 0; i < maxPictureNumber; i++)
         {
+            titles.Add(client.DownloadString(new Uri(dataUrl + i + "/title.txt")));
+            descriptions.Add(client.DownloadString(new Uri(dataUrl + i + "/description.txt")));
+
             StartCoroutine(getImagesFromServer(i, (response) =>
             {
                 sprites.Add(response);
             }));
-
-            using (WebClient client = new WebClient())
-            {
-                titles.Add(client.DownloadString(new Uri(dataUrl + i + "/title.txt")));
-                descriptions.Add(client.DownloadString(new Uri(dataUrl + i + "/description.txt")));
-            }
         }
     }
 
