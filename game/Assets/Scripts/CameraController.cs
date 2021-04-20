@@ -7,7 +7,16 @@ public class CameraController : MonoBehaviour
 {
     public GameObject player;
 
-    void Update()
+    public GameObject back1;
+    public GameObject back2;
+    public GameObject back3;
+
+    public float smoothSpeed = 0.125f;
+    public Vector3 offset;
+
+    private Vector3 velocity = Vector3.zero;
+
+    void LateUpdate()
     {
         if (player == null)
             return;
@@ -16,8 +25,15 @@ public class CameraController : MonoBehaviour
 
     private void LockCameraToPlayer()
     {
-        Vector3 pos = player.transform.position;
+        var playerPos = player.transform.position + offset;
+
+        transform.position = Vector3.SmoothDamp(transform.position, playerPos, ref velocity, smoothSpeed);
+        var pos = transform.position;
         pos.z = -10;
         transform.position = pos;
+        back1.transform.position = new Vector3(pos.x / 1.9f, pos.y / 1.9f, 2);
+        back2.transform.position = new Vector3(pos.x / 1.6f, pos.y / 1.6f, 3);
+        back3.transform.position = new Vector3(pos.x / 1.3f, pos.y / 1.3f, 4);
     }
+
 }

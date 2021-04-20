@@ -14,9 +14,38 @@ public class PlayerController : NetworkBehaviour
     [SyncVar]
     private float health;
 
-    [SyncVar]
-    public Kolory color;
-    public Kolory Kolor { get { return color; } }
+    [SyncVar(hook = nameof(OnColorChange))]
+    public Kolory Kolor;
+
+    private void OnColorChange(Kolory _old, Kolory _new)
+    {
+        var sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+        switch (_new)
+        {
+            case Kolory.niebieski:
+                sprite.color = Color.blue;
+                break;
+            case Kolory.zielony:
+                sprite.color = Color.green;
+                break;
+            case Kolory.pomarańczowy:
+                sprite.color = new Color(255,165,0);
+                break;
+            case Kolory.fioletowy:
+                sprite.color = Color.magenta;
+                break;
+            case Kolory.czerwony:
+                sprite.color = Color.red;
+                break;
+            default:
+                break;
+        }
+        var bronie = gameObject.GetComponentsInChildren<Gun>();
+        foreach (var gun in bronie)
+        {
+            gun.SetSprite(_new);
+        }
+    }
 
     [SyncVar]
     public string playerName;
@@ -41,7 +70,7 @@ public class PlayerController : NetworkBehaviour
             Camera.main.GetComponent<CameraController>().player = gameObject;
 
         health = maxHealth;
-        Debug.Log($"--- PlayerController.color: {color} ---");
+        Debug.Log($"--- PlayerController.color: {Kolor} ---");
     }
 
     void Update()
