@@ -11,15 +11,15 @@ public class HUD : MonoBehaviour
 
     public void UpdateHealth(int hp)
     {
-        Health.text = hp.ToString();
-        if(hp < 20)
+        if(hp <= 20)
         {
-            Health.color = new Color(255, 0, 0);
+            Health.color = new Color(1, 0, 0);
         }
         else
         {
-            Health.color = new Color(93, 236, 100, 255);
+            Health.color = new Color(0.36f, 0.92f, 0.39f);
         }
+        Health.text = hp.ToString();
     }
 
     public void UpdateAmmo(int maxAmmo, int currAmmo)
