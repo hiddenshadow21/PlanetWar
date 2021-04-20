@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : NetworkBehaviour
 {
+    private HUD hud;
     private float moveSpeed = 10f;
     private float jumpHeight = 5f;
     private Vector2 moveDir;
@@ -70,6 +72,7 @@ public class PlayerController : NetworkBehaviour
             Camera.main.GetComponent<CameraController>().player = gameObject;
 
         health = maxHealth;
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
     }
 
@@ -164,6 +167,7 @@ public class PlayerController : NetworkBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        hud.UpdateHealth((int)health);
         if (health < 0)
         {
             DestroyPlayer();
@@ -176,6 +180,7 @@ public class PlayerController : NetworkBehaviour
     public void AddHealth(float amount)
     {
         health += amount;
+        hud.UpdateHealth((int)health);
         Debug.Log(health);
     }
 

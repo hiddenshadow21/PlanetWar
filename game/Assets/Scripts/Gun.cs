@@ -15,6 +15,7 @@ public enum Kolory
 
 public abstract class Gun : NetworkBehaviour
 {
+    private HUD hud;
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
@@ -47,6 +48,7 @@ public abstract class Gun : NetworkBehaviour
     private void Test(int _old, int _new)
     {
         Debug.Log(_old + "->" + _new);
+        hud.UpdateAmmo(maxAmmo, _new);
     }
 
     public abstract void Shoot();
@@ -65,6 +67,7 @@ public abstract class Gun : NetworkBehaviour
             transform.localScale += new Vector3(0, 2*Mathf.Abs(transform.localScale.y), 0);
         }
         playerWeaponController.SetGun(this);
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
     }
 
     public void SetSprite(Kolory kolor)

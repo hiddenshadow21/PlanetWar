@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class PlayerWeaponController : NetworkBehaviour
 {
+    private HUD hud;
     private Transform aimTransform;
     private int selectedWeaponLocal = 0;
     private Gun[] weapons = new Gun[2];
@@ -34,6 +35,7 @@ public class PlayerWeaponController : NetworkBehaviour
             weapons[_New].GetComponent<SpriteRenderer>().enabled = true;
             activeWeapon = weapons[_New];
         }
+        hud.UpdateAmmo(activeWeapon.maxAmmo, activeWeapon.Ammo);
     }
 
     [Command]
@@ -57,6 +59,7 @@ public class PlayerWeaponController : NetworkBehaviour
         base.OnStartClient();
         CmdSpawnSelectedWeapons();
         CmdChangeActiveWeapon(0);
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
     }
 
     internal void SetGun(Gun gun)
@@ -130,6 +133,7 @@ public class PlayerWeaponController : NetworkBehaviour
             }
 
             CmdChangeActiveWeapon(selectedWeaponLocal);
+            hud.UpdateAmmo(activeWeapon.maxAmmo, activeWeapon.Ammo);
         }
     }
 
@@ -138,6 +142,7 @@ public class PlayerWeaponController : NetworkBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             CmdShoot();
+            hud.UpdateAmmo(activeWeapon.maxAmmo, activeWeapon.Ammo);
         }
     }
 
@@ -148,7 +153,7 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             activeWeapon.nextShootTime = Time.time + 1.0f / activeWeapon.FireRate;
 
-            activeWeapon.Shoot();
+            activeWeapon.Shoot(); 
         }
         
     }
