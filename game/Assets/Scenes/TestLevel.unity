@@ -1267,7 +1267,7 @@ GameObject:
   - component: {fileID: 228160089}
   m_Layer: 0
   m_Name: Pos4
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1785,11 +1785,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  playerPrefab: {fileID: 213013488172764608, guid: 9a9285bd3833153448e66a1e3147f04b,
-    type: 3}
-  spawnPoints: []
-  spawnButton: {fileID: 0}
-  canvas: {fileID: 0}
 --- !u!114 &463768378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3085,9 +3080,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  back1: {fileID: 522420681}
-  back2: {fileID: 1944745868}
-  back3: {fileID: 1397215374}
+  back1: {fileID: 0}
+  back2: {fileID: 0}
+  back3: {fileID: 0}
   smoothSpeed: 0.125
   offset: {x: 0, y: 0, z: 0}
 --- !u!114 &841367730
@@ -5113,7 +5108,7 @@ GameObject:
   - component: {fileID: 1436850343}
   m_Layer: 0
   m_Name: Pos3
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5320,7 +5315,7 @@ GameObject:
   - component: {fileID: 1515337678}
   m_Layer: 0
   m_Name: Pos1
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5617,7 +5612,7 @@ GameObject:
   - component: {fileID: 1595220929}
   m_Layer: 0
   m_Name: Pos2
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7193,7 +7188,7 @@ GameObject:
   - component: {fileID: 2097187386}
   m_Layer: 5
   m_Name: WeaponSelec&SpawnCanvas
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

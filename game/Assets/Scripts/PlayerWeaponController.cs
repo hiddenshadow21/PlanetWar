@@ -18,15 +18,15 @@ public class PlayerWeaponController : NetworkBehaviour
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced;
 
-    private void Awake()
-    {
-        aimTransform = transform.Find("Aim");
-    }
-
     private void OnEnable()
     {
         CmdSpawnSelectedWeapons();
         CmdChangeActiveWeapon(0);
+    }
+
+    private void Awake()
+    {
+        aimTransform = transform.Find("Aim");
     }
 
     public override void OnStartClient()
@@ -34,6 +34,7 @@ public class PlayerWeaponController : NetworkBehaviour
         base.OnStartClient();
         CmdSpawnSelectedWeapons();
         CmdChangeActiveWeapon(0);
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
     }
 
     private void Update()
@@ -75,19 +76,7 @@ public class PlayerWeaponController : NetworkBehaviour
         activeWeapon.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    private void Awake()
-    {
-        aimTransform = transform.Find("Aim");
-
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        CmdSpawnSelectedWeapons();
-        CmdChangeActiveWeapon(0);
-        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
-    }
+    
 
     internal void SetGun(Gun gun)
     {
