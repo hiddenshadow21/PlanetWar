@@ -16,7 +16,7 @@ public class LogRegPictures : MonoBehaviour
     private int maxPictureNumber = 0;
     private int pictureNumber = 0;
     private WebClient client = new WebClient();
-    private List<Sprite> sprites = new List<Sprite>();
+    private Sprite[] sprites;
     private List<string> titles = new List<string>();
     private List<string> descriptions = new List<string>();
 
@@ -25,8 +25,9 @@ public class LogRegPictures : MonoBehaviour
         try
         {
             getImagesNumberFromServer();
+            sprites = new Sprite[maxPictureNumber];
             getDataFromServer();
-            InvokeRepeating(nameof(setNewPicture), 1.0f, 10.0f);
+            InvokeRepeating(nameof(setNewPicture), 1.0f, 6.0f);
         }
         catch(Exception e)
         {
@@ -53,14 +54,11 @@ public class LogRegPictures : MonoBehaviour
             titles.Add(client.DownloadString(new Uri(dataUrl + i + "/title.txt")));
             descriptions.Add(client.DownloadString(new Uri(dataUrl + i + "/description.txt")));
 
-            StartCoroutine(getImagesFromServer(i, (response) =>
-            {
-                sprites.Add(response);
-            }));
+            StartCoroutine(getImagesFromServer(i));
         }
     }
 
-    private IEnumerator getImagesFromServer(int index, System.Action<Sprite> callback)
+    private IEnumerator getImagesFromServer(int index)
     {
         using (var www = UnityWebRequestTexture.GetTexture(dataUrl + index + "/image.png"))
         {
@@ -71,13 +69,12 @@ public class LogRegPictures : MonoBehaviour
                 throw new Exception("Unable to get data from server");
             }
 
-
             if (www.isDone)
             {
                 var image = DownloadHandlerTexture.GetContent(www);
                 var rect = new Rect(0, 0, 1920f, 1080f);
                 Sprite sprite = Sprite.Create(image, rect, new Vector2(0,0));
-                callback(sprite);
+                sprites[index] = sprite;
             }
         }
     }
