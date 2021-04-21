@@ -76,6 +76,12 @@ public class PlayerController : NetworkBehaviour
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
     }
 
+    private void OnEnable()
+    {
+        if (isServer)
+            health = maxHealth;
+    }
+
     void Update()
     {
         HandleMovement();
@@ -91,13 +97,13 @@ public class PlayerController : NetworkBehaviour
     #region Movement&Rotation
     void HandleMovement()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || !isGrounded)
             return;
         float moveHorizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         moveDir = new Vector2(moveHorizontal, 0);
         transform.Translate(moveDir);
 
-        if (isGrounded && Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             float x = 6 * jumpHeight;
             rb.AddForce(transform.up * x, ForceMode2D.Impulse);
@@ -109,7 +115,8 @@ public class PlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
-        isGrounded = false;
+
+        
         var pointBelowCollider = transform.TransformDirection(
             transform.InverseTransformDirection(transform.position)
             - new Vector3(0, collider.bounds.extents.y, 0)
@@ -123,6 +130,8 @@ public class PlayerController : NetworkBehaviour
 
             if (hit.distance <= 0.1f)
                 isGrounded = true;
+            else
+                isGrounded = false;
         }
     }
     
@@ -168,13 +177,14 @@ public class PlayerController : NetworkBehaviour
     {
         health -= damage;
         hud.UpdateHealth((int)health);
-        if (health < 0)
+        if (health <= 0)
         {
-            DestroyPlayer();
+            rb.velocity = Vector2.zero;
+            DisableComponents();
+            Die();
         }
         Debug.Log(health);
     }
-
 
     [Server]
     public void AddHealth(float amount)
@@ -184,9 +194,40 @@ public class PlayerController : NetworkBehaviour
         Debug.Log(health);
     }
 
-    [Server]
-    private void DestroyPlayer()
+    public void DisableComponents()
     {
-        NetworkServer.Destroy(gameObject);
+        if (isServer)
+        {
+            Gun[] guns = gameObject.GetComponentsInChildren<Gun>();
+            foreach (var gun in guns)
+            {
+                NetworkServer.Destroy(gun.gameObject);
+            }
+        }
+        gameObject.GetComponent<PlayerWeaponController>().enabled = false;
+        gameObject.GetComponent<GravityBody>().enabled = false;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        this.enabled = false;
+    }
+
+    public void EnableComponents()
+    {
+        this.enabled = true;
+        gameObject.GetComponent<PlayerWeaponController>().enabled = true;
+        gameObject.GetComponent<Collider2D>().enabled = true;
+        gameObject.GetComponent<GravityBody>().enabled = true;
+        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
+
+    }
+
+    [ClientRpc]
+    private void Die()
+    {
+        DisableComponents();
+        if (isLocalPlayer)
+        {
+            gameObject.GetComponent<PlayerRespawnSystem>().ToogleCanvas();
+        }
     }
 }

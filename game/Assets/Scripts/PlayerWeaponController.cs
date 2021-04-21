@@ -18,6 +18,33 @@ public class PlayerWeaponController : NetworkBehaviour
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced;
 
+    private void Awake()
+    {
+        aimTransform = transform.Find("Aim");
+    }
+
+    private void OnEnable()
+    {
+        CmdSpawnSelectedWeapons();
+        CmdChangeActiveWeapon(0);
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        CmdSpawnSelectedWeapons();
+        CmdChangeActiveWeapon(0);
+    }
+
+    private void Update()
+    {
+        if (!isLocalPlayer)
+            return;
+        HandleAiming();
+        HandleShooting();
+        HandleWeaponSwitching();
+        HandleReloading();
+    }
 
     void OnWeaponChanged(int _Old, int _New)
     {
@@ -77,6 +104,7 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             if(weapons[1] != null)
                 weapons[1].GetComponent<SpriteRenderer>().enabled = false;
+            weapons[0].GetComponent<SpriteRenderer>().enabled = true;
         }
         else
         {
@@ -97,16 +125,7 @@ public class PlayerWeaponController : NetworkBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (!isLocalPlayer)
-            return;
-        HandleAiming();
-        HandleShooting();
-        HandleWeaponSwitching();
-        HandleReloading();
-    }
-
+    
     private void HandleReloading()
     {
         if (Input.GetButtonDown("Reload"))
