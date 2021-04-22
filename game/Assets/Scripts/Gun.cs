@@ -45,10 +45,13 @@ public abstract class Gun : NetworkBehaviour
     [SyncVar]
     public uint parentNetId;
 
-    private void Test(int _old, int _new)
+    public void Test(int _old, int _new)
     {
+        if(hasAuthority)
+        {
+            hud.UpdateAmmo(maxAmmo, _new);
+        }
         Debug.Log(_old + "->" + _new);
-        hud.UpdateAmmo(maxAmmo, _new);
     }
 
     public abstract void Shoot();
@@ -68,6 +71,10 @@ public abstract class Gun : NetworkBehaviour
         }
         playerWeaponController.SetGun(this);
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+        if (hasAuthority)
+        {
+            hud.UpdateAmmo(maxAmmo, maxAmmo);
+        }
     }
 
     public void SetSprite(Kolory kolor)

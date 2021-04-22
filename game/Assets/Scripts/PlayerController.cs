@@ -13,7 +13,7 @@ public class PlayerController : NetworkBehaviour
     private Vector2 moveDir;
     
     public float maxHealth = 100;
-    [SyncVar]
+    [SyncVar(hook = nameof(ofHealthChange))]
     private float health;
 
     [SyncVar(hook = nameof(OnColorChange))]
@@ -49,6 +49,14 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    private void ofHealthChange(float _old, float _new)
+    {
+        if(isLocalPlayer)
+        {
+            hud.UpdateHealth((int)_new);
+        }
+    }
+
     [SyncVar]
     public string playerName;
 
@@ -65,6 +73,11 @@ public class PlayerController : NetworkBehaviour
 
     public GameObject[] Grounds;
 
+    public void Awake()
+    {
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+    }
+
     private void Start()
     {
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
@@ -72,7 +85,10 @@ public class PlayerController : NetworkBehaviour
             Camera.main.GetComponent<CameraController>().player = gameObject;
 
         health = maxHealth;
-        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+        if (isLocalPlayer)
+        {
+            hud.UpdateHealth((int)maxHealth);
+        }
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
     }
 
@@ -167,7 +183,6 @@ public class PlayerController : NetworkBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
-        hud.UpdateHealth((int)health);
         if (health < 0)
         {
             DestroyPlayer();
@@ -175,12 +190,10 @@ public class PlayerController : NetworkBehaviour
         Debug.Log(health);
     }
 
-
     [Server]
     public void AddHealth(float amount)
     {
         health += amount;
-        hud.UpdateHealth((int)health);
         Debug.Log(health);
     }
 
