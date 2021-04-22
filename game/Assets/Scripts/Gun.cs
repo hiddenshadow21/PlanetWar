@@ -16,6 +16,7 @@ public enum Kolory
 public abstract class Gun : NetworkBehaviour
 {
     private HUD hud;
+
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
@@ -32,7 +33,7 @@ public abstract class Gun : NetworkBehaviour
 
     public int maxAmmo = 15;
 
-    [SyncVar(hook = nameof(Test))]
+    [SyncVar(hook = nameof(OnAmmoChange))]
     protected int ammo;
     public int Ammo { get { return ammo; } }
     public float nextShootTime;
@@ -45,7 +46,7 @@ public abstract class Gun : NetworkBehaviour
     [SyncVar]
     public uint parentNetId;
 
-    private void Test(int _old, int _new)
+    private void OnAmmoChange(int _old, int _new)
     {
         Debug.Log(_old + "->" + _new);
         hud.UpdateAmmo(maxAmmo, _new);

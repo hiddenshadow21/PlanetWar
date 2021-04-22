@@ -13,11 +13,18 @@ public class PlayerController : NetworkBehaviour
     private Vector2 moveDir;
     
     public float maxHealth = 100;
-    [SyncVar]
+    [SyncVar(hook =nameof(OnHealthChange))]
     private float health;
+
+    private void OnHealthChange(float _old, float _new)
+    {
+    }
 
     [SyncVar(hook = nameof(OnColorChange))]
     public Kolory Kolor;
+
+    [SerializeField]
+    private Transform pointBelowPlayer;
 
     private void OnColorChange(Kolory _old, Kolory _new)
     {
@@ -65,6 +72,9 @@ public class PlayerController : NetworkBehaviour
 
     public GameObject[] Grounds;
 
+    [SerializeField]
+    private LayerMask layerMask;
+
     private void Start()
     {
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
@@ -99,10 +109,11 @@ public class PlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer || !isGrounded)
             return;
+
         float moveHorizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         moveDir = new Vector2(moveHorizontal, 0);
         transform.Translate(moveDir);
-
+        //rb.velocity = Vector2.zero;
         if (Input.GetButtonDown("Jump"))
         {
             float x = 6 * jumpHeight;
@@ -116,14 +127,9 @@ public class PlayerController : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
-        
-        var pointBelowCollider = transform.TransformDirection(
-            transform.InverseTransformDirection(transform.position)
-            - new Vector3(0, collider.bounds.extents.y, 0)
-        );
         RaycastHit2D hit = Physics2D.Raycast(
-            pointBelowCollider,
-            -transform.up);
+            pointBelowPlayer.position,
+            -transform.up, 100, layerMask);
         if (hit.collider != null)
         {
             groundNormal = hit.normal;

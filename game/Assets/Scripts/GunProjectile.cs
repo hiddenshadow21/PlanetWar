@@ -57,6 +57,11 @@ public class GunProjectile : Gun
 
     }
 
+    private void Awake()
+    {
+        
+    }
+
     private void Start()
     {
         base.AssignToPlayer();
