@@ -23,6 +23,7 @@ public class Reg : MonoBehaviour
 
     private void callRegistration()
     {
+        Answer.color = new Color(0.83f, 0.207f, 0.29f);
         Register.interactable = false;
         StartCoroutine(registration());
     }
@@ -235,8 +236,10 @@ public class Reg : MonoBehaviour
         switch (serverResponse)
         {   
             case "R_SVM_SUCCESSFUL":
-                Answer.text = "New account created succesfully! Please use link from your email to activate account!";
-                //tutaj powrót do sceny logowania!!
+                Answer.color = new Color(0.39f, 0.69f, 0.25f);
+                Answer.text = "New account created succesfully! Please use link from your email to activate account!\n You will be redirected in a moment.";
+                Register.enabled = false;
+                Invoke("toLog", 4.5f);
                 break;
             case "R_CNA_2":
                 Answer.text = "Account with this username already exists!";
