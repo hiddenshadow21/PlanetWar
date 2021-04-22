@@ -2,8 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -11,13 +11,30 @@ public class PlayerController : NetworkBehaviour
     private float moveSpeed = 10f;
     private float jumpHeight = 5f;
     private Vector2 moveDir;
-    
+
+    [SerializeField]
+    private Transform pointBelowPlayer;
+
+    [SerializeField]
+    private LayerMask layerMask;
+
     public float maxHealth = 100;
-    [SyncVar(hook = nameof(ofHealthChange))]
+    [SyncVar(hook = nameof(OnHealthChange))]
     private float health;
 
     [SyncVar(hook = nameof(OnColorChange))]
     public Kolory Kolor;
+
+    [SyncVar(hook = nameof(OnKillsChange))]
+    public uint Kills = 0;
+
+    [SyncVar(hook = nameof(OnLastKilledPlayerChange))]
+    public string LastKilledPlayer;
+
+    public void OnLastKilledPlayerChange(string _old, string _new)
+    {
+        hud.ShowDeathInfo(playerName, _new);
+    }
 
     private void OnColorChange(Kolory _old, Kolory _new)
     {
@@ -31,7 +48,7 @@ public class PlayerController : NetworkBehaviour
                 sprite.color = Color.green;
                 break;
             case Kolory.pomarańczowy:
-                sprite.color = new Color(255,165,0);
+                sprite.color = new Color(255, 165, 0);
                 break;
             case Kolory.fioletowy:
                 sprite.color = Color.magenta;
@@ -49,11 +66,19 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private void ofHealthChange(float _old, float _new)
+    public void OnHealthChange(float _old, float _new)
     {
         if(isLocalPlayer)
         {
             hud.UpdateHealth((int)_new);
+        }
+    }
+
+    public void OnKillsChange(uint _old, uint _new)
+    {
+        if(isLocalPlayer)
+        {
+            hud.UpdateEnemyKilledNumber(_new);
         }
     }
 
@@ -63,7 +88,8 @@ public class PlayerController : NetworkBehaviour
     public new Collider2D collider;
     public Rigidbody2D rb;
 
-    public  bool isGrounded { 
+    public bool isGrounded
+    {
         get;
         private set;
     }
@@ -73,23 +99,27 @@ public class PlayerController : NetworkBehaviour
 
     public GameObject[] Grounds;
 
-    public void Awake()
-    {
-        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
-    }
-
     private void Start()
     {
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
-        if(isLocalPlayer)
+        if (isLocalPlayer)
             Camera.main.GetComponent<CameraController>().player = gameObject;
 
         health = maxHealth;
-        if (isLocalPlayer)
-        {
-            hud.UpdateHealth((int)maxHealth);
-        }
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
+    }
+
+    private void Awake()
+    {
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+        hud.UpdateHealth((int)maxHealth);
+        hud.UpdateEnemyKilledNumber(Kills);
+    }
+
+    private void OnEnable()
+    {
+        if (isServer)
+            health = maxHealth;
     }
 
     void Update()
@@ -107,13 +137,14 @@ public class PlayerController : NetworkBehaviour
     #region Movement&Rotation
     void HandleMovement()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || !isGrounded)
             return;
+
         float moveHorizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         moveDir = new Vector2(moveHorizontal, 0);
         transform.Translate(moveDir);
-
-        if (isGrounded && Input.GetButtonDown("Jump"))
+        //rb.velocity = Vector2.zero;
+        if (Input.GetButtonDown("Jump"))
         {
             float x = 6 * jumpHeight;
             rb.AddForce(transform.up * x, ForceMode2D.Impulse);
@@ -125,23 +156,21 @@ public class PlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
-        isGrounded = false;
-        var pointBelowCollider = transform.TransformDirection(
-            transform.InverseTransformDirection(transform.position)
-            - new Vector3(0, collider.bounds.extents.y, 0)
-        );
+
         RaycastHit2D hit = Physics2D.Raycast(
-            pointBelowCollider,
-            -transform.up);
+            pointBelowPlayer.position,
+            -transform.up, 100, layerMask);
         if (hit.collider != null)
         {
             groundNormal = hit.normal;
 
             if (hit.distance <= 0.1f)
                 isGrounded = true;
+            else
+                isGrounded = false;
         }
     }
-    
+
     void RotatePlayerOnGround()
     {
         if (!isGrounded && !isLocalPlayer)
@@ -179,13 +208,20 @@ public class PlayerController : NetworkBehaviour
     }
     #endregion
 
+
     [Server]
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, uint shooterId)
     {
         health -= damage;
-        if (health < 0)
+        if (health <= 0)
         {
-            DestroyPlayer();
+            var shooterPlayer = FindObjectsOfType<PlayerController>().Where(x => x.netId == shooterId).FirstOrDefault();
+            shooterPlayer.Kills++;
+            shooterPlayer.LastKilledPlayer = playerName;
+            hud.ShowDeathInfo(shooterPlayer.playerName, playerName);
+            rb.velocity = Vector2.zero;
+            DisableComponents();
+            Die();
         }
         Debug.Log(health);
     }
@@ -197,9 +233,40 @@ public class PlayerController : NetworkBehaviour
         Debug.Log(health);
     }
 
-    [Server]
-    private void DestroyPlayer()
+    public void DisableComponents()
     {
-        NetworkServer.Destroy(gameObject);
+        if (isServer)
+        {
+            Gun[] guns = gameObject.GetComponentsInChildren<Gun>();
+            foreach (var gun in guns)
+            {
+                NetworkServer.Destroy(gun.gameObject);
+            }
+        }
+        gameObject.GetComponent<PlayerWeaponController>().enabled = false;
+        gameObject.GetComponent<GravityBody>().enabled = false;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        this.enabled = false;
+    }
+
+    public void EnableComponents()
+    {
+        this.enabled = true;
+        gameObject.GetComponent<PlayerWeaponController>().enabled = true;
+        gameObject.GetComponent<Collider2D>().enabled = true;
+        gameObject.GetComponent<GravityBody>().enabled = true;
+        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
+
+    }
+
+    [ClientRpc]
+    private void Die()
+    {
+        DisableComponents();
+        if (isLocalPlayer)
+        {
+            gameObject.GetComponent<PlayerRespawnSystem>().ToogleCanvas();
+        }
     }
 }

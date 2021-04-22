@@ -49,7 +49,7 @@ public abstract class Gun : NetworkBehaviour
     {
         if(hasAuthority)
         {
-            hud.UpdateAmmo(maxAmmo, _new);
+            hud.UpdateAmmo(_new, maxAmmo);
         }
         Debug.Log(_old + "->" + _new);
     }
@@ -73,7 +73,7 @@ public abstract class Gun : NetworkBehaviour
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
         if (hasAuthority)
         {
-            hud.UpdateAmmo(maxAmmo, maxAmmo);
+            hud.UpdateAmmo(Ammo, maxAmmo);
         }
     }
 

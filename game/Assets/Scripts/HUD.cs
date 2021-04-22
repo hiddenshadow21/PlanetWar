@@ -33,7 +33,7 @@ public class HUD : MonoBehaviour
         Health.text = hp.ToString();
     }
 
-    public void UpdateAmmo(int maxAmmo, int currAmmo)
+    public void UpdateAmmo(int currAmmo, int maxAmmo)
     {
         if(currAmmo == 0)
         {
@@ -53,7 +53,7 @@ public class HUD : MonoBehaviour
         Timer.text = m + ":" + s;
     }
 
-    public void UpdateEnemyKilledNumber(int enemyKilledNumber)
+    public void UpdateEnemyKilledNumber(uint enemyKilledNumber)
     {
         EnemyKilledNumber.text = enemyKilledNumber.ToString();
     }

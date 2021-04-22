@@ -46,7 +46,7 @@ public class GunRaycast : Gun
             var hitPlayer = hitInfo.transform.GetComponent<PlayerController>();
             if(hitPlayer != null)
             {
-                hitPlayer.TakeDamage(damage);
+                hitPlayer.TakeDamage(damage, parentNetId);
             }
         }
 

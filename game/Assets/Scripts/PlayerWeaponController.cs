@@ -37,7 +37,7 @@ public class PlayerWeaponController : NetworkBehaviour
         }
         if(isLocalPlayer)
         {
-            hud.UpdateAmmo(activeWeapon.maxAmmo, activeWeapon.Ammo);
+            hud.UpdateAmmo(activeWeapon.Ammo, activeWeapon.maxAmmo);
         }
     }
 
@@ -61,7 +61,7 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         base.OnStartClient();
         CmdSpawnSelectedWeapons();
-        CmdChangeActiveWeapon(0);
+        CmdChangeActiveWeapon(1);
     }
 
     internal void SetGun(Gun gun)

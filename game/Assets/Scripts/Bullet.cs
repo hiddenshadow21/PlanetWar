@@ -22,7 +22,7 @@ public class Bullet : NetworkBehaviour
         var player = other.gameObject.GetComponent<PlayerController>();
         if(player != null)
         {
-            player.TakeDamage(damage);
+            player.TakeDamage(damage, shooterId);
         }
         NetworkServer.Destroy(gameObject);
     }
