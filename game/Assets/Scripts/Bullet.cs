@@ -10,6 +10,8 @@ public class Bullet : NetworkBehaviour
     [SerializeField]
     private float lifeTime = 15;
 
+    private uint shooterId;
+
     [Server]
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -23,6 +25,11 @@ public class Bullet : NetworkBehaviour
             player.TakeDamage(damage);
         }
         NetworkServer.Destroy(gameObject);
+    }
+
+    public void SetShooterId(uint Id)
+    {
+        shooterId = Id;
     }
 
     private void Start()
