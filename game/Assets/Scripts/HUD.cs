@@ -20,6 +20,7 @@ public class HUD : MonoBehaviour
     public Text Chat5;
     public Text Chat6;
     public Text Chat7;
+    public Text Chat8;
     public Text Info;
     public InputField Message;
     private readonly List<Text> chats = new List<Text>();
@@ -34,6 +35,7 @@ public class HUD : MonoBehaviour
         chats.Add(Chat5);
         chats.Add(Chat6);
         chats.Add(Chat7);
+        chats.Add(Chat8);
         foreach (Text c in chats)
         {
             c.text = "";

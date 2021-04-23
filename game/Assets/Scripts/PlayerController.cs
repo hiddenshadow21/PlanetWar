@@ -11,6 +11,8 @@ public class PlayerController : NetworkBehaviour
     private float moveSpeed = 10f;
     private float jumpHeight = 5f;
     private Vector2 moveDir;
+    private int ChatID;
+    private System.Random rand = new System.Random();
 
     [SerializeField]
     private Transform pointBelowPlayer;
@@ -25,27 +27,27 @@ public class PlayerController : NetworkBehaviour
     void OnChatMessageChanged(string oldFormattedMessage, string newFormattedMessage)
     {
         string[] nicknameAndMessage = newFormattedMessage.Split('~');
-        if(nicknameAndMessage[0] == playerName)
+        if(nicknameAndMessage[0] == ChatID.ToString())
         {
-            hud.SetNewChatMessage(nicknameAndMessage[0], nicknameAndMessage[1], true);
+            hud.SetNewChatMessage(nicknameAndMessage[1], nicknameAndMessage[3], true);
         }
         else
         {
-            hud.SetNewChatMessage(nicknameAndMessage[0], nicknameAndMessage[1]);
+            hud.SetNewChatMessage(nicknameAndMessage[1], nicknameAndMessage[3]);
         }
     }   
 
     [Command]
     void SendChatMessage(string username, string message)
     {
-        chatMessage = username + '~' + message;
+        chatMessage = username + '~' + rand.Next().ToString() + '~' + message;
     }
 
     private void hud_OnChatMessageEntered(object sender, string e)
     {
         if (isLocalPlayer)
         {
-            SendChatMessage(playerName, e);
+            SendChatMessage(ChatID.ToString() + '~' + playerName, e); //TEST
         }
     }
 
@@ -133,6 +135,7 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
+        ChatID = rand.Next();
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
         if (isLocalPlayer)
             Camera.main.GetComponent<CameraController>().player = gameObject;
