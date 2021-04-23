@@ -18,6 +18,38 @@ public class PlayerController : NetworkBehaviour
     [SerializeField]
     private LayerMask layerMask;
 
+
+    [SyncVar(hook = nameof(OnChatMessageChanged))]
+    string chatMessage;
+
+    void OnChatMessageChanged(string oldFormattedMessage, string newFormattedMessage)
+    {
+        string[] nicknameAndMessage = newFormattedMessage.Split('~');
+        if(nicknameAndMessage[0] == playerName)
+        {
+            hud.SetNewChatMessage(nicknameAndMessage[0], nicknameAndMessage[1], true);
+        }
+        else
+        {
+            hud.SetNewChatMessage(nicknameAndMessage[0], nicknameAndMessage[1]);
+        }
+    }   
+
+    [Command]
+    void SendChatMessage(string username, string message)
+    {
+        chatMessage = username + '~' + message;
+    }
+
+    private void hud_OnChatMessageEntered(object sender, string e)
+    {
+        if (isLocalPlayer)
+        {
+            SendChatMessage(playerName, e);
+        }
+    }
+
+
     public float maxHealth = 100;
     [SyncVar(hook = nameof(OnHealthChange))]
     private float health;
@@ -112,6 +144,7 @@ public class PlayerController : NetworkBehaviour
     private void Awake()
     {
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+        hud.OnChatMessageEntered += hud_OnChatMessageEntered;
         hud.UpdateHealth((int)maxHealth);
         hud.UpdateEnemyKilledNumber(Kills);
     }
