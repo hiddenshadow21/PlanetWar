@@ -2,8 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -11,20 +11,93 @@ public class PlayerController : NetworkBehaviour
     private float moveSpeed = 10f;
     private float jumpHeight = 5f;
     private Vector2 moveDir;
-    
-    public float maxHealth = 100;
-    [SyncVar(hook =nameof(OnHealthChange))]
-    private float health;
+    private System.Random rand = new System.Random();
 
-    private void OnHealthChange(float _old, float _new)
-    {
-    }
+    [SerializeField]
+    private Transform pointBelowPlayer;
+
+    [SerializeField]
+    private LayerMask layerMask;
+
+    public float maxHealth = 100;
+    [SyncVar(hook = nameof(OnHealthChange))]
+    private float health;
 
     [SyncVar(hook = nameof(OnColorChange))]
     public Kolory Kolor;
 
-    [SerializeField]
-    private Transform pointBelowPlayer;
+    [SyncVar(hook = nameof(OnKillsChange))]
+    public uint Kills = 0;
+
+    [SyncVar(hook = nameof(OnLastKilledPlayerChange))]
+    public string LastKilledPlayer;
+
+    [SyncVar(hook = nameof(OnMatchTimeChange))]
+    public int MatchTime;
+
+    [SyncVar]
+    public string playerName;
+
+    public new Collider2D collider;
+    public Rigidbody2D rb;
+
+    public bool isGrounded
+    {
+        get;
+        private set;
+    }
+
+    private Vector2 groundNormal;
+
+    public GameObject[] Grounds;
+
+
+    #region Chat
+    private int ChatID;
+    private bool isChatActive = false;
+
+    [SyncVar(hook = nameof(OnChatMessageChanged))]
+    string chatMessage;
+
+    void OnChatMessageChanged(string oldFormattedMessage, string newFormattedMessage)
+    {
+        string[] nicknameAndMessage = newFormattedMessage.Split('~');
+        if(nicknameAndMessage[0] == ChatID.ToString())
+        {
+            hud.SetNewChatMessage(nicknameAndMessage[1], nicknameAndMessage[3], true);
+        }
+        else
+        {
+            hud.SetNewChatMessage(nicknameAndMessage[1], nicknameAndMessage[3]);
+        }
+    }   
+
+    [Command]
+    void SendChatMessage(string username, string message)
+    {
+        chatMessage = username + '~' + rand.Next().ToString() + '~' + message;
+    }
+
+    private void hud_ChatMessageEntered(object sender, string lassChatMessage)
+    {
+        if (isLocalPlayer)
+        {
+            SendChatMessage(ChatID.ToString() + '~' + playerName, lassChatMessage);
+        }
+    }
+
+    private void hud_ChatStatusChanged(object sender, bool isChatActive)
+    {
+        this.isChatActive = isChatActive;
+    }
+    #endregion
+
+    #region SyncVar Hooks
+
+    public void OnLastKilledPlayerChange(string _old, string _new)
+    {
+        hud.ShowDeathInfo(playerName, _new);
+    }
 
     private void OnColorChange(Kolory _old, Kolory _new)
     {
@@ -38,7 +111,7 @@ public class PlayerController : NetworkBehaviour
                 sprite.color = Color.green;
                 break;
             case Kolory.pomarańczowy:
-                sprite.color = new Color(255,165,0);
+                sprite.color = new Color(255, 165, 0);
                 break;
             case Kolory.fioletowy:
                 sprite.color = Color.magenta;
@@ -56,34 +129,47 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    [SyncVar]
-    public string playerName;
-
-    public new Collider2D collider;
-    public Rigidbody2D rb;
-
-    public  bool isGrounded { 
-        get;
-        private set;
+    public void OnHealthChange(float _old, float _new)
+    {
+        if(isLocalPlayer)
+        {
+            hud.UpdateHealth((int)_new);
+        }
     }
 
+    public void OnKillsChange(uint _old, uint _new)
+    {
+        if(isLocalPlayer)
+        {
+            hud.UpdateEnemyKilledNumber(_new);
+        }
+    }
 
-    private Vector2 groundNormal;
+    private void OnMatchTimeChange(int _old, int _new)
+    {
+        hud.UpdateTimer(_new);
+    }
 
-    public GameObject[] Grounds;
-
-    [SerializeField]
-    private LayerMask layerMask;
+    #endregion
 
     private void Start()
     {
+        ChatID = rand.Next();
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
-        if(isLocalPlayer)
+        if (isLocalPlayer)
             Camera.main.GetComponent<CameraController>().player = gameObject;
 
         health = maxHealth;
-        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
+    }
+
+    private void Awake()
+    {
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+        hud.ChatMessageEntered += hud_ChatMessageEntered;
+        hud.ChatStatusChanged += hud_ChatStatusChanged;
+        hud.UpdateHealth((int)maxHealth);
+        hud.UpdateEnemyKilledNumber(Kills);
     }
 
     private void OnEnable()
@@ -94,7 +180,10 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        HandleMovement();
+        if(!isChatActive)
+        {
+            HandleMovement();
+        }
     }
 
     private void FixedUpdate()
@@ -140,7 +229,7 @@ public class PlayerController : NetworkBehaviour
                 isGrounded = false;
         }
     }
-    
+
     void RotatePlayerOnGround()
     {
         if (!isGrounded && !isLocalPlayer)
@@ -178,13 +267,17 @@ public class PlayerController : NetworkBehaviour
     }
     #endregion
 
+
     [Server]
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, uint shooterId)
     {
         health -= damage;
-        hud.UpdateHealth((int)health);
         if (health <= 0)
         {
+            var shooterPlayer = FindObjectsOfType<PlayerController>().Where(x => x.netId == shooterId).FirstOrDefault();
+            shooterPlayer.Kills++;
+            shooterPlayer.LastKilledPlayer = playerName;
+            hud.ShowDeathInfo(shooterPlayer.playerName, playerName);
             rb.velocity = Vector2.zero;
             DisableComponents();
             Die();
@@ -196,7 +289,6 @@ public class PlayerController : NetworkBehaviour
     public void AddHealth(float amount)
     {
         health += amount;
-        hud.UpdateHealth((int)health);
         Debug.Log(health);
     }
 

@@ -18,34 +18,6 @@ public class PlayerWeaponController : NetworkBehaviour
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced;
 
-    private void OnEnable()
-    {
-        CmdSpawnSelectedWeapons();
-        CmdChangeActiveWeapon(0);
-    }
-
-    private void Awake()
-    {
-        aimTransform = transform.Find("Aim");
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        CmdSpawnSelectedWeapons();
-        CmdChangeActiveWeapon(0);
-        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
-    }
-
-    private void Update()
-    {
-        if (!isLocalPlayer)
-            return;
-        HandleAiming();
-        HandleShooting();
-        HandleWeaponSwitching();
-        HandleReloading();
-    }
 
     void OnWeaponChanged(int _Old, int _New)
     {
@@ -63,7 +35,10 @@ public class PlayerWeaponController : NetworkBehaviour
             weapons[_New].GetComponent<SpriteRenderer>().enabled = true;
             activeWeapon = weapons[_New];
         }
-        hud.UpdateAmmo(activeWeapon.maxAmmo, activeWeapon.Ammo);
+        if(isLocalPlayer)
+        {
+            hud.UpdateAmmo(activeWeapon.Ammo, activeWeapon.maxAmmo);
+        }
     }
 
     [Command]
@@ -76,7 +51,18 @@ public class PlayerWeaponController : NetworkBehaviour
         activeWeapon.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    
+    private void Awake()
+    {
+        aimTransform = transform.Find("Aim");
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        CmdSpawnSelectedWeapons();
+        CmdChangeActiveWeapon(1);
+    }
 
     internal void SetGun(Gun gun)
     {
@@ -93,7 +79,6 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             if(weapons[1] != null)
                 weapons[1].GetComponent<SpriteRenderer>().enabled = false;
-            weapons[0].GetComponent<SpriteRenderer>().enabled = true;
         }
         else
         {
@@ -114,7 +99,16 @@ public class PlayerWeaponController : NetworkBehaviour
         }
     }
 
-    
+    private void Update()
+    {
+        if (!isLocalPlayer)
+            return;
+        HandleAiming();
+        HandleShooting();
+        HandleWeaponSwitching();
+        HandleReloading();
+    }
+
     private void HandleReloading()
     {
         if (Input.GetButtonDown("Reload"))
@@ -141,7 +135,6 @@ public class PlayerWeaponController : NetworkBehaviour
             }
 
             CmdChangeActiveWeapon(selectedWeaponLocal);
-            hud.UpdateAmmo(activeWeapon.maxAmmo, activeWeapon.Ammo);
         }
     }
 
@@ -150,7 +143,6 @@ public class PlayerWeaponController : NetworkBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             CmdShoot();
-            hud.UpdateAmmo(activeWeapon.maxAmmo, activeWeapon.Ammo);
         }
     }
 

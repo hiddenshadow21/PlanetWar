@@ -3,12 +3,14 @@ using UnityEngine.SceneManagement;
 using Mirror;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 [AddComponentMenu("")]
 public class NetworkRoomManagerExt : NetworkRoomManager
 {
     public string Key { get; set; }
-
+    public NetworkRoomPlayerExt rP;
+    public PlayerController gP;
 
     /// <summary>
     /// Called just after GamePlayer object is instantiated and just before it replaces RoomPlayer object.
@@ -20,10 +22,11 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     /// <returns>true unless some code in here decides it needs to abort the replacement</returns>
     public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)
     {
-        var rP = roomPlayer.GetComponent<NetworkRoomPlayerExt>();
-        var gP = gamePlayer.GetComponent<PlayerController>();
+        rP = roomPlayer.GetComponent<NetworkRoomPlayerExt>();
+        gP = gamePlayer.GetComponent<PlayerController>();
 
         gP.playerName = rP.PlayerName;
+        gP.MatchTime = 180;
 
         switch (rP.index)
         {
@@ -46,7 +49,7 @@ public class NetworkRoomManagerExt : NetworkRoomManager
                 gP.Kolor = Kolory.niebieski;
                 break;
         }
-
+        StartCoroutine(UpdateMatchTime());
         return true;
     }
 
@@ -131,6 +134,22 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         if (roomSlots.Count == 0)
         {
             Application.Quit();
+        }
+    }
+
+    [Server]
+    private IEnumerator UpdateMatchTime()
+    {
+        if (gP.MatchTime > 0)
+        {
+            yield return new WaitForSeconds(1);
+            gP.MatchTime--;
+            StartCoroutine(UpdateMatchTime());
+        }
+        else
+        {
+            // TO - DO
+            // END MATCH
         }
     }
 }
