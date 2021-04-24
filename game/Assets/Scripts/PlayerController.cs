@@ -11,7 +11,6 @@ public class PlayerController : NetworkBehaviour
     private float moveSpeed = 10f;
     private float jumpHeight = 5f;
     private Vector2 moveDir;
-    private int ChatID;
     private System.Random rand = new System.Random();
 
     [SerializeField]
@@ -20,6 +19,9 @@ public class PlayerController : NetworkBehaviour
     [SerializeField]
     private LayerMask layerMask;
 
+    #region Chat
+    private int ChatID;
+    private bool isChatActive = false;
 
     [SyncVar(hook = nameof(OnChatMessageChanged))]
     string chatMessage;
@@ -43,14 +45,19 @@ public class PlayerController : NetworkBehaviour
         chatMessage = username + '~' + rand.Next().ToString() + '~' + message;
     }
 
-    private void hud_OnChatMessageEntered(object sender, string e)
+    private void hud_ChatMessageEntered(object sender, string lassChatMessage)
     {
         if (isLocalPlayer)
         {
-            SendChatMessage(ChatID.ToString() + '~' + playerName, e); //TEST
+            SendChatMessage(ChatID.ToString() + '~' + playerName, lassChatMessage);
         }
     }
 
+    private void hud_ChatStatusChanged(object sender, bool isChatActive)
+    {
+        this.isChatActive = isChatActive;
+    }
+    #endregion
 
     public float maxHealth = 100;
     [SyncVar(hook = nameof(OnHealthChange))]
@@ -147,7 +154,8 @@ public class PlayerController : NetworkBehaviour
     private void Awake()
     {
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
-        hud.OnChatMessageEntered += hud_OnChatMessageEntered;
+        hud.ChatMessageEntered += hud_ChatMessageEntered;
+        hud.ChatStatusChanged += hud_ChatStatusChanged;
         hud.UpdateHealth((int)maxHealth);
         hud.UpdateEnemyKilledNumber(Kills);
     }
@@ -160,7 +168,10 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        HandleMovement();
+        if(!isChatActive)
+        {
+            HandleMovement();
+        }
     }
 
     private void FixedUpdate()

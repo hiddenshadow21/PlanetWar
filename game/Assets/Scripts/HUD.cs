@@ -6,37 +6,22 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    public event EventHandler<string> OnChatMessageEntered;
+    public event EventHandler<string> ChatMessageEntered;
+    public event EventHandler<bool> ChatStatusChanged;
     public GameObject DeathImage;
     public Text Health;
     public Text Ammo;
     public Text Timer;
     public Text EnemyKilled;
     public Text EnemyKilledNumber;
-    public Text Chat1;
-    public Text Chat2;
-    public Text Chat3;
-    public Text Chat4;
-    public Text Chat5;
-    public Text Chat6;
-    public Text Chat7;
-    public Text Chat8;
+    public Text[] Chats;
     public Text Info;
     public InputField Message;
-    private readonly List<Text> chats = new List<Text>();
     private readonly GUIStyle style = new GUIStyle();
 
     private void Awake()
     {
-        chats.Add(Chat1);
-        chats.Add(Chat2);
-        chats.Add(Chat3);
-        chats.Add(Chat4);
-        chats.Add(Chat5);
-        chats.Add(Chat6);
-        chats.Add(Chat7);
-        chats.Add(Chat8);
-        foreach (Text c in chats)
+        foreach (Text c in Chats)
         {
             c.text = "";
         }
@@ -50,11 +35,13 @@ public class HUD : MonoBehaviour
         {
             if (Message.gameObject.active == true)
             {
+                ChatStatusChanged?.Invoke(this, false);
                 Message.gameObject.SetActive(false);
                 Info.gameObject.SetActive(true);
             }
             else
             {
+                ChatStatusChanged?.Invoke(this, true);
                 Message.gameObject.SetActive(true);
                 Message.ActivateInputField();
                 Info.gameObject.SetActive(false);
@@ -64,7 +51,8 @@ public class HUD : MonoBehaviour
         {
             if (Message.gameObject.active == true)
             {
-                OnChatMessageEntered?.Invoke(this, Message.text);
+                ChatStatusChanged?.Invoke(this, false);
+                ChatMessageEntered?.Invoke(this, Message.text);
                 Message.gameObject.SetActive(false);
                 Info.gameObject.SetActive(true);
                 Message.text = "";
@@ -134,23 +122,23 @@ public class HUD : MonoBehaviour
             updateChatPosition();
             if (itIsMyMessage == true)
             {
-                chats[0].text = "<size=25><color=#ffffff>" + username + "</color></size><size=20><color=#69e5fe>: " + message + "</color></size>";
+                Chats[0].text = "<size=25><color=#ffffff>" + username + "</color></size><size=20><color=#69e5fe>: " + message + "</color></size>";
             }
             else
             {
-                chats[0].text = "<size=25><color=#69e5fe>" + username + "</color></size><size=20><color=#ffffff>: " + message + "</color></size>";
+                Chats[0].text = "<size=25><color=#69e5fe>" + username + "</color></size><size=20><color=#ffffff>: " + message + "</color></size>";
             }
         }
     }
 
     private void updateChatPosition()
     {
-        for (int i = chats.Count - 1; i > 0; i--)
+        for (int i = Chats.Length - 1; i > 0; i--)
         {
-            chats[i].text = chats[i - 1].text;
+            Chats[i].text = Chats[i - 1].text;
         }
 
-        chats[0].text = "";
+        Chats[0].text = "";
         Invoke(nameof(updateChatPosition), 15.0f);
     }
 

@@ -462,14 +462,15 @@ MonoBehaviour:
   Timer: {fileID: 870712075}
   EnemyKilled: {fileID: 2117952336}
   EnemyKilledNumber: {fileID: 1568771744}
-  Chat1: {fileID: 1073696909}
-  Chat2: {fileID: 61831887}
-  Chat3: {fileID: 981671046}
-  Chat4: {fileID: 573231189}
-  Chat5: {fileID: 1700309054}
-  Chat6: {fileID: 297263628}
-  Chat7: {fileID: 430104079}
-  Chat8: {fileID: 1132650971}
+  Chats:
+  - {fileID: 1073696909}
+  - {fileID: 61831887}
+  - {fileID: 981671046}
+  - {fileID: 573231189}
+  - {fileID: 1700309054}
+  - {fileID: 297263628}
+  - {fileID: 430104079}
+  - {fileID: 1132650971}
   Info: {fileID: 528776593}
   Message: {fileID: 432215523}
 --- !u!1 &130182512
