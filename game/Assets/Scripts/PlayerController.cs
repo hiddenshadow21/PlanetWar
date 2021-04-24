@@ -19,6 +19,39 @@ public class PlayerController : NetworkBehaviour
     [SerializeField]
     private LayerMask layerMask;
 
+    public float maxHealth = 100;
+    [SyncVar(hook = nameof(OnHealthChange))]
+    private float health;
+
+    [SyncVar(hook = nameof(OnColorChange))]
+    public Kolory Kolor;
+
+    [SyncVar(hook = nameof(OnKillsChange))]
+    public uint Kills = 0;
+
+    [SyncVar(hook = nameof(OnLastKilledPlayerChange))]
+    public string LastKilledPlayer;
+
+    [SyncVar(hook = nameof(OnMatchTimeChange))]
+    public int MatchTime;
+
+    [SyncVar]
+    public string playerName;
+
+    public new Collider2D collider;
+    public Rigidbody2D rb;
+
+    public bool isGrounded
+    {
+        get;
+        private set;
+    }
+
+    private Vector2 groundNormal;
+
+    public GameObject[] Grounds;
+
+
     #region Chat
     private int ChatID;
     private bool isChatActive = false;
@@ -59,18 +92,7 @@ public class PlayerController : NetworkBehaviour
     }
     #endregion
 
-    public float maxHealth = 100;
-    [SyncVar(hook = nameof(OnHealthChange))]
-    private float health;
-
-    [SyncVar(hook = nameof(OnColorChange))]
-    public Kolory Kolor;
-
-    [SyncVar(hook = nameof(OnKillsChange))]
-    public uint Kills = 0;
-
-    [SyncVar(hook = nameof(OnLastKilledPlayerChange))]
-    public string LastKilledPlayer;
+    #region SyncVar Hooks
 
     public void OnLastKilledPlayerChange(string _old, string _new)
     {
@@ -123,22 +145,12 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    [SyncVar]
-    public string playerName;
-
-    public new Collider2D collider;
-    public Rigidbody2D rb;
-
-    public bool isGrounded
+    private void OnMatchTimeChange(int _old, int _new)
     {
-        get;
-        private set;
+        hud.UpdateTimer(_new);
     }
 
-
-    private Vector2 groundNormal;
-
-    public GameObject[] Grounds;
+    #endregion
 
     private void Start()
     {

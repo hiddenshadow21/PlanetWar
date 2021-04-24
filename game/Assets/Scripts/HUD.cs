@@ -94,10 +94,15 @@ public class HUD : MonoBehaviour
 
     public void UpdateTimer(int secs)
     {
-        int m = secs % 60;
-        int s = m * 60 - secs;
+        decimal m = (int)Math.Floor(secs / 60d);
+        int s = (int)(secs - m * 60);
 
-        Timer.text = m + ":" + s;
+        string tmpTime = m.ToString() + ":";
+        if (s < 10)
+            tmpTime += "0";
+        tmpTime += s;
+
+        Timer.text = tmpTime;
     }
 
     public void UpdateEnemyKilledNumber(uint enemyKilledNumber)
