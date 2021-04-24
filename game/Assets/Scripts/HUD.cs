@@ -14,6 +14,7 @@ public class HUD : MonoBehaviour
     public Text Timer;
     public Text EnemyKilled;
     public Text EnemyKilledNumber;
+    public Text DeathNumber;
     public Text[] Chats;
     public Text Info;
     public InputField Message;
@@ -108,6 +109,11 @@ public class HUD : MonoBehaviour
     public void UpdateEnemyKilledNumber(uint enemyKilledNumber)
     {
         EnemyKilledNumber.text = enemyKilledNumber.ToString();
+    }
+
+    public void UpdateDeathNumber(uint deathNumber)
+    {
+        DeathNumber.text = deathNumber.ToString();
     }
 
     public void ShowDeathInfo(string shooter, string killed)
