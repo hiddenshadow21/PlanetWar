@@ -29,6 +29,9 @@ public class PlayerController : NetworkBehaviour
     [SyncVar(hook = nameof(OnKillsChange))]
     public uint Kills = 0;
 
+    [SyncVar(hook = nameof(OnDeathsChange))]
+    public uint Deaths = 0;
+
     [SyncVar(hook = nameof(OnLastKilledPlayerChange))]
     public string LastKilledPlayer;
 
@@ -145,6 +148,14 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    public void OnDeathsChange(uint _old, uint _new)
+    {
+        if(isLocalPlayer)
+        {
+            hud.UpdateDeathNumber(_new);
+        }           
+    }
+
     private void OnMatchTimeChange(int _old, int _new)
     {
         hud.UpdateTimer(_new);
@@ -170,6 +181,7 @@ public class PlayerController : NetworkBehaviour
         hud.ChatStatusChanged += hud_ChatStatusChanged;
         hud.UpdateHealth((int)maxHealth);
         hud.UpdateEnemyKilledNumber(Kills);
+        hud.UpdateDeathNumber(Deaths);
     }
 
     private void OnEnable()
@@ -278,6 +290,7 @@ public class PlayerController : NetworkBehaviour
             shooterPlayer.Kills++;
             shooterPlayer.LastKilledPlayer = playerName;
             hud.ShowDeathInfo(shooterPlayer.playerName, playerName);
+            Deaths++;
             rb.velocity = Vector2.zero;
             DisableComponents();
             Die();
