@@ -8,7 +8,6 @@ public class Room : MonoBehaviour
 {
     public Button ButtonReadyState;
     public Button ButtonExitRoom;
-    //public Button ButtonStartGame;
     public Text TextRoomKey;
 
     NetworkRoomManagerExt roomManager;
@@ -19,7 +18,7 @@ public class Room : MonoBehaviour
     {
         changeShowGuiStatus(false);
         roomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<NetworkRoomManagerExt>();
-        StartCoroutine(GetNetworkRoomPlayerExtSingleton(2));
+        StartCoroutine(GetNetworkRoomPlayerExtSingleton(1));
         TextRoomKey.text += roomManager.Key;
     }
 
@@ -34,14 +33,12 @@ public class Room : MonoBehaviour
     {
         ButtonReadyState.gameObject.SetActive(status);
         ButtonExitRoom.gameObject.SetActive(status);
-        //ButtonStartGame.enabled = status;
     }
 
     private void OnEnable()
     {
         ButtonReadyState.onClick.AddListener(ChangeReadyState);
         ButtonExitRoom.onClick.AddListener(ExitRoom);
-        //ButtonStartGame.onClick.AddListener(StartGame);
     }
 
     private void ChangeReadyState()
@@ -58,28 +55,9 @@ public class Room : MonoBehaviour
         roomPlayer.CmdChangeReadyState(!roomPlayer.readyToBegin);
     }
 
-/*    private void StartGame()
-    {
-        int i = 0;
-
-        foreach (var item in roomManager.roomSlots)
-            if (item.readyToBegin)
-                i++;
-        if (i == roomManager.roomSlots.Count)
-            roomManager.ServerChangeScene(roomManager.GameplayScene);
-    }*/
-
-    // TO DO - fix
     private void ExitRoom()
     {
-        // TO DO
-        // tu jesszcze usun polaczenie z serwerem
-        roomManager.roomSlots.Remove(roomPlayer);
-        Destroy(roomPlayer.gameObject);
-        SceneManager.LoadScene(sceneName: "OfflineScene");
-        roomManager.OnRoomServerDisconnect(roomPlayer.connectionToServer);
-        Debug.Log($"connectionToServer: {roomPlayer.connectionToServer}");
-        Debug.Log($"connectionToServer: {roomPlayer.connectionToClient}");
+        roomPlayer.roomManager.StopClient();
     }
 
 }
