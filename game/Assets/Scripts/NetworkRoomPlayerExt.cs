@@ -21,7 +21,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     public static NetworkRoomPlayerExt singleton { get; private set; }
 
     static readonly ILogger logger = LogFactory.GetLogger(typeof(NetworkRoomPlayerExt));
-    NetworkRoomManager room;
+    public NetworkRoomManagerExt roomManager;
 
 
     [SyncVar(hook = nameof(PlayerNameChanged))]
@@ -36,14 +36,13 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     [Command]
     public void CmdChangePlayerName(string playerName)
     {
-        room = NetworkManager.singleton as NetworkRoomManager;
-        foreach (NetworkRoomPlayerExt item in room.roomSlots)
+        foreach (NetworkRoomPlayerExt item in roomManager.roomSlots)
         {
             if (item == this)
             {
                 item.PlayerName = playerName;
                 // znajdz gdzie jest conn
-                room.OnRoomServerDisconnect(item.connectionToServer);
+                roomManager.OnRoomServerDisconnect(item.connectionToServer);
             }
         }
     }
@@ -51,8 +50,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     [Command]
     public void CmdChangePlayerColor()
     {
-        room = NetworkManager.singleton as NetworkRoomManager;
-        foreach (NetworkRoomPlayerExt item in room.roomSlots)
+        foreach (NetworkRoomPlayerExt item in roomManager.roomSlots)
         {
             if (item == this)
             {
@@ -66,8 +64,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
 
     public void CmdKickPlayer(int indexToKick)
     {
-        room = NetworkManager.singleton as NetworkRoomManager;
-        room.roomSlots.RemoveAll(s => s.index == indexToKick);
+        roomManager.roomSlots.RemoveAll(s => s.index == indexToKick);
     }
     #endregion
 
@@ -111,8 +108,15 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
 
     #endregion
 
+    public override void OnStartServer()
+    {
+        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
+        base.OnStartServer();
+    }
+
     public override void OnStartClient()
     {
+        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         Debug.Log("---OnStartClient()---");
         showRoomGUI = false;
         singleton = this;
@@ -147,8 +151,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     // Ustala pozycje na ekranie na podstawie indeksu
     private void updatePositions()
     {
-        room = NetworkManager.singleton as NetworkRoomManager;
-        foreach (NetworkRoomPlayerExt item in room.roomSlots)
+        foreach (NetworkRoomPlayerExt item in roomManager.roomSlots)
         {
             Vector3 pos = getPlayerPosition(item.index);
             item.Panel.transform.position = pos;
