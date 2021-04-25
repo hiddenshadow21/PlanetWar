@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:game/Assets/Graphics/Planets/Galaxy.png.meta
 guid: 7d2d52905e45ae247b3390d0f42fdc49
+=======
+guid: ef1bf2ecc16140f4195ed991ac4136c1
+>>>>>>> feature/HUD:game/Assets/Graphics/Planets/Ice-Planet.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
