@@ -190,16 +190,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  pointBelowPlayer: {fileID: 1426062224041867850}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
   maxHealth: 100
   Kolor: 0
-  pointBelowPlayer: {fileID: 1426062224041867850}
+  Kills: 0
+  Deaths: 0
+  LastKilledPlayer: 
   playerName: 
   collider: {fileID: 3181704384020778682}
   rb: {fileID: 6445737654020582295}
   Grounds: []
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!114 &5894009021197809340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,10 +264,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.30580932, y: 0.5462244}
-      - {x: 0.008862684, y: 0.57249624}
-      - {x: 0.2416712, y: 0.56032604}
-      - {x: 0.26969993, y: -0.20867859}
+    - - {x: -0.17884654, y: 0.46564507}
+      - {x: -0.017105347, y: 0.5826802}
+      - {x: 0.13094474, y: 0.42833596}
+      - {x: 0.23127328, y: -0.20867859}
       - {x: 0.31124416, y: -1.0662363}
       - {x: -0.31311816, y: -1.0662363}
 --- !u!114 &1724816308
