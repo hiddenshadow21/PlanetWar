@@ -37,13 +37,26 @@ public abstract class Gun : NetworkBehaviour
     public int Ammo { get { return ammo; } }
     public float nextShootTime;
 
-    protected bool isReloading;
 
     [SerializeField]
     protected Transform weaponFirePosition;
 
     [SyncVar]
     public uint parentNetId;
+
+    [SyncVar(hook = nameof(OnIsReloadingChange))]
+    public bool isReloading;
+
+    public void OnIsReloadingChange(bool _old, bool _new)
+    {
+        if(_new)
+        {
+            if(hasAuthority)
+            {
+                hud.ShowReloadingAmmoInfo(ReloadSpeed);
+            }
+        }
+    }
 
     public void Test(int _old, int _new)
     {

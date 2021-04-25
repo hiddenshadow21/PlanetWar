@@ -23,7 +23,8 @@ public class HUD : MonoBehaviour
 
     //AMMO//
     public GameObject ReloadAlert;
-    public Text ReloadKey;
+    public GameObject ReloadingAlert;
+    public Text ReloadInfo;
     public Text Ammo;
     //AMMO//
 
@@ -46,7 +47,8 @@ public class HUD : MonoBehaviour
         ChatInfo.gameObject.SetActive(true);
         ChatMessage.gameObject.SetActive(false);
         ReloadAlert.gameObject.SetActive(false);
-        ReloadKey.gameObject.SetActive(false);
+        ReloadingAlert.gameObject.SetActive(false);
+        ReloadInfo.gameObject.SetActive(false);
         EnemyKilled.gameObject.SetActive(false);
         DeathImage.SetActive(false);
         style.richText = true;
@@ -161,8 +163,24 @@ public class HUD : MonoBehaviour
     {
         CancelInvoke(nameof(hideEmptyAmmoInfo));
         ReloadAlert.gameObject.SetActive(true);
-        ReloadKey.gameObject.SetActive(true);
+        ReloadInfo.gameObject.SetActive(true);
+        ReloadInfo.text = "<color=#69e5fe>R</color> reload";
         Invoke(nameof(hideEmptyAmmoInfo), 1.5f);
+    }
+
+    public void ShowReloadingAmmoInfo(float reloadSpeed)
+    {
+        ReloadingAlert.gameObject.SetActive(true);
+        ReloadAlert.gameObject.SetActive(false);
+        ReloadInfo.text = "<color=#ffffff>Reloading</color>";
+        ReloadInfo.gameObject.SetActive(true);
+        Invoke(nameof(HideReloadingAmmoInfo), reloadSpeed);
+    }
+
+    public void HideReloadingAmmoInfo()
+    {
+        ReloadingAlert.gameObject.SetActive(false);
+        ReloadInfo.gameObject.SetActive(false);
     }
 
     private void updateChatPosition()
@@ -185,6 +203,6 @@ public class HUD : MonoBehaviour
     private void hideEmptyAmmoInfo()
     {
         ReloadAlert.gameObject.SetActive(false);
-        ReloadKey.gameObject.SetActive(false);
+        ReloadInfo.gameObject.SetActive(false);
     }
 }

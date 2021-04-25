@@ -111,7 +111,8 @@ MonoBehaviour:
   nextShootTime: 0
   weaponFirePosition: {fileID: 6625748491423539509}
   parentNetId: 0
-  force: 700
+  isReloading: 0
+  force: 300
   weaponBullet: {fileID: 2912613800490833474, guid: 9b7feea6ad4f22d469d6c7d0bdb13cef,
     type: 3}
 --- !u!114 &6472709804294878675

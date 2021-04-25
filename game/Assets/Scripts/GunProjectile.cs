@@ -7,7 +7,7 @@ using UnityEngine;
 public class GunProjectile : Gun
 {
     [SerializeField]
-    private int force;
+    public int force;
 
     public GameObject weaponBullet;
 
@@ -69,6 +69,5 @@ public class GunProjectile : Gun
         base.SetSprite(kolor);
         nextShootTime = Time.time;
         ammo = maxAmmo;
-        force = 100;
     }
 }
