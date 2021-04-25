@@ -2325,6 +2325,9 @@ MonoBehaviour:
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
+  serverGameplay: {fileID: -1127422798180308461, guid: 12abba6576200cb4492152f1a1aa2882,
+    type: 3}
+  gamePlayers: []
 --- !u!4 &2008127832
 Transform:
   m_ObjectHideFlags: 0

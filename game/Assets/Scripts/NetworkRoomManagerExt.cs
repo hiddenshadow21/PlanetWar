@@ -4,13 +4,14 @@ using Mirror;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 [AddComponentMenu("")]
 public class NetworkRoomManagerExt : NetworkRoomManager
 {
     public string Key { get; set; }
-    public NetworkRoomPlayerExt rP;
-    public PlayerController gP;
+    public ServerGameplay serverGameplay;
+    public List<PlayerController> gamePlayers = new List<PlayerController>();
 
     /// <summary>
     /// Called just after GamePlayer object is instantiated and just before it replaces RoomPlayer object.
@@ -22,11 +23,12 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     /// <returns>true unless some code in here decides it needs to abort the replacement</returns>
     public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)
     {
-        rP = roomPlayer.GetComponent<NetworkRoomPlayerExt>();
-        gP = gamePlayer.GetComponent<PlayerController>();
+        var rP = roomPlayer.GetComponent<NetworkRoomPlayerExt>();
+        var gP = gamePlayer.GetComponent<PlayerController>();
+
+        gamePlayers.Add(gP);
 
         gP.playerName = rP.PlayerName;
-        gP.MatchTime = 180;
 
         switch (rP.index)
         {
@@ -49,7 +51,10 @@ public class NetworkRoomManagerExt : NetworkRoomManager
                 gP.Kolor = Kolory.niebieski;
                 break;
         }
-        StartCoroutine(UpdateMatchTime());
+
+        if (gamePlayers.Count == roomSlots.Count)
+            Instantiate(serverGameplay);
+
         return true;
     }
 
@@ -111,9 +116,9 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     {
         // calling the base method calls ServerChangeScene as soon as all players are in Ready state.
 
-        #if UNITY_SERVER
-                base.OnRoomServerPlayersReady();
-        #endif
+    #if UNITY_SERVER
+        base.OnRoomServerPlayersReady();
+    #endif
     }
 
     public override void OnGUI()
@@ -130,26 +135,22 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     public override void OnRoomServerDisconnect(NetworkConnection conn)
     {
         base.OnRoomServerDisconnect(conn);
+    }
 
+    public override void OnServerDisconnect(NetworkConnection conn)
+    {
+        // znajduje obiekt gracza po po³¹czeniu i usuwa z listy
+        if (SceneManager.GetActiveScene().name == GameplayScene)
+        {
+            var rP = FindObjectsOfType<PlayerController>().Where(x => x.connectionToClient == conn).FirstOrDefault();
+            Debug.Log("---Wyszedl gracz o nazwie: " + rP.playerName);
+            gamePlayers.Remove(rP);
+        }
+
+        base.OnServerDisconnect(conn);
         if (roomSlots.Count == 0)
         {
             Application.Quit();
-        }
-    }
-
-    [Server]
-    private IEnumerator UpdateMatchTime()
-    {
-        if (gP.MatchTime > 0)
-        {
-            yield return new WaitForSeconds(1);
-            gP.MatchTime--;
-            StartCoroutine(UpdateMatchTime());
-        }
-        else
-        {
-            // TO - DO
-            // END MATCH
         }
     }
 }

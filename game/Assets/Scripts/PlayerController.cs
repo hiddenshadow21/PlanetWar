@@ -35,9 +35,6 @@ public class PlayerController : NetworkBehaviour
     [SyncVar(hook = nameof(OnLastKilledPlayerChange))]
     public string LastKilledPlayer;
 
-    [SyncVar(hook = nameof(OnMatchTimeChange))]
-    public int MatchTime;
-
     [SyncVar]
     public string playerName;
 
@@ -154,11 +151,6 @@ public class PlayerController : NetworkBehaviour
         {
             hud.UpdateDeathNumber(_new);
         }           
-    }
-
-    private void OnMatchTimeChange(int _old, int _new)
-    {
-        hud.UpdateTimer(_new);
     }
 
     #endregion
@@ -340,5 +332,11 @@ public class PlayerController : NetworkBehaviour
         {
             gameObject.GetComponent<PlayerRespawnSystem>().ToogleCanvas();
         }
+    }
+	
+	[ClientRpc]
+    public void RpcUpdateHudTimer(int time)
+    {
+        hud.UpdateTimer(time);
     }
 }

@@ -79,6 +79,10 @@ public abstract class Gun : NetworkBehaviour
 
     public void SetSprite(Kolory kolor)
     {
-        spriteRenderer.sprite = spriteColors[(int)kolor];
+        Debug.Log("---(int)kolor: "+(int)kolor);
+        Debug.Log("---spriteColors.length: " + spriteColors.Length);
+        Debug.Log("---spriteRenderer.sprite: " + spriteRenderer.sprite);
+
+        //spriteRenderer.sprite = spriteColors[(int)kolor];
     }
 }
