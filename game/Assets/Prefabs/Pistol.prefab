@@ -98,8 +98,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  spriteRenderer: {fileID: 0}
-  spriteColors: []
+  spriteRenderer: {fileID: 8570166580372395456}
+  spriteColors:
+  - {fileID: 21300000, guid: 3e652a597824bd44d91fd93f87e3857d, type: 3}
+  - {fileID: 2490920443210793853, guid: 006f7f82ca50d224a993a4ca8304ad81, type: 3}
+  - {fileID: -668280731567999620, guid: 3ad56d0daa98d8a41b2846a87a936e73, type: 3}
+  - {fileID: -7192585884581913262, guid: 393021b790fe7bd4484e9f84c76ad03e, type: 3}
+  - {fileID: 8212466260515318275, guid: eeac123894a68534590c3197728fced1, type: 3}
   fireRate: 30
   reloadTime: 1.5
   maxAmmo: 12

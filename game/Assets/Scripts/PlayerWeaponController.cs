@@ -142,6 +142,10 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            if(activeWeapon.Ammo <= 0)
+            {
+                hud.ShowEmptyAmmoInfo();
+            }
             CmdShoot();
         }
     }
@@ -153,9 +157,8 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             activeWeapon.nextShootTime = Time.time + 1.0f / activeWeapon.FireRate;
 
-            activeWeapon.Shoot(); 
+            activeWeapon.Shoot();
         }
-        
     }
 
 

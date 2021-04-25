@@ -6,18 +6,35 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
+    //CHAT//
     public event EventHandler<string> ChatMessageEntered;
     public event EventHandler<bool> ChatStatusChanged;
+    public Text[] Chats;
+    public Text ChatInfo;
+    public InputField ChatMessage;
+    //CHAT//
+
+    //DEATH//
     public GameObject DeathImage;
-    public Text Health;
-    public Text Ammo;
-    public Text Timer;
     public Text EnemyKilled;
     public Text EnemyKilledNumber;
     public Text DeathNumber;
-    public Text[] Chats;
-    public Text Info;
-    public InputField Message;
+    //DEATH//
+
+    //AMMO//
+    public GameObject ReloadAlert;
+    public Text ReloadKey;
+    public Text Ammo;
+    //AMMO//
+
+    //HEALTH//
+    public Text HP;
+    //HEALTH//
+
+    //TIMER//
+    public Text Timer;
+    //TIMER//
+
     private readonly GUIStyle style = new GUIStyle();
 
     private void Awake()
@@ -26,59 +43,57 @@ public class HUD : MonoBehaviour
         {
             c.text = "";
         }
-        Info.gameObject.SetActive(true);
-        Message.gameObject.SetActive(false);
+        ChatInfo.gameObject.SetActive(true);
+        ChatMessage.gameObject.SetActive(false);
+        ReloadAlert.gameObject.SetActive(false);
+        ReloadKey.gameObject.SetActive(false);
+        EnemyKilled.gameObject.SetActive(false);
+        DeathImage.SetActive(false);
+        style.richText = true;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (Message.gameObject.active == true)
+            if (ChatMessage.gameObject.active == true)
             {
                 ChatStatusChanged?.Invoke(this, false);
-                Message.gameObject.SetActive(false);
-                Info.gameObject.SetActive(true);
+                ChatMessage.gameObject.SetActive(false);
+                ChatInfo.gameObject.SetActive(true);
             }
             else
             {
                 ChatStatusChanged?.Invoke(this, true);
-                Message.gameObject.SetActive(true);
-                Message.ActivateInputField();
-                Info.gameObject.SetActive(false);
+                ChatMessage.gameObject.SetActive(true);
+                ChatMessage.ActivateInputField();
+                ChatInfo.gameObject.SetActive(false);
             }
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (Message.gameObject.active == true)
+            if (ChatMessage.gameObject.active == true)
             {
                 ChatStatusChanged?.Invoke(this, false);
-                ChatMessageEntered?.Invoke(this, Message.text);
-                Message.gameObject.SetActive(false);
-                Info.gameObject.SetActive(true);
-                Message.text = "";
+                ChatMessageEntered?.Invoke(this, ChatMessage.text);
+                ChatMessage.gameObject.SetActive(false);
+                ChatInfo.gameObject.SetActive(true);
+                ChatMessage.text = "";
             }
         }
-    }
-
-    private void Start()
-    {
-        EnemyKilled.gameObject.SetActive(false);
-        DeathImage.SetActive(false);
-        style.richText = true;
     }
 
     public void UpdateHealth(int hp)
     {
         if(hp <= 20)
         {
-            Health.color = new Color(1, 0, 0);
+            HP.color = new Color(1, 0, 0);
         }
         else
         {
-            Health.color = new Color(0.36f, 0.92f, 0.39f);
+            HP.color = new Color(0.36f, 0.92f, 0.39f);
         }
-        Health.text = hp.ToString();
+        HP.text = hp.ToString();
     }
 
     public void UpdateAmmo(int currAmmo, int maxAmmo)
@@ -142,6 +157,14 @@ public class HUD : MonoBehaviour
         }
     }
 
+    public void ShowEmptyAmmoInfo()
+    {
+        CancelInvoke(nameof(hideEmptyAmmoInfo));
+        ReloadAlert.gameObject.SetActive(true);
+        ReloadKey.gameObject.SetActive(true);
+        Invoke(nameof(hideEmptyAmmoInfo), 1.5f);
+    }
+
     private void updateChatPosition()
     {
         for (int i = Chats.Length - 1; i > 0; i--)
@@ -157,5 +180,11 @@ public class HUD : MonoBehaviour
     {
         EnemyKilled.gameObject.SetActive(false);
         DeathImage.SetActive(false);
+    }
+
+    private void hideEmptyAmmoInfo()
+    {
+        ReloadAlert.gameObject.SetActive(false);
+        ReloadKey.gameObject.SetActive(false);
     }
 }
