@@ -8,10 +8,16 @@ public class HUD : MonoBehaviour
 {
     //CHAT//
     public event EventHandler<string> ChatMessageEntered;
-    public event EventHandler<bool> ChatStatusChanged;
     public Text[] Chats;
     public Text ChatInfo;
     public InputField ChatMessage;
+    public bool IsChatActive
+    { 
+        get
+        {
+            return ChatMessage.gameObject.activeSelf;
+        }
+    }
     //CHAT//
 
     //DEATH//
@@ -58,15 +64,13 @@ public class HUD : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (ChatMessage.gameObject.active == true)
+            if (ChatMessage.gameObject.activeSelf == true)
             {
-                ChatStatusChanged?.Invoke(this, false);
                 ChatMessage.gameObject.SetActive(false);
                 ChatInfo.gameObject.SetActive(true);
             }
             else
             {
-                ChatStatusChanged?.Invoke(this, true);
                 ChatMessage.gameObject.SetActive(true);
                 ChatMessage.ActivateInputField();
                 ChatInfo.gameObject.SetActive(false);
@@ -74,9 +78,8 @@ public class HUD : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (ChatMessage.gameObject.active == true)
+            if (ChatMessage.gameObject.activeSelf == true)
             {
-                ChatStatusChanged?.Invoke(this, false);
                 ChatMessageEntered?.Invoke(this, ChatMessage.text);
                 ChatMessage.gameObject.SetActive(false);
                 ChatInfo.gameObject.SetActive(true);
