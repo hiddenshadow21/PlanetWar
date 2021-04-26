@@ -1387,6 +1387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 228160088}
   - component: {fileID: 228160089}
+  - component: {fileID: 228160090}
   m_Layer: 0
   m_Name: Pos4
   m_TagString: Respawn
@@ -1418,6 +1419,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &228160090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228160087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173d9d53c792a624eae74ce4e16d96bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &238937109
@@ -6372,6 +6385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1436850342}
   - component: {fileID: 1436850343}
+  - component: {fileID: 1436850344}
   m_Layer: 0
   m_Name: Pos3
   m_TagString: Respawn
@@ -6403,6 +6417,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1436850344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436850341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173d9d53c792a624eae74ce4e16d96bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1465968416
@@ -6774,6 +6800,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1515337677}
   - component: {fileID: 1515337678}
+  - component: {fileID: 1515337679}
   m_Layer: 0
   m_Name: Pos1
   m_TagString: Respawn
@@ -6805,6 +6832,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1515337679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515337676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173d9d53c792a624eae74ce4e16d96bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1531594787
@@ -7246,6 +7285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1595220928}
   - component: {fileID: 1595220929}
+  - component: {fileID: 1595220930}
   m_Layer: 0
   m_Name: Pos2
   m_TagString: Respawn
@@ -7277,6 +7317,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1595220930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595220927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173d9d53c792a624eae74ce4e16d96bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1613840099
