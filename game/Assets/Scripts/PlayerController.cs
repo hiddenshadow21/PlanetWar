@@ -54,7 +54,6 @@ public class PlayerController : NetworkBehaviour
 
     #region Chat
     private int ChatID;
-    private bool isChatActive = false;
 
     [SyncVar(hook = nameof(OnChatMessageChanged))]
     string chatMessage;
@@ -84,11 +83,6 @@ public class PlayerController : NetworkBehaviour
         {
             SendChatMessage(ChatID.ToString() + '~' + playerName, lassChatMessage);
         }
-    }
-
-    private void hud_ChatStatusChanged(object sender, bool isChatActive)
-    {
-        this.isChatActive = isChatActive;
     }
     #endregion
 
@@ -170,7 +164,6 @@ public class PlayerController : NetworkBehaviour
     {
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
         hud.ChatMessageEntered += hud_ChatMessageEntered;
-        hud.ChatStatusChanged += hud_ChatStatusChanged;
         hud.UpdateHealth((int)maxHealth);
         hud.UpdateEnemyKilledNumber(Kills);
         hud.UpdateDeathNumber(Deaths);
@@ -184,7 +177,7 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        if(!isChatActive)
+        if(!hud.IsChatActive)
         {
             HandleMovement();
         }
