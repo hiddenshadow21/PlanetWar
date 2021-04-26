@@ -61,7 +61,7 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         base.OnStartClient();
         CmdSpawnSelectedWeapons();
-        CmdChangeActiveWeapon(1);
+        CmdChangeActiveWeapon(0);
     }
 
     internal void SetGun(Gun gun)
@@ -77,11 +77,13 @@ public class PlayerWeaponController : NetworkBehaviour
 
         if(activeWeaponSynced == 0)
         {
+            activeWeapon = weapons[0];
             if(weapons[1] != null)
                 weapons[1].GetComponent<SpriteRenderer>().enabled = false;
         }
         else
         {
+            activeWeapon = weapons[1];
             weapons[0].GetComponent<SpriteRenderer>().enabled = false;
         }
     }
