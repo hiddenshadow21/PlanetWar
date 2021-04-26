@@ -20,14 +20,13 @@ public class GunRaycast : Gun
 
         isReloading = true;
         StartCoroutine(ReloadCouritine());
-        isReloading = false;
-
     }
 
     private IEnumerator ReloadCouritine()
     {
         yield return new WaitForSeconds(reloadTime);
         ammo = maxAmmo;
+        isReloading = false;
     }
 
     [Server]
@@ -66,7 +65,6 @@ public class GunRaycast : Gun
         else
         {
             lineRenderer.SetPosition(1, weaponFirePosition.position + weaponFirePosition.right * range);
-
         }
 
         Destroy(line, 0.1f);

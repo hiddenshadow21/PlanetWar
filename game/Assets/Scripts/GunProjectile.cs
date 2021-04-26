@@ -19,14 +19,13 @@ public class GunProjectile : Gun
 
         isReloading = true;
         StartCoroutine(ReloadCouritine());
-        isReloading = false;
-
     }
 
     private IEnumerator ReloadCouritine()
     {
         yield return new WaitForSeconds(reloadTime);
         ammo = maxAmmo;
+        isReloading = false;
     }
 
     [Server]
