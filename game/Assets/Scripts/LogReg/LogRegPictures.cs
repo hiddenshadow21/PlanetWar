@@ -19,20 +19,32 @@ public class LogRegPictures : MonoBehaviour
     private Sprite[] sprites;
     private List<string> titles = new List<string>();
     private List<string> descriptions = new List<string>();
+    private bool allImagesDownloaded = false;
 
-    void Start()
+    private void Start()
     {
         try
         {
             getImagesNumberFromServer();
             sprites = new Sprite[maxPictureNumber];
             getDataFromServer();
-            InvokeRepeating(nameof(setNewPicture), 1.0f, 6.0f);
         }
-        catch(Exception e)
+        catch(Exception)
         {
             ImageTitle.text = "Connection error";
-            ImageDescription.text = e.Message;
+            ImageDescription.text = "Please check your internet connection and try again later!";
+        }
+    }
+
+    private void Update()
+    {
+        if(allImagesDownloaded == false)
+        {
+            if(checkImagesDownloadStatus() == true)
+            {
+                allImagesDownloaded = true;
+                InvokeRepeating(nameof(setNewPicture), 0f, 6.0f);
+            }
         }
     }
 
@@ -44,11 +56,11 @@ public class LogRegPictures : MonoBehaviour
         {
             throw new Exception("Unable to get data from server");
         }
+
     }
 
-
     private void getDataFromServer()
-    {
+    { 
         for (int i = 0; i < maxPictureNumber; i++)
         {
             titles.Add(client.DownloadString(new Uri(dataUrl + i + "/title.txt")));
@@ -93,5 +105,17 @@ public class LogRegPictures : MonoBehaviour
         {
             pictureNumber = 0;
         }
+    }
+
+    private bool checkImagesDownloadStatus()
+    {
+        for (int i = 0; i < maxPictureNumber; i++)
+        {
+            if (sprites[i] == null)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
