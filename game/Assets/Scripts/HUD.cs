@@ -141,7 +141,7 @@ public class HUD : MonoBehaviour
         CancelInvoke(nameof(hideDeathInfo));
         EnemyKilled.gameObject.SetActive(true);
         DeathImage.SetActive(true);
-        EnemyKilled.text = "<size=40><color=#69e5fe>DEFEATED</color></size>\n<color=#d4354a>" + killed + "</color> <size=15><color=#ffffff>killed by</color></size> <color=#5DEC64>" + shooter + "</color>";
+        EnemyKilled.text = "<size=30><color=#69e5fe>DEFEATED</color></size>\n<color=#d4354a>" + killed + "</color><size=15><color=#ffffff> killed by </color></size><color=#5DEC64>" + shooter + "</color>";
         Invoke(nameof(hideDeathInfo), 5f);
     }
 
@@ -173,6 +173,7 @@ public class HUD : MonoBehaviour
 
     public void ShowReloadingAmmoInfo(float reloadSpeed)
     {
+        CancelInvoke(nameof(hideEmptyAmmoInfo));
         ReloadingAlert.gameObject.SetActive(true);
         ReloadAlert.gameObject.SetActive(false);
         ReloadInfo.text = "<color=#ffffff>Reloading</color>";

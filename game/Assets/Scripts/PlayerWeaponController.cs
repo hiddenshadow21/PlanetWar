@@ -155,9 +155,15 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             if(activeWeapon.Ammo <= 0)
             {
-                hud.ShowEmptyAmmoInfo();
+                if(!activeWeapon.isReloading)
+                {
+                    hud.ShowEmptyAmmoInfo();
+                }
             }
-            CmdShoot();
+            else
+            {
+                CmdShoot();
+            }
         }
     }
 
