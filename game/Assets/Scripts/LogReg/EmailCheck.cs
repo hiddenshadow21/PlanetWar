@@ -93,9 +93,15 @@ public class EmailCheck : MonoBehaviour
             case "NPEV_SC_2":
                 Answer.text = "No restore option was found for this account!";
                 break;
-
             default:
-                Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
+                if (serverResponse == "")
+                {
+                    Answer.text = "Error! Please check Your internet connection and try again later!";
+                }
+                else
+                {
+                    Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
+                }
                 break;
         }
         EmailVerify.interactable = true;

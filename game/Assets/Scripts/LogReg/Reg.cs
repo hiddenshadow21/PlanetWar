@@ -248,7 +248,14 @@ public class Reg : MonoBehaviour
                 Answer.text = "Account with this email already exists!";
                 break;
             default:
-                Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
+                if (serverResponse == "")
+                {
+                    Answer.text = "Error! Please check Your internet connection and try again later!";
+                }
+                else
+                {
+                    Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
+                }
                 break;
         }
         Register.interactable = true;

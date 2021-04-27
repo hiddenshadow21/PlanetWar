@@ -151,7 +151,14 @@ public class Log : MonoBehaviour
                 Answer.text = "This account is not verified!";
                 break;
             default:
-                Answer.text = "Error (Code: " + response[0] + ")! Please try again later!";
+                if(response[0] == "")
+                {
+                    Answer.text = "Error! Please check Your internet connection and try again later!";
+                }
+                else
+                {
+                    Answer.text = "Error (Code: " + response[0] + ")! Please try again later!";
+                }
                 break;
         }
         Login.interactable = true;

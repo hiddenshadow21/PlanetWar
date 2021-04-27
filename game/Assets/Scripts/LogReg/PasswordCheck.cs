@@ -162,7 +162,14 @@ public class PasswordCheck : MonoBehaviour
                 SceneManager.LoadScene("Log");
                 break;
             default:
-                Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
+                if (serverResponse == "")
+                {
+                    Answer.text = "Error! Please check Your internet connection and try again later!";
+                }
+                else
+                {
+                    Answer.text = "Error (Code: " + serverResponse + ")! Please try again later!";
+                }
                 break;
         }
         PasswordVerify.interactable = true;
