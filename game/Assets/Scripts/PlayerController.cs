@@ -18,6 +18,9 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField]
     private LayerMask layerMask;
+		
+    [SerializeField]
+    public Animator animator;
 
     public float maxHealth = 100;
     [SyncVar(hook = nameof(OnHealthChange))]
@@ -40,6 +43,7 @@ public class PlayerController : NetworkBehaviour
 
     public new Collider2D collider;
     public Rigidbody2D rb;
+		public GameObject Body;
 
     public bool isGrounded
     {
@@ -158,6 +162,7 @@ public class PlayerController : NetworkBehaviour
 
         health = maxHealth;
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
+				Body.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
     }
 
     private void Awake()
@@ -191,7 +196,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     #region Movement&Rotation
-    void HandleMovement()
+   void HandleMovement()
     {
         if (!isLocalPlayer || !isGrounded)
             return;
@@ -206,6 +211,32 @@ public class PlayerController : NetworkBehaviour
             rb.AddForce(transform.up * x, ForceMode2D.Impulse);
             Debug.Log(x);
         }
+
+
+        CheckIfOnGround();
+        if (!isGrounded)
+        {
+            animator.SetBool("IsJumping", true);
+            Debug.Log("powieterze");
+        }
+        else
+            animator.SetBool("IsJumping", false);
+
+
+        if (moveDir != Vector2.zero)
+        {
+   
+            var sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+
+            if (Input.GetAxis("Horizontal") < 0)
+                sprite.flipX = true;
+            else if (Input.GetAxis("Horizontal") > 0)
+                sprite.flipX = false;
+        }
+
+        animator.SetBool("IsWalking", moveDir != Vector2.zero);
+        
+
     }
 
     void CheckIfOnGround()
