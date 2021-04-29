@@ -35,9 +35,6 @@ public class PlayerController : NetworkBehaviour
     [SyncVar(hook = nameof(OnDeathsChange))]
     public uint Deaths = 0;
 
-    [SyncVar(hook = nameof(OnLastKilledPlayerChange))]
-    public string LastKilledPlayer;
-
     [SyncVar]
     public string playerName;
 
@@ -91,11 +88,6 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region SyncVar Hooks
-
-    public void OnLastKilledPlayerChange(string _old, string _new)
-    {
-        hud.DeathGlobal_Show(playerName, _new);
-    }
 
     private void OnColorChange(Kolory _old, Kolory _new)
     {
@@ -306,9 +298,8 @@ public class PlayerController : NetworkBehaviour
         {
             var shooterPlayer = FindObjectsOfType<PlayerController>().Where(x => x.netId == shooterId).FirstOrDefault();
             shooterPlayer.Kills++;
-            shooterPlayer.LastKilledPlayer = playerName;
             Deaths++;
-            hud.DeathGlobal_Show(shooterPlayer.playerName, playerName);
+            showDeathInfo(shooterPlayer.playerName, playerName);
             //rb.velocity = Vector2.zero;
             DisableComponents();
             Die();
@@ -348,6 +339,12 @@ public class PlayerController : NetworkBehaviour
         gameObject.GetComponent<GravityBody>().enabled = true;
         gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
 
+    }
+
+    [ClientRpc]
+    private void showDeathInfo(string shooter, string killed)
+    {
+        hud.DeathGlobal_Show(shooter, killed);
     }
 
     [ClientRpc]
