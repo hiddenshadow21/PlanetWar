@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1c5c78ac448921f4c8f5ce6ce32e54fd, type: 3}
-  m_Color: {r: 0.754717, g: 0.18867925, b: 0.18867925, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -206,8 +206,8 @@ MonoBehaviour:
   playerName: 
   collider: {fileID: 3181704384020778682}
   rb: {fileID: 6445737654020582295}
-  Grounds: []
   Body: {fileID: 132092302645633948}
+  Grounds: []
 --- !u!114 &5894009021197809340
 MonoBehaviour:
   m_ObjectHideFlags: 0

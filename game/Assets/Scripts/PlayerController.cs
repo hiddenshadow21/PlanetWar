@@ -43,7 +43,6 @@ public class PlayerController : NetworkBehaviour
 
     public new Collider2D collider;
     public Rigidbody2D rb;
-		public GameObject Body;
 
     public bool isGrounded
     {
@@ -103,16 +102,16 @@ public class PlayerController : NetworkBehaviour
         switch (_new)
         {
             case Kolory.niebieski:
-                sprite.color = Color.blue;
+                sprite.material.SetColor("_Color", new Color(0, .7f, 1f));
                 break;
             case Kolory.zielony:
-                sprite.color = Color.green;
+                sprite.material.SetColor("_Color", new Color(.5f, 1f, .5f));
                 break;
             case Kolory.pomarańczowy:
-                sprite.color = new Color(255, 165, 0);
+                sprite.material.SetColor("_Color", new Color(1f, .55f, .35f));
                 break;
             case Kolory.fioletowy:
-                sprite.color = Color.magenta;
+                sprite.material.SetColor("_Color", new Color(1f, .5f, 1f));
                 break;
             case Kolory.czerwony:
                 sprite.color = Color.red;
@@ -162,7 +161,6 @@ public class PlayerController : NetworkBehaviour
 
         health = maxHealth;
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
-				Body.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
     }
 
     private void Awake()
