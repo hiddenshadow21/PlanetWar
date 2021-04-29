@@ -36,6 +36,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     [Command]
     public void CmdChangePlayerName(string playerName)
     {
+        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         foreach (NetworkRoomPlayerExt item in roomManager.roomSlots)
         {
             if (item == this)
@@ -50,6 +51,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     [Command]
     public void CmdChangePlayerColor()
     {
+        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         foreach (NetworkRoomPlayerExt item in roomManager.roomSlots)
         {
             if (item == this)
@@ -72,15 +74,11 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
 
     private void PlayerNameChanged(string oldName, string newName)
     {
-        Debug.Log("---Hook PlayerNameChanged---");
-        Debug.Log(oldName);
-        Debug.Log(newName);
         TextPlayerName.text = newName;
     }
 
     private void PlayerColorChanged(Color32 oldColor, Color32 newColor)
     {
-        Debug.Log("---Hook PlayerNameColor---");
         ImagePlayerColor.color = newColor;
     }
 
@@ -110,29 +108,25 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
 
     public override void OnStartServer()
     {
-        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         base.OnStartServer();
     }
 
     public override void OnStartClient()
     {
-        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         Debug.Log("---OnStartClient()---");
-        showRoomGUI = false;
-        singleton = this;
-
-        CmdChangePlayerName(PlayerInfo.Name);
-
         base.OnStartClient();
     }
 
     public override void OnClientEnterRoom()
     {
         Debug.Log("---OnClientEnterRoom()---");
+        showRoomGUI = false;
+        CmdChangePlayerName(PlayerInfo.Name);
         CmdChangePlayerColor();
         updatePositions();
         updateButtonKick();
         ButtonKick.onClick.AddListener(kickPlayer);
+        singleton = this;
     }
 
     public override void OnClientExitRoom(){}
@@ -151,6 +145,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     // Ustala pozycje na ekranie na podstawie indeksu
     private void updatePositions()
     {
+        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         foreach (NetworkRoomPlayerExt item in roomManager.roomSlots)
         {
             Vector3 pos = getPlayerPosition(item.index);

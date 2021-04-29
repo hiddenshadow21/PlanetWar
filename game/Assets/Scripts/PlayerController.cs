@@ -18,6 +18,9 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField]
     private LayerMask layerMask;
+		
+    [SerializeField]
+    public Animator animator;
 
     public float maxHealth = 100;
     [SyncVar(hook = nameof(OnHealthChange))]
@@ -99,16 +102,16 @@ public class PlayerController : NetworkBehaviour
         switch (_new)
         {
             case Kolory.niebieski:
-                sprite.color = Color.blue;
+                sprite.material.SetColor("_Color", new Color(0, .7f, 1f));
                 break;
             case Kolory.zielony:
-                sprite.color = Color.green;
+                sprite.material.SetColor("_Color", new Color(.5f, 1f, .5f));
                 break;
             case Kolory.pomarańczowy:
-                sprite.color = new Color(255, 165, 0);
+                sprite.material.SetColor("_Color", new Color(1f, .55f, .35f));
                 break;
             case Kolory.fioletowy:
-                sprite.color = Color.magenta;
+                sprite.material.SetColor("_Color", new Color(1f, .5f, 1f));
                 break;
             case Kolory.czerwony:
                 sprite.color = Color.red;
@@ -191,7 +194,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     #region Movement&Rotation
-    void HandleMovement()
+   void HandleMovement()
     {
         if (!isLocalPlayer || !isGrounded)
             return;
@@ -206,6 +209,32 @@ public class PlayerController : NetworkBehaviour
             rb.AddForce(transform.up * x, ForceMode2D.Impulse);
             Debug.Log(x);
         }
+
+
+        CheckIfOnGround();
+        if (!isGrounded)
+        {
+            animator.SetBool("IsJumping", true);
+            Debug.Log("powieterze");
+        }
+        else
+            animator.SetBool("IsJumping", false);
+
+
+        if (moveDir != Vector2.zero)
+        {
+   
+            var sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+
+            if (Input.GetAxis("Horizontal") < 0)
+                sprite.flipX = true;
+            else if (Input.GetAxis("Horizontal") > 0)
+                sprite.flipX = false;
+        }
+
+        animator.SetBool("IsWalking", moveDir != Vector2.zero);
+        
+
     }
 
     void CheckIfOnGround()

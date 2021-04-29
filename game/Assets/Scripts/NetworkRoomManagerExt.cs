@@ -26,8 +26,6 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         var rP = roomPlayer.GetComponent<NetworkRoomPlayerExt>();
         var gP = gamePlayer.GetComponent<PlayerController>();
 
-        gamePlayers.Add(gP);
-
         gP.playerName = rP.PlayerName;
 
         switch (rP.index)
@@ -51,6 +49,7 @@ public class NetworkRoomManagerExt : NetworkRoomManager
                 gP.Kolor = Kolory.niebieski;
                 break;
         }
+        gamePlayers.Add(gP);
 
         if (gamePlayers.Count == roomSlots.Count)
             Instantiate(serverGameplay);

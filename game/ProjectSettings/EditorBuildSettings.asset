@@ -5,20 +5,20 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LogReg/Log.unity
     guid: eaca8b8f0a4caad44a981afa38372cef
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LogReg/Reg.unity
     guid: 5715268614278194cb4b7cd576d3604a
-  - enabled: 1
-    path: Assets/Scenes/LogReg/CodeCheck.unity
-    guid: b9c18d19f9e4818418def8bf49bdaead
-  - enabled: 1
-    path: Assets/Scenes/LogReg/EmailCheck.unity
+  - enabled: 0
+    path: Assets/Scenes/ForgottenPassword/EmailCheck.unity
     guid: 8ad5a42857913cd4794f1cf451404d9a
-  - enabled: 1
-    path: Assets/Scenes/LogReg/PasswordCheck.unity
+  - enabled: 0
+    path: Assets/Scenes/ForgottenPassword/CodeCheck.unity
+    guid: b9c18d19f9e4818418def8bf49bdaead
+  - enabled: 0
+    path: Assets/Scenes/ForgottenPassword/PasswordCheck.unity
     guid: 59d1a20d23b2d4d4eb5237fc962f2fd4
   - enabled: 1
     path: Assets/Scenes/OfflineScene.unity

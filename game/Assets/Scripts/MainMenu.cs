@@ -68,6 +68,7 @@ public class MainMenu : MonoBehaviour
         generateRandomKey();
         networkRoomManagerExt.networkAddress = networkAddress;
         networkRoomManagerExt.Key = key;
+        GUIUtility.systemCopyBuffer = key;
         StartCoroutine(createRoomPHP());
     }
     public void JoinRoom()
