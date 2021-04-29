@@ -43,6 +43,7 @@ public class PlayerController : NetworkBehaviour
 
     public new Collider2D collider;
     public Rigidbody2D rb;
+    public PlayerRespawnSystem playerRespawnSystem;
 
     public bool isGrounded
     {
@@ -130,7 +131,10 @@ public class PlayerController : NetworkBehaviour
     {
         if(isLocalPlayer)
         {
-            hud.HP_update((int)_new);
+            if (_new < 0)
+                hud.HP_update(0);
+            else
+                hud.HP_update((int)_new);
         }
     }
 
@@ -303,8 +307,8 @@ public class PlayerController : NetworkBehaviour
             var shooterPlayer = FindObjectsOfType<PlayerController>().Where(x => x.netId == shooterId).FirstOrDefault();
             shooterPlayer.Kills++;
             shooterPlayer.LastKilledPlayer = playerName;
-            hud.DeathGlobal_Show(shooterPlayer.playerName, playerName);
             Deaths++;
+            hud.DeathGlobal_Show(shooterPlayer.playerName, playerName);
             //rb.velocity = Vector2.zero;
             DisableComponents();
             Die();
@@ -354,7 +358,8 @@ public class PlayerController : NetworkBehaviour
         {
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
-            gameObject.GetComponent<PlayerRespawnSystem>().ToogleCanvas();
+            StartCoroutine(hud.HP_ShowRespawnAnim(5, 4));
+            StartCoroutine(SpawnPlayerWithDelay(5));
         }
     }
 	
@@ -362,5 +367,12 @@ public class PlayerController : NetworkBehaviour
     public void RpcUpdateHudTimer(int time)
     {
         hud.Timer_update(time);
+    }
+
+    private IEnumerator SpawnPlayerWithDelay(float t)
+    {
+        yield return new WaitForSeconds(t);
+        playerRespawnSystem = gameObject.GetComponent<PlayerRespawnSystem>();
+        playerRespawnSystem.SpawnPlayerLocal();
     }
 }

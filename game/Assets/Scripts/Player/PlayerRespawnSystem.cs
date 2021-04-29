@@ -7,28 +7,17 @@ using UnityEngine.UI;
 
 public class PlayerRespawnSystem : NetworkBehaviour
 {
-    private Button spawnButton;
-    private Canvas canvas;
-    private bool isActive=false;
-
     private PlayerController playerController;
 
     private void Start()
     {
-        canvas = Resources.FindObjectsOfTypeAll<Canvas>().Where(x => x.tag == "Respawn").FirstOrDefault();
-        spawnButton = canvas.GetComponentInChildren<Button>();
-        spawnButton.onClick.AddListener(delegate ()
-        {
-            SpawnPlayerLocal();
-        });
         playerController = gameObject.GetComponent<PlayerController>();
     }
 
-    private void SpawnPlayerLocal()
+    public void SpawnPlayerLocal()
     {
         if (!isLocalPlayer)
             return;
-        ToogleCanvas();
         var random = new Random();
         var spawnPoints = SpawnPoint.GetSpawnPoints();
         int k = (int)Random.Range(0, spawnPoints.Count);
@@ -52,11 +41,5 @@ public class PlayerRespawnSystem : NetworkBehaviour
     {
         transform.position = SpawnPoint.GetSpawnPoints()[k];
         playerController.EnableComponents();
-    }
-
-    public void ToogleCanvas()
-    {
-        isActive = !isActive;
-        canvas.gameObject.SetActive(isActive);
     }
 }
