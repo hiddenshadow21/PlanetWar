@@ -34,6 +34,9 @@ public class PlayerRespawnSystem : NetworkBehaviour
         int k = (int)Random.Range(0, spawnPoints.Count);
         transform.position = spawnPoints[k];
         CmdSpawnPlayer(k);
+        PlayerWeaponController playerWeaponController = gameObject.GetComponent<PlayerWeaponController>();
+        playerWeaponController.CmdSpawnSelectedWeapons();
+        playerWeaponController.CmdChangeActiveWeapon(0);
     }
 
     [Command]

@@ -89,7 +89,7 @@ public class PlayerWeaponController : NetworkBehaviour
     }
 
     [Command]
-    private void CmdSpawnSelectedWeapons()
+    public void CmdSpawnSelectedWeapons()
     {
         for (int i = 0; i < 2; i++)
         {

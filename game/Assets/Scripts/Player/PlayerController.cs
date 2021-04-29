@@ -305,7 +305,7 @@ public class PlayerController : NetworkBehaviour
             shooterPlayer.LastKilledPlayer = playerName;
             hud.ShowDeathInfo(shooterPlayer.playerName, playerName);
             Deaths++;
-            rb.velocity = Vector2.zero;
+            //rb.velocity = Vector2.zero;
             DisableComponents();
             Die();
         }
@@ -352,6 +352,8 @@ public class PlayerController : NetworkBehaviour
         DisableComponents();
         if (isLocalPlayer)
         {
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0;
             gameObject.GetComponent<PlayerRespawnSystem>().ToogleCanvas();
         }
     }
