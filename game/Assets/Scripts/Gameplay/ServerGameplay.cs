@@ -27,7 +27,11 @@ public class ServerGameplay : NetworkBehaviour
         else
         {
             // TO DO
-            // Koniec meczu
+            foreach (var gP in roomManager.gamePlayers)
+                gP.DisableComponents();
+            // tutaj wyświetl tabelkę wyników
+            // Po 5s przechodzi do pokoju
+            StartCoroutine(endMatchWithDelay(5));
         }
     }
 
@@ -35,6 +39,13 @@ public class ServerGameplay : NetworkBehaviour
     private void UpdateMatchTimeClients()
     {
         roomManager.gamePlayers[0].RpcUpdateHudTimer(MatchTime);
+    }
+
+    [Server]
+    private IEnumerator endMatchWithDelay(float t)
+    {
+        yield return new WaitForSeconds(t);
+        roomManager.ServerChangeScene(roomManager.RoomScene);
     }
 
 }
