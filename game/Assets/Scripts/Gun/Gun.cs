@@ -53,7 +53,7 @@ public abstract class Gun : NetworkBehaviour
         {
             if(hasAuthority)
             {
-                hud.ShowReloadingAmmoInfo(ReloadSpeed);
+                hud.Ammo_ShowReloadingAmmoInfo(ReloadSpeed);
             }
         }
     }
@@ -62,7 +62,7 @@ public abstract class Gun : NetworkBehaviour
     {
         if(hasAuthority)
         {
-            hud.UpdateAmmo(_new, maxAmmo);
+            hud.Ammo_update(_new, maxAmmo);
         }
         Debug.Log(_old + "->" + _new);
     }
@@ -86,7 +86,7 @@ public abstract class Gun : NetworkBehaviour
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
         if (hasAuthority)
         {
-            hud.UpdateAmmo(Ammo, maxAmmo);
+            hud.Ammo_update(Ammo, maxAmmo);
         }
     }
 

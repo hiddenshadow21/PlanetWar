@@ -66,11 +66,11 @@ public class PlayerController : NetworkBehaviour
         string[] nicknameAndMessage = newFormattedMessage.Split('~');
         if(nicknameAndMessage[0] == ChatID.ToString())
         {
-            hud.SetNewChatMessage(nicknameAndMessage[1], nicknameAndMessage[3], true);
+            hud.Chat_SetNewMessage(nicknameAndMessage[1], nicknameAndMessage[3], true);
         }
         else
         {
-            hud.SetNewChatMessage(nicknameAndMessage[1], nicknameAndMessage[3]);
+            hud.Chat_SetNewMessage(nicknameAndMessage[1], nicknameAndMessage[3]);
         }
     }   
 
@@ -80,7 +80,7 @@ public class PlayerController : NetworkBehaviour
         chatMessage = username + '~' + rand.Next().ToString() + '~' + message;
     }
 
-    private void hud_ChatMessageEntered(object sender, string lassChatMessage)
+    private void hud_Chat_messageEntered(object sender, string lassChatMessage)
     {
         if (isLocalPlayer)
         {
@@ -93,7 +93,7 @@ public class PlayerController : NetworkBehaviour
 
     public void OnLastKilledPlayerChange(string _old, string _new)
     {
-        hud.ShowDeathInfo(playerName, _new);
+        hud.DeathGlobal_Show(playerName, _new);
     }
 
     private void OnColorChange(Kolory _old, Kolory _new)
@@ -130,7 +130,7 @@ public class PlayerController : NetworkBehaviour
     {
         if(isLocalPlayer)
         {
-            hud.UpdateHealth((int)_new);
+            hud.HP_update((int)_new);
         }
     }
 
@@ -138,7 +138,7 @@ public class PlayerController : NetworkBehaviour
     {
         if(isLocalPlayer)
         {
-            hud.UpdateEnemyKilledNumber(_new);
+            hud.Kills_update(_new);
         }
     }
 
@@ -146,7 +146,7 @@ public class PlayerController : NetworkBehaviour
     {
         if(isLocalPlayer)
         {
-            hud.UpdateDeathNumber(_new);
+            hud.Deahts_update(_new);
         }           
     }
 
@@ -166,10 +166,10 @@ public class PlayerController : NetworkBehaviour
     private void Awake()
     {
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
-        hud.ChatMessageEntered += hud_ChatMessageEntered;
-        hud.UpdateHealth((int)maxHealth);
-        hud.UpdateEnemyKilledNumber(Kills);
-        hud.UpdateDeathNumber(Deaths);
+        hud.Chat_messageEntered += hud_Chat_messageEntered;
+        hud.HP_update((int)maxHealth);
+        hud.Kills_update(Kills);
+        hud.Deahts_update(Deaths);
     }
 
     private void OnEnable()
@@ -180,7 +180,7 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        if(!hud.IsChatActive)
+        if(!hud.Chat_IsChatActive)
         {
             HandleMovement();
         }
@@ -303,7 +303,7 @@ public class PlayerController : NetworkBehaviour
             var shooterPlayer = FindObjectsOfType<PlayerController>().Where(x => x.netId == shooterId).FirstOrDefault();
             shooterPlayer.Kills++;
             shooterPlayer.LastKilledPlayer = playerName;
-            hud.ShowDeathInfo(shooterPlayer.playerName, playerName);
+            hud.DeathGlobal_Show(shooterPlayer.playerName, playerName);
             Deaths++;
             //rb.velocity = Vector2.zero;
             DisableComponents();
@@ -361,6 +361,6 @@ public class PlayerController : NetworkBehaviour
 	[ClientRpc]
     public void RpcUpdateHudTimer(int time)
     {
-        hud.UpdateTimer(time);
+        hud.Timer_update(time);
     }
 }
