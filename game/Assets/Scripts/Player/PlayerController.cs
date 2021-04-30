@@ -11,7 +11,6 @@ public class PlayerController : NetworkBehaviour
     private float moveSpeed = 10f;
     private float jumpHeight = 5f;
     private Vector2 moveDir;
-    private System.Random rand = new System.Random();
 
     [SerializeField]
     private Transform pointBelowPlayer;
@@ -53,39 +52,13 @@ public class PlayerController : NetworkBehaviour
     public GameObject[] Grounds;
 
 
-    #region Chat
-    private int ChatID;
-
-    [SyncVar(hook = nameof(OnChatMessageChanged))]
-    string chatMessage;
-
-    void OnChatMessageChanged(string oldFormattedMessage, string newFormattedMessage)
+    private void hud_Chat_messageEntered(object sender, string chatMessage)
     {
-        string[] nicknameAndMessage = newFormattedMessage.Split('~');
-        if(nicknameAndMessage[0] == ChatID.ToString())
+        if(isLocalPlayer)
         {
-            hud.Chat_SetNewMessage(nicknameAndMessage[1], nicknameAndMessage[3], true);
-        }
-        else
-        {
-            hud.Chat_SetNewMessage(nicknameAndMessage[1], nicknameAndMessage[3]);
-        }
-    }   
-
-    [Command]
-    void SendChatMessage(string username, string message)
-    {
-        chatMessage = username + '~' + rand.Next().ToString() + '~' + message;
-    }
-
-    private void hud_Chat_messageEntered(object sender, string lassChatMessage)
-    {
-        if (isLocalPlayer)
-        {
-            SendChatMessage(ChatID.ToString() + '~' + playerName, lassChatMessage);
+            AddChatMessage(playerName, chatMessage);
         }
     }
-    #endregion
 
     #region SyncVar Hooks
 
@@ -150,7 +123,6 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
-        ChatID = rand.Next();
         Grounds = GameObject.FindGameObjectsWithTag("Ground");
         if (isLocalPlayer)
             Camera.main.GetComponent<CameraController>().player = gameObject;
@@ -176,10 +148,21 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        if(!hud.Chat_IsChatActive)
+        if(isLocalPlayer)
         {
-            HandleMovement();
-        }
+            if (!hud.Chat_isChatActive)
+            {
+                HandleMovement();
+            }
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                hud.Chat_TabAction();
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                hud.Chat_ReturnAction();
+            }
+        } 
     }
 
     private void FixedUpdate()
@@ -341,10 +324,17 @@ public class PlayerController : NetworkBehaviour
 
     }
 
+    [Command]
+    public void AddChatMessage(string username, string message)
+    {
+        var serverGameplay = GameObject.FindGameObjectWithTag("ServerGameplay").GetComponent<ServerGameplay>();
+        serverGameplay.SendChatMessage(username, message);
+    }
+
     [ClientRpc]
     private void showDeathInfo(string shooter, string killed)
     {
-        hud.DeathGlobal_Show(shooter, killed);
+        hud.DeathGlobal_show(shooter, killed);
     }
 
     [ClientRpc]
@@ -355,15 +345,21 @@ public class PlayerController : NetworkBehaviour
         {
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
-            StartCoroutine(hud.HP_ShowRespawnAnim(5, 4));
+            StartCoroutine(hud.HP_showRespawnAnim(5, 4));
             StartCoroutine(SpawnPlayerWithDelay(5));
         }
     }
 	
-	[ClientRpc]
-    public void RpcUpdateHudTimer(int time)
+	[TargetRpc]
+    public void TargetUpdateHudTimer(NetworkConnection targer, int time)
     {
         hud.Timer_update(time);
+    }
+
+    [TargetRpc]
+    public void TargetUpdateChat(NetworkConnection target, List<string> chats)
+    {
+        hud.Chat_update(chats, playerName);
     }
 
     private IEnumerator SpawnPlayerWithDelay(float t)
