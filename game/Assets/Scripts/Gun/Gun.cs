@@ -53,7 +53,7 @@ public abstract class Gun : NetworkBehaviour
         {
             if(hasAuthority)
             {
-                hud.Ammo_ShowReloadingAmmoInfo(ReloadSpeed);
+                hud.Ammo_showReloadingAmmoInfo(ReloadSpeed);
             }
         }
     }

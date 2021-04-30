@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -1127422798180308461}
   m_Layer: 0
   m_Name: ServerGameplay
-  m_TagString: Untagged
+  m_TagString: ServerGameplay
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,3 +63,4 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   MatchTime: 181
+  Chats: []

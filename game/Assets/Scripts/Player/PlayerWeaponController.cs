@@ -113,7 +113,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
     private void HandleReloading()
     {
-        if (hud.Chat_IsChatActive)
+        if (hud.Chat_isChatActive)
             return;
 
         if (Input.GetButtonDown("Reload"))
@@ -130,7 +130,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
     private void HandleWeaponSwitching()
     {
-        if (hud.Chat_IsChatActive)
+        if (hud.Chat_isChatActive)
             return;
 
         if (Input.GetButtonDown("Fire2")) //Fire2 is mouse 2nd click and left alt
@@ -148,7 +148,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
     private void HandleShooting()
     {
-        if (hud.Chat_IsChatActive)
+        if (hud.Chat_isChatActive)
             return;
 
         if (Input.GetButtonDown("Fire1"))
@@ -157,7 +157,7 @@ public class PlayerWeaponController : NetworkBehaviour
             {
                 if(!activeWeapon.isReloading)
                 {
-                    hud.Ammo_ShowEmptyAmmoInfo();
+                    hud.Ammo_showEmptyAmmoInfo();
                 }
             }
             else
@@ -181,7 +181,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
     private void HandleAiming()
     {
-        if (hud.Chat_IsChatActive)
+        if (hud.Chat_isChatActive)
             return;
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

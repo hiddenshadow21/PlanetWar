@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +15,7 @@ public class HUD : MonoBehaviour
     public Text Chat_info;
     public InputField Chat_message;
 
-    public bool Chat_IsChatActive
+    public bool Chat_isChatActive
     { 
         get
         {
@@ -32,60 +34,49 @@ public class HUD : MonoBehaviour
         Chat_message.gameObject.SetActive(false);
     }
 
-    private void chat_update()
+    public void Chat_TabAction()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Chat_message.gameObject.activeSelf == true)
         {
-            if (Chat_message.gameObject.activeSelf == true)
-            {
-                Chat_message.gameObject.SetActive(false);
-                Chat_info.gameObject.SetActive(true);
-            }
-            else
-            {
-                Chat_message.gameObject.SetActive(true);
-                Chat_message.ActivateInputField();
-                Chat_info.gameObject.SetActive(false);
-            }
+            Chat_message.gameObject.SetActive(false);
+            Chat_info.gameObject.SetActive(true);
         }
-        if (Input.GetKeyDown(KeyCode.Return))
+        else
         {
-            if (Chat_message.gameObject.activeSelf == true)
-            {
-                Chat_messageEntered?.Invoke(this, Chat_message.text);
-                Chat_message.gameObject.SetActive(false);
-                Chat_info.gameObject.SetActive(true);
-                Chat_message.text = "";
-            }
+            Chat_message.gameObject.SetActive(true);
+            Chat_message.ActivateInputField();
+            Chat_info.gameObject.SetActive(false);
         }
     }
 
-    public void Chat_SetNewMessage(string username, string message, bool itIsMyMessage = false)
+    public void Chat_ReturnAction()
     {
-        if (message != "")
+        if (Chat_message.gameObject.activeSelf == true)
         {
-            CancelInvoke(nameof(chat_updatePosition));
-            chat_updatePosition();
-            if (itIsMyMessage == true)
-            {
-                Chat_chats[0].text = "<size=25><color=#ffffff>" + username + "</color></size><size=20><color=#69e5fe>: " + message + "</color></size>";
-            }
-            else
-            {
-                Chat_chats[0].text = "<size=25><color=#69e5fe>" + username + "</color></size><size=20><color=#ffffff>: " + message + "</color></size>";
-            }
+            Chat_messageEntered?.Invoke(this, Chat_message.text);
+            Chat_message.gameObject.SetActive(false);
+            Chat_info.gameObject.SetActive(true);
+            Chat_message.text = "";
         }
     }
 
-    private void chat_updatePosition()
+    public void Chat_update(List<string> chats, string playerName)
     {
-        for (int i = Chat_chats.Length - 1; i > 0; i--)
+        for(int i = 0; i < chats.Count; i++)
         {
-            Chat_chats[i].text = Chat_chats[i - 1].text;
+            string[] data = chats[i].Split('~');
+            if(data.Length == 2)
+            {
+                if (data[0] == playerName)
+                {
+                    Chat_chats[i].text = "<size=25><color=#ffffff>" + data[0] + "</color></size><size=20><color=#69e5fe>: " + data[1] + "</color></size>";
+                }
+                else
+                {
+                    Chat_chats[i].text = "<size=25><color=#69e5fe>" + data[0] + "</color></size><size=20><color=#ffffff>: " + data[1] + "</color></size>";
+                }
+            }
         }
-
-        Chat_chats[0].text = "";
-        Invoke(nameof(chat_updatePosition), 15.0f);
     }
     #endregion
 
@@ -125,7 +116,7 @@ public class HUD : MonoBehaviour
         HP_hp.text = hp.ToString();
     }
 
-    public IEnumerator HP_ShowRespawnAnim(float seconds, float secDivision = 2)
+    public IEnumerator HP_showRespawnAnim(float seconds, float secDivision = 2)
     {
         float hpTickSize = 100 / (seconds * secDivision);
         float hp = 0;
@@ -170,7 +161,7 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void Ammo_ShowEmptyAmmoInfo()
+    public void Ammo_showEmptyAmmoInfo()
     {
         CancelInvoke(nameof(ammo_hideEmptyAmmoInfo));
         Ammo_reloadImage.gameObject.SetActive(true);
@@ -179,7 +170,7 @@ public class HUD : MonoBehaviour
         Invoke(nameof(ammo_hideEmptyAmmoInfo), 1.5f);
     }
 
-    public void Ammo_ShowReloadingAmmoInfo(float reloadSpeed)
+    public void Ammo_showReloadingAmmoInfo(float reloadSpeed)
     {
         ammo_hideEmptyAmmoInfo();
         CancelInvoke(nameof(ammo_hideReloadingAmmoInfo));
@@ -277,7 +268,7 @@ public class HUD : MonoBehaviour
     public GameObject DeathGlobal_image;
     public Text DeathGlobal_text;
 
-    public void DeathGlobal_Show(string shooter, string killed)
+    public void DeathGlobal_show(string shooter, string killed)
     {
         CancelInvoke(nameof(deathGlobal_hide));
         DeathGlobal_text.gameObject.SetActive(true);
@@ -308,10 +299,5 @@ public class HUD : MonoBehaviour
         hp_init();
         deathGlobal_init();
         style.richText = true;
-    }
-
-    private void Update()
-    {
-        chat_update();
     }
 }
