@@ -76,6 +76,10 @@ public class HUD : MonoBehaviour
                     Chat_chats[i].text = "<size=25><color=#69e5fe>" + data[0] + "</color></size><size=20><color=#ffffff>: " + data[1] + "</color></size>";
                 }
             }
+            else
+            {
+                Chat_chats[i].text = "";
+            }
         }
     }
     #endregion
