@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using System;
 
 public class ServerGameplay : NetworkBehaviour
 {
     private const int chatNumber = 8;
     public int MatchTime;
     public List<string> Chats = new List<string>();
+    private bool isChatUpdateRunning = true;
     NetworkRoomManagerExt roomManager;
 
     void Start()
@@ -55,46 +55,65 @@ public class ServerGameplay : NetworkBehaviour
         roomManager.ServerChangeScene(roomManager.RoomScene);
     }
 
+    #region Chat methods
     [Server]
     private void initChatMessages()
     {
-        for(int i = 0; i < chatNumber; i++)
+        for (int i = 0; i < chatNumber; i++)
         {
             Chats.Add("");
         }
-        InvokeRepeating(nameof(updateChatPosition), 0, 15f);
+        StartCoroutine(updateChatPositionPeriodically());
     }
 
     [Server]
     public void SendChatMessage(string username, string message)
     {
-        string chatFormat = username + "~" + message;
-        CancelInvoke(nameof(updateChatPosition));
-        updateChatPosition(false);
-        Chats[0] = chatFormat;
-        //roomManager.gamePlayers[0].UpdateChat(gamePlayerChats);
-        foreach(var nc in roomManager.gamePlayers)
+        if(username != "" && message != "")
         {
-            nc.TargetUpdateChat(nc.connectionToClient, Chats);
+            isChatUpdateRunning = false;
+            string chatFormat = username + "~" + message;
+            updateChatPosition();
+            Chats[0] = chatFormat;
+            sendUpdateToClients();
         }
-        InvokeRepeating(nameof(updateChatPosition), 0, 15f);
     }
 
     [Server]
-    private void updateChatPosition(bool updateClients = true)
+    private IEnumerator updateChatPositionPeriodically()
+    {
+        while (true)
+        {
+            if (isChatUpdateRunning == false)
+            {
+                isChatUpdateRunning = true;
+            }
+            else
+            {
+                updateChatPosition();
+                sendUpdateToClients();
+            }
+            yield return new WaitForSeconds(15);
+        }   
+    }
+
+    [Server]
+    private void updateChatPosition()
     {
         for (int i = chatNumber - 1; i > 0; i--)
         {
             Chats[i] = Chats[i - 1];
         }
         Chats[0] = "";
+    }
 
-        if(updateClients == true)
+    [Server]
+    private void sendUpdateToClients()
+    {
+        foreach (var nc in roomManager.gamePlayers)
         {
-            foreach (var nc in roomManager.gamePlayers)
-            {
-                nc.TargetUpdateChat(nc.connectionToClient, Chats);
-            }
+            nc.TargetUpdateChat(nc.connectionToClient, Chats);
         }
     }
+    #endregion
 }
