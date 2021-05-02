@@ -1,21 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
-    public static bool OptionsIsOff = true;
+    public bool GameIsPaused { get; private set; } = false;
+    public bool OptionsIsOff { get; private set; } = true;
 
     public GameObject pauseMenuUI;
 
-    void Update()
+    public void PauseMenu_EscapeAction()
     {
-   
-            if (Input.GetKeyDown(KeyCode.Escape) && OptionsIsOff)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (OptionsIsOff)
             {
-
                 if (GameIsPaused)
                 {
                     Resume();
@@ -25,9 +23,9 @@ public class PauseMenu : MonoBehaviour
                     Pause();
                 }
             }
-  
-
+        }
     }
+
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
