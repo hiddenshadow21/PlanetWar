@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - HUD
   - ServerGameplay
+  - RoomPlayer
+  - PanelRoomPlayer
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - 
   - 
   - Player
-  - 
+  - Bonus
   - 
   - 
   - 
