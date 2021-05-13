@@ -103,8 +103,8 @@ public class HUD : MonoBehaviour
 
     #region HP
     public Text HP_hp;
-    public Text HP_respawningInfo;
-    public GameObject HP_respawningImage;
+    public Text HP_info;
+    public GameObject HP_infoImage;
 
     public void HP_update(int hp)
     {
@@ -125,8 +125,9 @@ public class HUD : MonoBehaviour
         float hpTickSize = 100 / (seconds * secDivision);
         float hp = 0;
 
-        HP_respawningInfo.gameObject.SetActive(true);
-        HP_respawningImage.SetActive(true);
+        HP_info.gameObject.SetActive(true);
+        HP_info.text = "RESPAWNING";
+        HP_infoImage.SetActive(true);
 
         while (hp < 100)
         {
@@ -136,14 +137,25 @@ public class HUD : MonoBehaviour
             yield return new WaitForSeconds(1/secDivision);
         }
 
-        HP_respawningInfo.gameObject.SetActive(false);
-        HP_respawningImage.SetActive(false);
+        HP_info.gameObject.SetActive(false);
+        HP_infoImage.SetActive(false);
+    }
+
+    public IEnumerator HP_showHpIncrementAnim(float incrementHp, float seconds = 3)
+    {
+        HP_info.gameObject.SetActive(true);
+        HP_info.text = "+" + incrementHp.ToString();
+        HP_infoImage.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+
+        HP_info.gameObject.SetActive(true);
+        HP_infoImage.SetActive(true);
     }
 
     private void hp_init()
     {
-        HP_respawningInfo.gameObject.SetActive(false);
-        HP_respawningImage.SetActive(false);
+        HP_info.gameObject.SetActive(false);
+        HP_infoImage.SetActive(false);
     }
     #endregion
 
@@ -291,6 +303,28 @@ public class HUD : MonoBehaviour
     {
         DeathGlobal_text.gameObject.SetActive(false);
         DeathGlobal_image.SetActive(false);
+    }
+    #endregion
+
+    #region Armor
+    public Text Armor_armor;
+    public Text Armor_info;
+    public GameObject Armor_infoImage;
+
+    public void Armor_update(int armor)
+    {
+        Armor_armor.text = armor.ToString();
+    }
+
+    public IEnumerator HP_showArmorIncrementAnim(float incrementArmor, float seconds = 3)
+    {
+        Armor_info.gameObject.SetActive(true);
+        Armor_info.text = "+" + incrementArmor.ToString();
+        Armor_infoImage.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+
+        Armor_infoImage.gameObject.SetActive(true);
+        HP_infoImage.SetActive(true);
     }
     #endregion
 
