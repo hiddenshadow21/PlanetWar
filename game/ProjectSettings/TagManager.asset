@@ -9,6 +9,14 @@ TagManager:
   - ServerGameplay
   - RoomPlayer
   - PanelRoomPlayer
+  - InputRoomKeyText
+  - RoomManager
+  - PanelRoomPlayer2
+  - PanelRoomPlayer1
+  - PanelRoomPlayer0
+  - PanelRoomPlayer3
+  - Bonus
+  - BonusSpawnPoints
   layers:
   - Default
   - TransparentFX

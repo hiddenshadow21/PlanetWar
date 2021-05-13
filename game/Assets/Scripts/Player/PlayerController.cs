@@ -23,7 +23,11 @@ public class PlayerController : NetworkBehaviour
 
     public float maxHealth = 100;
     [SyncVar(hook = nameof(OnHealthChange))]
-    private float health;
+    public float health;
+
+    public float maxArmor = 200;
+    [SyncVar(hook = nameof(OnArmorChange))]
+    public float armor;
 
     [SyncVar(hook = nameof(OnColorChange))]
     public Kolory Kolor;
@@ -96,10 +100,29 @@ public class PlayerController : NetworkBehaviour
     {
         if(isLocalPlayer)
         {
+            if(_old < _new)
+            {
+                StartCoroutine(hud.HP_showHpIncrementAnim(_new - _old));
+            }
             if (_new < 0)
-                hud.HP_update(0);
+                hud.HP_update(0); 
             else
                 hud.HP_update((int)_new);
+        }
+    }
+
+    public void OnArmorChange(float _old, float _new)
+    {
+        if (isLocalPlayer)
+        {
+            if(_old < _new)
+            {
+                StartCoroutine(hud.Armor_showArmorIncrementAnim(_new - _old));
+            }
+            if (_new < 0)
+                hud.Armor_update(0);
+            else
+                hud.Armor_update((int)_new);
         }
     }
 
@@ -128,6 +151,7 @@ public class PlayerController : NetworkBehaviour
             Camera.main.GetComponent<CameraController>().player = gameObject;
 
         health = maxHealth;
+        armor = 0;
         Debug.Log($"--- PlayerController.color: {Kolor} ---");
     }
 
@@ -136,6 +160,7 @@ public class PlayerController : NetworkBehaviour
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
         hud.Chat_messageEntered += hud_Chat_messageEntered;
         hud.HP_update((int)maxHealth);
+        hud.Armor_update(0);
         hud.Kills_update(Kills);
         hud.Deahts_update(Deaths);
     }
@@ -143,7 +168,10 @@ public class PlayerController : NetworkBehaviour
     private void OnEnable()
     {
         if (isServer)
+        {
             health = maxHealth;
+            armor = 0;
+        }
     }
 
     void Update()
@@ -276,6 +304,19 @@ public class PlayerController : NetworkBehaviour
     [Server]
     public void TakeDamage(float damage, uint shooterId)
     {
+        if(armor > 0)
+        {
+            if (armor >= damage)
+            {
+                armor -= damage;
+                damage = 0;
+            }
+            else
+            {
+                damage -= armor;
+                armor = 0;
+            }
+        }
         health -= damage;
         if (health <= 0)
         {
@@ -287,14 +328,35 @@ public class PlayerController : NetworkBehaviour
             DisableComponents();
             Die();
         }
-        Debug.Log(health);
+        Debug.Log(String.Format("H: {0}, A: {1}", health, armor));
     }
 
     [Server]
     public void AddHealth(float amount)
     {
-        health += amount;
+        if(maxHealth - amount < health)
+        {
+            health = 100;
+        }
+        else
+        {
+            health += amount;
+        }
         Debug.Log(health);
+    }
+
+    [Server]
+    public void AddArmor(float amount)
+    {
+        if (maxArmor - amount < armor)
+        {
+            armor = 100;
+        }
+        else
+        {
+            armor += amount;
+        }
+        Debug.Log(armor);
     }
 
     public void DisableComponents()

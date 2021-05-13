@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 1731380353158566931}
   - component: {fileID: 8490155409728984928}
   - component: {fileID: 7939918429806356357}
-  - component: {fileID: 7939918429806356356}
+  - component: {fileID: -3224773455967877716}
   - component: {fileID: 7939918429806356355}
   - component: {fileID: 3151807498009322095}
   m_Layer: 9
-  m_Name: MedKit
+  m_Name: ArmorKit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 09b2039737adf6b48a9ab247424e5a68, type: 3}
+  m_Sprite: {fileID: 6935380798999507776, guid: 006f7f82ca50d224a993a4ca8304ad81,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,7 +102,7 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &7939918429806356356
+--- !u!114 &-3224773455967877716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,13 +111,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6414434401761371515}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 644c3128cba9a8947afb952208acc07f, type: 3}
+  m_Script: {fileID: 11500000, guid: afff7c87953ddf24a9c06d1bc2a266db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  LifeTime: 10
-  RestoreAmount: 25
 --- !u!61 &7939918429806356355
 BoxCollider2D:
   m_ObjectHideFlags: 0

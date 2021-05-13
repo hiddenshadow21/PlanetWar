@@ -1,16 +1,13 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MedKit : BonusBase
+public class ArmorKit : Bonus
 {
-
-    [SerializeField]
-    private float RestoreAmount = 10;
-
     [Server]
-    protected override void OnTriggerEnter2D(Collider2D collider)
+    public override void OnTriggerEnter2D(Collider2D collider)
     {
         if (!isServer)
             return;
@@ -21,12 +18,10 @@ public class MedKit : BonusBase
         if (player == null)
             return;
 
-        player.AddHealth(RestoreAmount);
-        NetworkServer.Destroy(gameObject);
-    }
-
-    protected override void Start()
-    {
-        base.Start();
+        if (player.armor != player.maxArmor)
+        {
+            player.AddArmor(RestoreAmount);
+            OnPlayerTakeBonus();
+        }
     }
 }

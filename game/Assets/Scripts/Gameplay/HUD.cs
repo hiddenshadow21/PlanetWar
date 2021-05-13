@@ -16,7 +16,7 @@ public class HUD : MonoBehaviour
     public InputField Chat_message;
 
     public bool Chat_isChatActive
-    { 
+    {
         get
         {
             return Chat_message.gameObject.activeSelf;
@@ -62,10 +62,10 @@ public class HUD : MonoBehaviour
 
     public void Chat_update(List<string> chats, string playerName)
     {
-        for(int i = 0; i < chats.Count; i++)
+        for (int i = 0; i < chats.Count; i++)
         {
             string[] data = chats[i].Split('~');
-            if(data.Length == 2)
+            if (data.Length == 2)
             {
                 if (data[0] == playerName)
                 {
@@ -134,7 +134,7 @@ public class HUD : MonoBehaviour
             hp += hpTickSize;
             HP_update((int)Math.Round(hp));
             seconds -= seconds / secDivision;
-            yield return new WaitForSeconds(1/secDivision);
+            yield return new WaitForSeconds(1 / secDivision);
         }
 
         HP_info.gameObject.SetActive(false);
@@ -148,8 +148,8 @@ public class HUD : MonoBehaviour
         HP_infoImage.SetActive(true);
         yield return new WaitForSeconds(seconds);
 
-        HP_info.gameObject.SetActive(true);
-        HP_infoImage.SetActive(true);
+        HP_info.gameObject.SetActive(false);
+        HP_infoImage.SetActive(false);
     }
 
     private void hp_init()
@@ -258,7 +258,7 @@ public class HUD : MonoBehaviour
     {
         Deaths_deaths.text = deathNumber.ToString();
 
-        if(deathNumber != 0)
+        if (deathNumber != 0)
         {
             CancelInvoke(nameof(deaths_hideIncrementInfo));
             Deaths_increment.gameObject.SetActive(true);
@@ -316,15 +316,21 @@ public class HUD : MonoBehaviour
         Armor_armor.text = armor.ToString();
     }
 
-    public IEnumerator HP_showArmorIncrementAnim(float incrementArmor, float seconds = 3)
+    public IEnumerator Armor_showArmorIncrementAnim(float incrementArmor, float seconds = 3)
     {
         Armor_info.gameObject.SetActive(true);
         Armor_info.text = "+" + incrementArmor.ToString();
         Armor_infoImage.SetActive(true);
         yield return new WaitForSeconds(seconds);
 
-        Armor_infoImage.gameObject.SetActive(true);
-        HP_infoImage.SetActive(true);
+        Armor_infoImage.gameObject.SetActive(false);
+        Armor_info.gameObject.SetActive(false);
+    }
+
+    private void armor_init()
+    {
+        Armor_info.gameObject.SetActive(false);
+        Armor_infoImage.SetActive(false);
     }
     #endregion
 
@@ -336,6 +342,7 @@ public class HUD : MonoBehaviour
         deaths_init();
         hp_init();
         deathGlobal_init();
+        armor_init();
         style.richText = true;
     }
 }
