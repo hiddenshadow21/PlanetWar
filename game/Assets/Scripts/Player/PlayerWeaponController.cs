@@ -202,6 +202,31 @@ public class PlayerWeaponController : NetworkBehaviour
         }
         aimTransform.localScale = aimLocalScale;
     }
-    
+
+
+    List<int> oldGunSpeeds = new List<int>();
+    [Server]
+    public void StartChangeLaserSpeedBonus(float time)
+    {
+        if(oldGunSpeeds.Count == 0)
+        {
+            foreach(Gun weapon in weapons)
+            {
+                oldGunSpeeds.Add(weapon.fireRate);
+                weapon.fireRate = 30;
+            }
+        }
+        CancelInvoke(nameof(stopChangeLaserSpeedBonus));
+        Invoke(nameof(stopChangeLaserSpeedBonus), time);
+    }
+
+    private void stopChangeLaserSpeedBonus()
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weapons[i].fireRate = oldGunSpeeds[i];
+        }
+        oldGunSpeeds.Clear();
+    }
 }
 

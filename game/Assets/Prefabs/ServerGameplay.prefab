@@ -66,4 +66,6 @@ MonoBehaviour:
   MedKit: {fileID: 6414434401761371515, guid: 93eb3b8acb0ed964ebbecba81511dd5b, type: 3}
   ArmorKit: {fileID: 6414434401761371515, guid: eda12213305b91c449ff9d066a3bff43,
     type: 3}
+  GunSpeedChanger: {fileID: 6414434401761371515, guid: 5db3fe91d429bc24a811ccb57773592a,
+    type: 3}
   MatchTime: 181

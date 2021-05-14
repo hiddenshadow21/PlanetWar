@@ -23,13 +23,14 @@ public abstract class Gun : NetworkBehaviour
     private Sprite[] spriteColors;
 
     [SerializeField]
-    protected int fireRate = 1;
+    public int fireRate = 1;
     public int FireRate { get { return fireRate; } }
 
     [SerializeField]
     protected float reloadTime = 1f;
     public float ReloadSpeed { get { return reloadTime; } }
 
+    [SyncVar(hook = nameof(OnMaxAmmoChange))]
     public int maxAmmo = 15;
 
     [SyncVar(hook = nameof(Test))]
@@ -55,6 +56,14 @@ public abstract class Gun : NetworkBehaviour
             {
                 hud.Ammo_showReloadingAmmoInfo(ReloadSpeed);
             }
+        }
+    }
+
+    public void OnMaxAmmoChange(int _old, int _new)
+    {
+        if (hasAuthority)
+        {
+            hud.Ammo_update(ammo, _new);
         }
     }
 

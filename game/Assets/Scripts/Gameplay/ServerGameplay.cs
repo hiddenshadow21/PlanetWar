@@ -15,7 +15,8 @@ public class ServerGameplay : NetworkBehaviour
     #region Bonus properties and fields
     public GameObject MedKit;
     public GameObject ArmorKit;
-    private const int BonusCount = 2;
+    public GameObject GunSpeedChanger;
+    private const int BonusCount = 3;
     private BonusSpawnPoint[] spawnPoints;
     #endregion
 
@@ -174,6 +175,9 @@ public class ServerGameplay : NetworkBehaviour
                 break;
             case 1: //ArmorKit
                 bonusGameObject = Instantiate(ArmorKit, spawnPoints[selectedId].Coordinates, Quaternion.identity);
+                break;
+            case 2: //GunSpeedChanger
+                bonusGameObject = Instantiate(GunSpeedChanger, spawnPoints[selectedId].Coordinates, Quaternion.identity);
                 break;
         }
 
