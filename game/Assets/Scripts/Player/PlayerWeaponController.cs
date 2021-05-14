@@ -35,7 +35,7 @@ public class PlayerWeaponController : NetworkBehaviour
             weapons[_New].GetComponent<SpriteRenderer>().enabled = true;
             activeWeapon = weapons[_New];
         }
-        if(isLocalPlayer)
+        if (isLocalPlayer)
         {
             hud.Ammo_update(activeWeapon.Ammo, activeWeapon.maxAmmo);
         }
@@ -44,7 +44,7 @@ public class PlayerWeaponController : NetworkBehaviour
     [Command]
     public void CmdChangeActiveWeapon(int newIndex)
     {
-        if(activeWeapon != null)
+        if (activeWeapon != null)
             activeWeapon.GetComponent<SpriteRenderer>().enabled = false;
         activeWeaponSynced = newIndex;
         activeWeapon = weapons[newIndex];
@@ -66,7 +66,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
     internal void SetGun(Gun gun)
     {
-        if(weapons[0] == null)
+        if (weapons[0] == null)
         {
             weapons[0] = gun;
         }
@@ -75,10 +75,10 @@ public class PlayerWeaponController : NetworkBehaviour
             weapons[1] = gun;
         }
 
-        if(activeWeaponSynced == 0)
+        if (activeWeaponSynced == 0)
         {
             activeWeapon = weapons[0];
-            if(weapons[1] != null)
+            if (weapons[1] != null)
                 weapons[1].GetComponent<SpriteRenderer>().enabled = false;
         }
         else
@@ -153,9 +153,9 @@ public class PlayerWeaponController : NetworkBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            if(activeWeapon.Ammo <= 0)
+            if (activeWeapon.Ammo <= 0)
             {
-                if(!activeWeapon.isReloading)
+                if (!activeWeapon.isReloading)
                 {
                     hud.Ammo_showEmptyAmmoInfo();
                 }
@@ -192,7 +192,7 @@ public class PlayerWeaponController : NetworkBehaviour
         aimTransform.eulerAngles = new Vector3(0, 0, angle);
 
         Vector3 aimLocalScale = Vector3.one;
-        if(Quaternion.Angle(transform.rotation, aimTransform.rotation) > 90)
+        if (Quaternion.Angle(transform.rotation, aimTransform.rotation) > 90)
         {
             aimLocalScale.y = -1f;
         }
@@ -203,30 +203,42 @@ public class PlayerWeaponController : NetworkBehaviour
         aimTransform.localScale = aimLocalScale;
     }
 
+    #region Bonus - GunSpeedChanger
+    private List<int> oldGunSpeeds = new List<int>();
+    Coroutine hudCoroutine;
 
-    List<int> oldGunSpeeds = new List<int>();
     [Server]
-    public void StartChangeLaserSpeedBonus(float time)
+    public void StartGunSpeedChanger(float time)
     {
-        if(oldGunSpeeds.Count == 0)
+        CancelInvoke(nameof(stopGunSpeedChanger));
+        Invoke(nameof(stopGunSpeedChanger), time);
+        foreach (Gun weapon in weapons)
         {
-            foreach(Gun weapon in weapons)
-            {
-                oldGunSpeeds.Add(weapon.fireRate);
-                weapon.fireRate = 30;
-            }
+            oldGunSpeeds.Add(weapon.fireRate);
+            weapon.fireRate = 30;
         }
-        CancelInvoke(nameof(stopChangeLaserSpeedBonus));
-        Invoke(nameof(stopChangeLaserSpeedBonus), time);
+        showHudGunSpeedChanger(connectionToClient, time);
     }
 
-    private void stopChangeLaserSpeedBonus()
+    [TargetRpc]
+    private void showHudGunSpeedChanger(NetworkConnection target, float time)
+    {
+        if(hudCoroutine != null)
+        {
+            StopCoroutine(hudCoroutine);
+        }
+        hudCoroutine = StartCoroutine(hud.Bonus_gunSpeedChanger_show(time));
+    }
+
+    [Server]
+    private void stopGunSpeedChanger()
     {
         for (int i = 0; i < weapons.Length; i++)
         {
             weapons[i].fireRate = oldGunSpeeds[i];
         }
-        oldGunSpeeds.Clear();
     }
+    #endregion
+
 }
 

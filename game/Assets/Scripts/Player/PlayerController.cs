@@ -331,6 +331,7 @@ public class PlayerController : NetworkBehaviour
         Debug.Log(String.Format("H: {0}, A: {1}", health, armor));
     }
 
+    #region Bonus - HealthKit
     [Server]
     public void AddHealth(float amount)
     {
@@ -344,7 +345,9 @@ public class PlayerController : NetworkBehaviour
         }
         Debug.Log(health);
     }
+    #endregion
 
+    #region Bonus - ArmorKit
     [Server]
     public void AddArmor(float amount)
     {
@@ -358,6 +361,7 @@ public class PlayerController : NetworkBehaviour
         }
         Debug.Log(armor);
     }
+    #endregion
 
     public void DisableComponents()
     {

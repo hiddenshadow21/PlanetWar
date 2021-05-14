@@ -334,6 +334,33 @@ public class HUD : MonoBehaviour
     }
     #endregion
 
+    #region Bonus
+    public Text Bonus_gunSpeedChanger_text;
+    public GameObject Bonus_gunSpeedChanger_image;
+
+    public IEnumerator Bonus_gunSpeedChanger_show(float seconds)
+    {
+        Bonus_gunSpeedChanger_text.gameObject.SetActive(true);
+        Bonus_gunSpeedChanger_image.SetActive(true);
+
+        while (seconds != 0)
+        { 
+            Bonus_gunSpeedChanger_text.text = seconds.ToString();
+            seconds--;
+            yield return new WaitForSeconds(1);
+        }
+
+        Bonus_gunSpeedChanger_text.gameObject.SetActive(false);
+        Bonus_gunSpeedChanger_image.SetActive(false);
+    }
+
+    private void bonus_init()
+    {
+        Bonus_gunSpeedChanger_text.gameObject.SetActive(false);
+        Bonus_gunSpeedChanger_image.SetActive(false);
+    }
+    #endregion
+
     private void Awake()
     {
         chat_init();
@@ -343,6 +370,7 @@ public class HUD : MonoBehaviour
         hp_init();
         deathGlobal_init();
         armor_init();
+        bonus_init();
         style.richText = true;
     }
 }

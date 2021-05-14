@@ -11,13 +11,11 @@ public class GunSpeedChanger : Bonus
         if (!isServer)
             return;
 
-        Debug.Log(collider.gameObject.name);
-
         var playerWeaponController = collider.gameObject.GetComponent<PlayerController>().gameObject.GetComponent<PlayerWeaponController>();
         if (playerWeaponController == null)
             return;
 
-        playerWeaponController.StartChangeLaserSpeedBonus(10);
+        playerWeaponController.StartGunSpeedChanger(10f);
         OnPlayerTakeBonus();
     }
 }
