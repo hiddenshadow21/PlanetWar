@@ -68,4 +68,8 @@ MonoBehaviour:
     type: 3}
   GunSpeedChanger: {fileID: 6414434401761371515, guid: 5db3fe91d429bc24a811ccb57773592a,
     type: 3}
+  CarpetAttack: {fileID: 6414434401761371515, guid: 53acee55fdb99df4791f18c135b9fa81,
+    type: 3}
   MatchTime: 181
+  weaponBullet: {fileID: 2912613800490833474, guid: 9b7feea6ad4f22d469d6c7d0bdb13cef,
+    type: 3}

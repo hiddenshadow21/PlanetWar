@@ -16,7 +16,8 @@ public class ServerGameplay : NetworkBehaviour
     public GameObject MedKit;
     public GameObject ArmorKit;
     public GameObject GunSpeedChanger;
-    private const int BonusCount = 3;
+    public GameObject CarpetAttack;
+    private const int BonusCount = 4;
     private BonusSpawnPoint[] spawnPoints;
     #endregion
 
@@ -178,6 +179,9 @@ public class ServerGameplay : NetworkBehaviour
                 break;
             case 2: //GunSpeedChanger
                 bonusGameObject = Instantiate(GunSpeedChanger, spawnPoints[selectedId].Coordinates, Quaternion.identity);
+                break;
+            case 3: //CarpetAttack
+                bonusGameObject = Instantiate(CarpetAttack, spawnPoints[selectedId].Coordinates, Quaternion.identity);
                 break;
         }
 

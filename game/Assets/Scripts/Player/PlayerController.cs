@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerController : NetworkBehaviour
 {
     private HUD hud;
+    private CameraController cameraController;
     private float moveSpeed = 10f;
     private float jumpHeight = 5f;
     private Vector2 moveDir;
@@ -100,7 +101,7 @@ public class PlayerController : NetworkBehaviour
     {
         if(isLocalPlayer)
         {
-            if(_old < _new)
+            if (_old < _new)
             {
                 StartCoroutine(hud.HP_showHpIncrementAnim(_new - _old));
             }
@@ -115,7 +116,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            if(_old < _new)
+            if (_old < _new)
             {
                 StartCoroutine(hud.Armor_showArmorIncrementAnim(_new - _old));
             }
@@ -157,6 +158,7 @@ public class PlayerController : NetworkBehaviour
 
     private void Awake()
     {
+        cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
         hud.Chat_messageEntered += hud_Chat_messageEntered;
         hud.HP_update((int)maxHealth);
@@ -427,6 +429,15 @@ public class PlayerController : NetworkBehaviour
     {
         hud.Chat_update(chats, playerName);
     }
+
+    #region Bonus - CarpetAttack
+    [TargetRpc]
+    public void TargetShakeScreenAfterCarpetAttack()
+    {
+        var cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+        StartCoroutine(cameraController.ShakeCamera());
+    }
+    #endregion
 
     private IEnumerator SpawnPlayerWithDelay(float t)
     {

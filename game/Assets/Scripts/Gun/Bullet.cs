@@ -9,6 +9,8 @@ public class Bullet : NetworkBehaviour
     private float damage = 10;
     [SerializeField]
     private float lifeTime = 15;
+    [SerializeField]
+    private bool hitPlanet = true;
 
     private uint shooterId;
 
@@ -20,6 +22,16 @@ public class Bullet : NetworkBehaviour
 
         Debug.Log("Hit: " + other);
         var player = other.gameObject.GetComponent<PlayerController>();
+        var planet = other.gameObject.GetComponent<GravityAttractor>();
+
+
+        if(planet != null && hitPlanet == false)
+        {
+            Debug.Log("hitPlanet == false");
+            return;
+        }
+
+
         if(player != null)
         {
             if (shooterId == player.netId)

@@ -97,6 +97,10 @@ public class HUD : MonoBehaviour
             tmpTime += "0";
 
         tmpTime += s;
+        if(secs < 10)
+        {
+            Timer_timer.color = new Color(1, 0, 0);
+        }
         Timer_timer.text = tmpTime;
     }
     #endregion
