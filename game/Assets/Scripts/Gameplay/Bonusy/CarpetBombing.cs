@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CarpetAttack : Bonus
+public class CarpetBombing : Bonus
 {
     public GameObject Meteorite;
     private BonusSpawnPoint[] spawnPoints;
@@ -20,7 +20,7 @@ public class CarpetAttack : Bonus
         if (player == null)
             return;
 
-        var spawnPointsContainer = GameObject.FindGameObjectWithTag("CarpetAttackSpawnPoints");
+        var spawnPointsContainer = GameObject.FindGameObjectWithTag("CarpetBombingSpawnPoints");
         spawnPoints = spawnPointsContainer.GetComponentsInChildren<BonusSpawnPoint>();
 
         OnPlayerTakeBonus();
@@ -28,9 +28,8 @@ public class CarpetAttack : Bonus
         var roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         foreach (var nc in roomManager.gamePlayers)
         {
-            nc.TargetShakeScreenAfterCarpetAttack();
+            nc.TargetSendInfoAboutCarpetBombing(player.playerName);
         }
-
 
         for (int i = 0; i < spawnPoints.Length; i++)
         {

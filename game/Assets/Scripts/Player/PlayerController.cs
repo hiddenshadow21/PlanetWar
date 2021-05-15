@@ -430,12 +430,13 @@ public class PlayerController : NetworkBehaviour
         hud.Chat_update(chats, playerName);
     }
 
-    #region Bonus - CarpetAttack
+    #region Bonus - CarpetBombing
     [TargetRpc]
-    public void TargetShakeScreenAfterCarpetAttack()
+    public void TargetSendInfoAboutCarpetBombing(string summonerName)
     {
         var cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         StartCoroutine(cameraController.ShakeCamera());
+        hud.Bonus_carpetAttack_show(summonerName);
     }
     #endregion
 

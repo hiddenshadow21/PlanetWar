@@ -290,6 +290,7 @@ public class HUD : MonoBehaviour
 
     public void DeathGlobal_show(string shooter, string killed)
     {
+        bonus_carpetAttack_hide();
         CancelInvoke(nameof(deathGlobal_hide));
         DeathGlobal_text.gameObject.SetActive(true);
         DeathGlobal_image.SetActive(true);
@@ -338,7 +339,7 @@ public class HUD : MonoBehaviour
     }
     #endregion
 
-    #region Bonus
+    #region Bonus - GunSpeedChanger
     public Text Bonus_gunSpeedChanger_text;
     public GameObject Bonus_gunSpeedChanger_image;
 
@@ -358,10 +359,36 @@ public class HUD : MonoBehaviour
         Bonus_gunSpeedChanger_image.SetActive(false);
     }
 
-    private void bonus_init()
+    private void bonus_gunSpeedChanger_init()
     {
         Bonus_gunSpeedChanger_text.gameObject.SetActive(false);
         Bonus_gunSpeedChanger_image.SetActive(false);
+    }
+    #endregion
+
+    #region Bonus - CarpetBombing
+    public GameObject Bonus_carpetBombing_image;
+    public Text Bonus_carpetBombing_text;
+
+    public void Bonus_carpetAttack_show(string summonerName)
+    {
+        CancelInvoke(nameof(bonus_carpetAttack_hide));
+        Bonus_carpetBombing_text.gameObject.SetActive(true);
+        Bonus_carpetBombing_image.SetActive(true);
+        Bonus_carpetBombing_text.text = "<size=30><color=#69e5fe>CARPET BOMBING</color></size>\n<size=15><color=#ffffff> summoned by </color></size><color=#5DEC64>" + summonerName + "</color>";
+        Invoke(nameof(bonus_carpetAttack_hide), 3f);
+    }
+
+    private void bonus_carpetAttack_hide()
+    {
+        Bonus_carpetBombing_text.gameObject.SetActive(false);
+        Bonus_carpetBombing_image.SetActive(false);
+    }
+
+    private void bonus_carpetBombing_init()
+    {
+        Bonus_carpetBombing_text.gameObject.SetActive(false);
+        Bonus_carpetBombing_image.SetActive(false);
     }
     #endregion
 
@@ -374,7 +401,8 @@ public class HUD : MonoBehaviour
         hp_init();
         deathGlobal_init();
         armor_init();
-        bonus_init();
+        bonus_gunSpeedChanger_init();
+        bonus_carpetBombing_init();
         style.richText = true;
     }
 }
