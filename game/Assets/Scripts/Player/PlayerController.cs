@@ -59,10 +59,10 @@ public class PlayerController : NetworkBehaviour
 
     private void hud_Chat_messageEntered(object sender, string chatMessage)
     {
-        if(isLocalPlayer)
-        {
-            AddChatMessage(playerName, chatMessage);
-        }
+        if (!isLocalPlayer)
+            return;
+
+        AddChatMessage(playerName, chatMessage);
     }
 
     #region SyncVar Hooks
@@ -90,6 +90,7 @@ public class PlayerController : NetworkBehaviour
             default:
                 break;
         }
+
         var bronie = gameObject.GetComponentsInChildren<Gun>();
         foreach (var gun in bronie)
         {
@@ -99,48 +100,57 @@ public class PlayerController : NetworkBehaviour
 
     public void OnHealthChange(float _old, float _new)
     {
-        if(isLocalPlayer)
+        if (!isLocalPlayer)
+            return;
+
+        if (_old < _new)
+            StartCoroutine(hud.HP_showHpIncrementAnim(_new - _old));
+        else
         {
-            if (_old < _new)
-            {
-                StartCoroutine(hud.HP_showHpIncrementAnim(_new - _old));
-            }
-            if (_new < 0)
-                hud.HP_update(0); 
-            else
-                hud.HP_update((int)_new);
+            StartCoroutine(cameraController.ShakeCamera(((_old - _new) / 45) * 0.25f, 0.5f));
+            hud.Damage_show(_old - _new);
         }
+
+        if (_new < 0)
+            hud.HP_update(0);
+        else
+            hud.HP_update((int)_new);
     }
 
     public void OnArmorChange(float _old, float _new)
     {
-        if (isLocalPlayer)
+        if (!isLocalPlayer)
+            return;
+
+        if (_old < _new)
+            StartCoroutine(hud.Armor_showArmorIncrementAnim(_new - _old));
+        else
         {
-            if (_old < _new)
-            {
-                StartCoroutine(hud.Armor_showArmorIncrementAnim(_new - _old));
-            }
-            if (_new < 0)
-                hud.Armor_update(0);
-            else
-                hud.Armor_update((int)_new);
+            StartCoroutine(cameraController.ShakeCamera(((_old - _new) / 45) * 0.25f, 0.5f));
+            hud.Damage_show(_old - _new);
         }
+
+
+        if (_new < 0)
+            hud.Armor_update(0);
+        else
+            hud.Armor_update((int)_new);
     }
 
     public void OnKillsChange(uint _old, uint _new)
     {
-        if(isLocalPlayer)
-        {
-            hud.Kills_update(_new);
-        }
+        if (!isLocalPlayer)
+            return;
+
+        hud.Kills_update(_new);
     }
 
     public void OnDeathsChange(uint _old, uint _new)
     {
-        if(isLocalPlayer)
-        {
-            hud.Deahts_update(_new);
-        }           
+        if (!isLocalPlayer)
+            return;
+
+        hud.Deahts_update(_new);        
     }
 
     #endregion
@@ -431,13 +441,21 @@ public class PlayerController : NetworkBehaviour
     }
 
     #region Bonus - CarpetBombing
-    [TargetRpc]
-    public void TargetSendInfoAboutCarpetBombing(string summonerName)
+    [ClientRpc]
+    public void RpcSendInfoAboutCarpetBombing(string summonerName)
     {
         var cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-        StartCoroutine(cameraController.ShakeCamera());
+        StartCoroutine(cameraController.ShakeCamera(0.35f, 1.5f));
         hud.Bonus_carpetAttack_show(summonerName);
     }
+
+    /*[ClientRpc]
+    public void RpcSetMeteoriteColor(Color color)
+    {
+        var meteorities = GameObject.GetComponents<MeteoriteRotation>();
+        spawnPoints = spawnPointsContainer.GetComponentsInChildren<BonusSpawnPoint>();
+        //meteorite.GetComponent<SpriteRenderer>().material.SetColor("_Color", color);
+    }*/
     #endregion
 
     private IEnumerator SpawnPlayerWithDelay(float t)

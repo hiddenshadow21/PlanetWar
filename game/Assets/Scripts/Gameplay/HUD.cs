@@ -365,13 +365,41 @@ public class HUD : MonoBehaviour
         Bonus_gunSpeedChanger_image.SetActive(false);
     }
     #endregion
+    public GameObject Damage_image;
+    private Coroutine coroutine;
 
+    public void Damage_show(float damage)
+    {
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+        coroutine = StartCoroutine(damage_show(damage));
+    }
+
+    public IEnumerator damage_show(float damage)
+    {
+        Damage_image.SetActive(true);
+
+        while (damage >= 0)
+        {
+            Damage_image.GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 1, 1, 5.6f * damage / 255f));
+            damage--;
+            yield return new WaitForSeconds(0.025f);
+        }
+
+        Damage_image.SetActive(false);
+    }
+
+    private void damage_init()
+    {
+        Damage_image.SetActive(false);
+    }
     #region Bonus - CarpetBombing
     public GameObject Bonus_carpetBombing_image;
     public Text Bonus_carpetBombing_text;
 
     public void Bonus_carpetAttack_show(string summonerName)
     {
+        deathGlobal_hide();
         CancelInvoke(nameof(bonus_carpetAttack_hide));
         Bonus_carpetBombing_text.gameObject.SetActive(true);
         Bonus_carpetBombing_image.SetActive(true);
@@ -392,6 +420,10 @@ public class HUD : MonoBehaviour
     }
     #endregion
 
+    #region Damage
+
+    #endregion
+
     private void Awake()
     {
         chat_init();
@@ -403,6 +435,7 @@ public class HUD : MonoBehaviour
         armor_init();
         bonus_gunSpeedChanger_init();
         bonus_carpetBombing_init();
+        damage_init();
         style.richText = true;
     }
 }

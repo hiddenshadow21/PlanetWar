@@ -18,6 +18,7 @@ TagManager:
   - Bonus
   - BonusSpawnPoints
   - CarpetBombingSpawnPoints
+  - Meteorities
   layers:
   - Default
   - TransparentFX

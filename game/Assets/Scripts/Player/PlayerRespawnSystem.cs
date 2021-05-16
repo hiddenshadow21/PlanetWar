@@ -18,9 +18,11 @@ public class PlayerRespawnSystem : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
+
         var random = new Random();
         var spawnPoints = SpawnPoint.GetSpawnPoints();
-        int k = (int)Random.Range(0, spawnPoints.Count);
+        int k = (int)Random.Range(0, spawnPoints.Count - 1);
+
         transform.position = spawnPoints[k];
         CmdSpawnPlayer(k);
         PlayerWeaponController playerWeaponController = gameObject.GetComponent<PlayerWeaponController>();

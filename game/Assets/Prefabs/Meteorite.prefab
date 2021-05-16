@@ -105,6 +105,7 @@ MonoBehaviour:
   damage: 20
   lifeTime: 30
   hitPlanet: 0
+  hitBullet: 0
 --- !u!114 &-7631979962148498566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +177,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62a1584ccaf648429731b848a016f9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  color: {r: 0.15472588, g: 0.28453973, b: 0.5754717, a: 0}
 --- !u!70 &1768707931272161844
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3151807498009322095}
   - component: {fileID: -6072241903216774325}
   m_Layer: 9
-  m_Name: CarpetAttack
+  m_Name: CarpetBombing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,7 +114,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.042817593, y: -0.03153968}
+  m_Offset: {x: -0.2283783, y: 0.01230818}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -125,7 +125,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.899808, y: 3.425416}
+  m_Size: {x: 4.9868946, y: 3.474918}
   m_EdgeRadius: 0
 --- !u!114 &3151807498009322095
 MonoBehaviour:
@@ -161,3 +161,4 @@ MonoBehaviour:
   syncInterval: 0.1
   Meteorite: {fileID: 2912613800490833474, guid: d1703ff07d85fe946bd9d9a03eb739dc,
     type: 3}
+  sprite: {fileID: 0}

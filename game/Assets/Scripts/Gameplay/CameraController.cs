@@ -36,15 +36,19 @@ public class CameraController : MonoBehaviour
         back3.transform.position = new Vector3(pos.x / 1.3f, pos.y / 1.3f, 4);
     }
 
-    public IEnumerator ShakeCamera(float power = 0.2f)
+    public IEnumerator ShakeCamera(float power, float length)
     {
-        int tick = 30;
+        float tick = 40 * length;
 
         while (tick != 0)
         {
             transform.position = transform.position + UnityEngine.Random.insideUnitSphere * power;
             tick--;
-            yield return new WaitForSeconds(0.05f);
+
+            if(tick < 40 * length * 0.5)
+                power *= 0.9f;
+
+            yield return new WaitForSeconds(0.025f);
         }
     }
 }
