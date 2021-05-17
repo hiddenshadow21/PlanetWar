@@ -10,7 +10,11 @@ using System.Linq;
 public class NetworkRoomManagerExt : NetworkRoomManager
 {
     public string Key { get; set; }
+
+    [System.NonSerialized]
+    public int MatchTime;
     public ServerGameplay serverGameplay;
+    public ServerGameplay InstantiatedServerGameplay;
     public List<PlayerController> gamePlayers = new List<PlayerController>();
 
     /// <summary>
@@ -32,6 +36,7 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         {
             case 0:
                 gP.Kolor = Kolory.niebieski;
+                MatchTime = rP.MatchTime;
                 break;
             case 1:
                 gP.Kolor = Kolory.zielony;
@@ -52,7 +57,7 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         gamePlayers.Add(gP);
 
         if (gamePlayers.Count == roomSlots.Count)
-            Instantiate(serverGameplay);
+            InstantiatedServerGameplay = Instantiate(serverGameplay);
 
         return true;
     }
@@ -73,6 +78,16 @@ public class NetworkRoomManagerExt : NetworkRoomManager
             {
                 item.Panel.SetActive(true);
             }
+        }
+    }
+
+    public override void OnServerChangeScene(string newSceneName)
+    {
+        base.OnServerChangeScene(newSceneName);
+        if (newSceneName == RoomScene && InstantiatedServerGameplay != null)
+        {
+            Destroy(InstantiatedServerGameplay);
+            gamePlayers.Clear();
         }
     }
 
@@ -115,9 +130,9 @@ public class NetworkRoomManagerExt : NetworkRoomManager
     {
         // calling the base method calls ServerChangeScene as soon as all players are in Ready state.
 
-    #if UNITY_SERVER
+#if UNITY_SERVER
         base.OnRoomServerPlayersReady();
-    #endif
+#endif
     }
 
     public override void OnGUI()
@@ -125,7 +140,7 @@ public class NetworkRoomManagerExt : NetworkRoomManager
         // do not show
     }
 
-    public override void OnRoomClientDisconnect(NetworkConnection conn) 
+    public override void OnRoomClientDisconnect(NetworkConnection conn)
     {
         // TO DO - exit
         // wraca do mainmenu
