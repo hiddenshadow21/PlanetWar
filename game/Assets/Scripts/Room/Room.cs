@@ -3,12 +3,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Mirror;
 
 public class Room : MonoBehaviour
 {
     public Button ButtonReadyState;
     public Button ButtonExitRoom;
     public Text TextRoomKey;
+    public GameObject AdminOptionsUI;
+    public Dropdown DropdownMatchTime;
 
     NetworkRoomManagerExt roomManager;
     NetworkRoomPlayerExt roomPlayer;
@@ -17,15 +20,19 @@ public class Room : MonoBehaviour
     void Start()
     {
         changeShowGuiStatus(false);
-        roomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<NetworkRoomManagerExt>();
+        AdminOptionsUI.SetActive(false);
         StartCoroutine(GetNetworkRoomPlayerExtSingleton(1));
-        TextRoomKey.text += roomManager.Key;
     }
 
     IEnumerator GetNetworkRoomPlayerExtSingleton(float time)
     {
         yield return new WaitForSeconds(time);
+        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
         roomPlayer = NetworkRoomPlayerExt.singleton;
+        TextRoomKey.text += roomManager.Key;
+        if (roomPlayer.index == 0)
+            AdminOptionsUI.SetActive(true);
+
         changeShowGuiStatus(true);
     }
 
@@ -58,6 +65,27 @@ public class Room : MonoBehaviour
     private void ExitRoom()
     {
         roomPlayer.roomManager.StopClient();
+    }
+
+    public void updateMatchTime(Dropdown dropdown)
+    {
+        switch (dropdown.value)
+        {
+            case 0:
+                roomPlayer.CmdChangeMatchTime(180);
+                break;
+            case 1:
+                roomPlayer.CmdChangeMatchTime(300);
+                break;
+            case 2:
+                roomPlayer.CmdChangeMatchTime(600);
+                break;
+            default:
+                roomPlayer.CmdChangeMatchTime(180);
+                break;
+        }
+
+        var nM = NetworkManager.singleton as NetworkRoomManagerExt;
     }
 
 }

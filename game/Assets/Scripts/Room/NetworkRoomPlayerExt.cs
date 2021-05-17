@@ -23,6 +23,8 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
     static readonly ILogger logger = LogFactory.GetLogger(typeof(NetworkRoomPlayerExt));
     public NetworkRoomManagerExt roomManager;
 
+    [SyncVar]
+    public int MatchTime;
 
     [SyncVar(hook = nameof(PlayerNameChanged))]
     public string PlayerName;
@@ -42,8 +44,19 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
             if (item == this)
             {
                 item.PlayerName = playerName;
-                // znajdz gdzie jest conn
-                roomManager.OnRoomServerDisconnect(item.connectionToServer);
+            }
+        }
+    }
+
+    [Command]
+    public void CmdChangeMatchTime(int time)
+    {
+        roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
+        foreach (NetworkRoomPlayerExt item in roomManager.roomSlots)
+        {
+            if (item == this)
+            {
+                item.MatchTime = time;
             }
         }
     }
@@ -87,6 +100,14 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
         CmdChangePlayerColor();
         updatePositions();
         //updateButtonKick();
+        if (isLocalPlayer)
+        {
+            if (newIndex == 0)
+            {
+                CmdChangeMatchTime(180);
+                ButtonKick.gameObject.SetActive(true);
+            }
+        }
     }
 
     public override void ReadyStateChanged(bool _, bool newReadyState)
@@ -123,9 +144,10 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
         showRoomGUI = false;
         CmdChangePlayerName(PlayerInfo.Name);
         CmdChangePlayerColor();
+        CmdChangeMatchTime(180);
         updatePositions();
         updateButtonKick();
-        ButtonKick.onClick.AddListener(kickPlayer);
+        ButtonKick.gameObject.SetActive(false);
         singleton = this;
     }
 
@@ -174,6 +196,7 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
 
     }
 
+
     private Vector3 getPlayerPosition(int index)
     {
         switch (index)
@@ -196,17 +219,17 @@ public class NetworkRoomPlayerExt : NetworkRoomPlayer
         switch(index)
         {
             case 0:
-                return new Color32(0, 0, 255, 255);
+                return new Color32(0, 0, 255, 200);
             case 1:
-                return new Color32(0, 255, 0, 255);
+                return new Color32(0, 255, 0, 200);
             case 2:
-                return new Color32(255, 128, 0, 255);
+                return new Color32(255, 128, 0, 200);
             case 3:
-                return new Color32(128, 0, 255, 255);
+                return new Color32(128, 0, 255, 200);
             case 4:
-                return new Color32(255, 0, 0, 255);
+                return new Color32(255, 0, 0, 200);
             default:
-                return new Color32(0, 0, 255, 255);
+                return new Color32(0, 0, 255, 200);
         }
     }
 }

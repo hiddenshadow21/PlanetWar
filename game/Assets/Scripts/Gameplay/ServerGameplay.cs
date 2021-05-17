@@ -21,13 +21,14 @@ public class ServerGameplay : NetworkBehaviour
     private BonusSpawnPoint[] spawnPoints;
     #endregion
 
-    public int MatchTime;
+    private int matchTime;
     NetworkRoomManagerExt roomManager;
     private System.Random rand = new System.Random();
 
     void Start()
     {
         roomManager = NetworkManager.singleton as NetworkRoomManagerExt;
+        matchTime = roomManager.MatchTime;
         StartCoroutine(updateMatchTimeServer());
 
         initChatMessages();
@@ -40,9 +41,9 @@ public class ServerGameplay : NetworkBehaviour
     private IEnumerator updateMatchTimeServer()
     {
         yield return new WaitForSeconds(1f);
-        if (MatchTime > 0)
+        if (matchTime > 0)
         {
-            MatchTime--;
+            matchTime--;
             UpdateMatchTimeClients();
             StartCoroutine(updateMatchTimeServer());
         }
@@ -62,7 +63,7 @@ public class ServerGameplay : NetworkBehaviour
     {
         foreach (var nc in roomManager.gamePlayers)
         {
-            nc.TargetUpdateHudTimer(nc.connectionToClient, MatchTime);
+            nc.TargetUpdateHudTimer(nc.connectionToClient, matchTime);
         }
     }
 
@@ -70,8 +71,6 @@ public class ServerGameplay : NetworkBehaviour
     private IEnumerator endMatchWithDelay(float t)
     {
         yield return new WaitForSeconds(t);
-        roomManager.gamePlayers.Clear();
-        roomManager.roomSlots.Clear();
         roomManager.ServerChangeScene(roomManager.RoomScene);
     }
 

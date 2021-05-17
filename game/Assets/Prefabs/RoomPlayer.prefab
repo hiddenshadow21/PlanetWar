@@ -65,12 +65,13 @@ MonoBehaviour:
   syncInterval: 0.1
   showRoomGUI: 1
   readyToBegin: 0
-  index: 0
+  index: 9
   ImagePlayerColor: {fileID: 1740169623403678313}
   TextPlayerName: {fileID: 3275028336376880418}
   TextReadyState: {fileID: 5369539799677300674}
   Panel: {fileID: 6842312177088418535}
   ButtonKick: {fileID: 8596436679166324139}
+  roomManager: {fileID: 0}
   PlayerName: 
   PlayerColor:
     serializedVersion: 2

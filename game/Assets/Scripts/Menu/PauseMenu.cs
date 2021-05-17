@@ -53,7 +53,8 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         OptionsIsOff = true;
         GameIsPaused = false;
-        SceneManager.LoadScene("Main");
+        var roomPlayer = NetworkRoomPlayerExt.singleton;
+        roomPlayer.roomManager.StopClient();
     }
 
     public void QuitGame()
