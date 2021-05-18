@@ -7,6 +7,7 @@ public class Meteorite : NetworkBehaviour
 {
     [SyncVar(hook = nameof(OnColorChange))]
     public Color color;
+    float rotateScale;
 
     public void OnColorChange(Color _old, Color _new)
     {
@@ -14,8 +15,13 @@ public class Meteorite : NetworkBehaviour
         spriteRenderer.material.SetColor("_Color", _new);
     }
 
+    private void Start()
+    {
+        rotateScale = Random.Range(50, 500);
+    }
+
     void Update()
     {
-        transform.Rotate(new Vector3(0, 0, 50F * Time.deltaTime));
+        transform.Rotate(new Vector3(0, 0, rotateScale * Time.deltaTime));
     }
 }
