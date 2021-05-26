@@ -332,11 +332,19 @@ public class PlayerController : NetworkBehaviour
         health -= damage;
         if (health <= 0)
         {
-            var shooterPlayer = FindObjectsOfType<PlayerController>().Where(x => x.netId == shooterId).FirstOrDefault();
-            shooterPlayer.Kills++;
+            if (shooterId == 10) //poisonArea
+            {
+                showDeathInfo("poison area", playerName);
+            }
+            else
+            {
+                var shooterPlayer = FindObjectsOfType<PlayerController>().Where(x => x.netId == shooterId).FirstOrDefault();
+                shooterPlayer.Kills++;
+                showDeathInfo(shooterPlayer.playerName, playerName);
+                //rb.velocity = Vector2.zero;
+            }
+
             Deaths++;
-            showDeathInfo(shooterPlayer.playerName, playerName);
-            //rb.velocity = Vector2.zero;
             DisableComponents();
             Die();
         }

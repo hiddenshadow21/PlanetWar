@@ -21,6 +21,11 @@ public class ServerGameplay : NetworkBehaviour
     private BonusSpawnPoint[] spawnPoints;
     #endregion
 
+    #region Poison Area properties and fields
+    public GameObject PoisonArea;
+    private PoisonAreaSpawnPoint[] poisonAreas;
+    #endregion
+
     private int matchTime;
     NetworkRoomManagerExt roomManager;
     private System.Random rand = new System.Random();
@@ -34,7 +39,8 @@ public class ServerGameplay : NetworkBehaviour
         initChatMessages();
 
         initSpawnPoints();
-        StartCoroutine(randomSpawnPoints());
+
+        initPoisonAreas();
     }
 
     [Server]
@@ -142,6 +148,7 @@ public class ServerGameplay : NetworkBehaviour
     {
         var spawnPointsContainer = GameObject.FindGameObjectWithTag("BonusSpawnPoints");
         spawnPoints = spawnPointsContainer.GetComponentsInChildren<BonusSpawnPoint>();
+        StartCoroutine(randomSpawnPoints());
     }
 
     [Server]
@@ -196,6 +203,7 @@ public class ServerGameplay : NetworkBehaviour
         }
     }
 
+
     private void serverGameplay_onPlayerTakeBonus(object sender, int e)
     {
         NetworkServer.Destroy((GameObject)sender);
@@ -208,6 +216,46 @@ public class ServerGameplay : NetworkBehaviour
         yield return new WaitForSeconds(lifeTime);
         NetworkServer.Destroy(bonusGameObject);
         spawnPoints[selectedId].IsSpawnPointUsed = false;
+    }
+    #endregion
+
+    #region Posion Area methods
+    [Server]
+    private void initPoisonAreas()
+    {
+        var poisonAreaContainer = GameObject.FindGameObjectWithTag("Planets");
+        poisonAreas = poisonAreaContainer.GetComponentsInChildren<PoisonAreaSpawnPoint>();
+        StartCoroutine(spawnPoisonAreas());
+    }
+
+    [Server]
+    private IEnumerator spawnPoisonAreas()
+    {
+        yield return new WaitForSeconds(rand.Next(25, 45));
+
+        int selectedSpawn;
+        do
+        {
+            selectedSpawn = rand.Next(0, poisonAreas.Length);
+        }
+        while (poisonAreas[selectedSpawn].IsSpawnPointUsed == true);
+
+        Vector3 coordinates = new Vector3(poisonAreas[selectedSpawn].Coordinates.x, poisonAreas[selectedSpawn].Coordinates.y, 1);
+        GameObject poisonArea = Instantiate(PoisonArea, coordinates, Quaternion.identity);
+
+        poisonArea.GetComponent<PoisonArea>().onPoisonAreaDestroy += serverGameplay_onPoisonAreaDestroy;
+        poisonArea.GetComponent<PoisonArea>().Id = selectedSpawn;
+        poisonAreas[selectedSpawn].IsSpawnPointUsed = true;
+
+        NetworkServer.Spawn(poisonArea);
+
+        StartCoroutine(spawnPoisonAreas());
+    }
+
+    private void serverGameplay_onPoisonAreaDestroy(object sender, int e)
+    {
+        NetworkServer.Destroy((GameObject)sender);
+        poisonAreas[e].IsSpawnPointUsed = false;
     }
     #endregion
 }
