@@ -6,26 +6,6 @@ using System.Linq;
 
 public class ServerGameplay : NetworkBehaviour
 {
-    #region Chat properties and fields
-    private const int chatNumber = 8;
-    public List<string> Chats = new List<string>();
-    private bool isChatUpdateRunning = true;
-    #endregion
-
-    #region Bonus properties and fields
-    public GameObject MedKit;
-    public GameObject ArmorKit;
-    public GameObject GunSpeedChanger;
-    public GameObject CarpetBombing;
-    private const int BonusCount = 4;
-    private BonusSpawnPoint[] spawnPoints;
-    #endregion
-
-    #region Poison Area properties and fields
-    public GameObject PoisonArea;
-    private PoisonAreaSpawnPoint[] poisonAreas;
-    #endregion
-
     private int matchTime;
     NetworkRoomManagerExt roomManager;
     private System.Random rand = new System.Random();
@@ -80,7 +60,11 @@ public class ServerGameplay : NetworkBehaviour
         roomManager.ServerChangeScene(roomManager.RoomScene);
     }
 
-    #region Chat methods
+    #region Chat
+    private const int chatNumber = 8;
+    public List<string> Chats = new List<string>();
+    private bool isChatUpdateRunning = true;
+
     [Server]
     private void initChatMessages()
     {
@@ -100,7 +84,7 @@ public class ServerGameplay : NetworkBehaviour
             string chatFormat = username + "~" + message;
             updateChatPosition();
             Chats[0] = chatFormat;
-            sendUpdateToClients();
+            sendChatUpdateToClients();
         }
     }
 
@@ -116,7 +100,7 @@ public class ServerGameplay : NetworkBehaviour
             else
             {
                 updateChatPosition();
-                sendUpdateToClients();
+                sendChatUpdateToClients();
             }
             yield return new WaitForSeconds(5);
         }   
@@ -133,7 +117,7 @@ public class ServerGameplay : NetworkBehaviour
     }
 
     [Server]
-    private void sendUpdateToClients()
+    private void sendChatUpdateToClients()
     {
         foreach (var nc in roomManager.gamePlayers)
         {
@@ -142,7 +126,14 @@ public class ServerGameplay : NetworkBehaviour
     }
     #endregion
 
-    #region Bonus methods
+    #region Bonus
+    public GameObject MedKit;
+    public GameObject ArmorKit;
+    public GameObject GunSpeedChanger;
+    public GameObject CarpetBombing;
+    private const int BonusCount = 4;
+    private BonusSpawnPoint[] spawnPoints;
+
     [Server]
     private void initSpawnPoints()
     {
@@ -219,19 +210,27 @@ public class ServerGameplay : NetworkBehaviour
     }
     #endregion
 
-    #region Posion Area methods
+    #region Posion Area
+    public GameObject PoisonArea;
+    private PoisonAreaSpawnPoint[] poisonAreas;
+    private int poisonedAreaNumber = 0;
+    private int allAreasNumber = 0;
+
     [Server]
     private void initPoisonAreas()
     {
         var poisonAreaContainer = GameObject.FindGameObjectWithTag("Planets");
         poisonAreas = poisonAreaContainer.GetComponentsInChildren<PoisonAreaSpawnPoint>();
+        allAreasNumber = poisonAreas.Length;
+        sendPoisonAreaUpdateToClients();
+
         StartCoroutine(spawnPoisonAreas());
     }
 
     [Server]
     private IEnumerator spawnPoisonAreas()
     {
-        yield return new WaitForSeconds(rand.Next(25, 45));
+        yield return new WaitForSeconds(rand.Next(10, 50));
 
         int selectedSpawn;
         do
@@ -247,6 +246,9 @@ public class ServerGameplay : NetworkBehaviour
         poisonArea.GetComponent<PoisonArea>().Id = selectedSpawn;
         poisonAreas[selectedSpawn].IsSpawnPointUsed = true;
 
+        poisonedAreaNumber++;
+        sendPoisonAreaUpdateToClients();
+
         NetworkServer.Spawn(poisonArea);
 
         StartCoroutine(spawnPoisonAreas());
@@ -256,6 +258,17 @@ public class ServerGameplay : NetworkBehaviour
     {
         NetworkServer.Destroy((GameObject)sender);
         poisonAreas[e].IsSpawnPointUsed = false;
+        poisonedAreaNumber--;
+        sendPoisonAreaUpdateToClients();
+    }
+
+    [Server]
+    private void sendPoisonAreaUpdateToClients()
+    {
+        foreach (var nc in roomManager.gamePlayers)
+        {
+            nc.TargetUpdatePoisonArea(nc.connectionToClient, poisonedAreaNumber, allAreasNumber);
+        }
     }
     #endregion
 }

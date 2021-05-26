@@ -284,30 +284,29 @@ public class HUD : MonoBehaviour
     }
     #endregion
 
-    #region DeathGlobal
-    public GameObject DeathGlobal_image;
-    public Text DeathGlobal_text;
+    #region Death [global messages section]
+    public GameObject Death_image;
+    public Text Death_text;
 
-    public void DeathGlobal_show(string shooter, string killed)
+    public void Death_show(string shooter, string killed)
     {
-        bonus_carpetAttack_hide();
-        CancelInvoke(nameof(deathGlobal_hide));
-        DeathGlobal_text.gameObject.SetActive(true);
-        DeathGlobal_image.SetActive(true);
-        DeathGlobal_text.text = "<size=30><color=#69e5fe>DEFEATED</color></size>\n<color=#d4354a>" + killed + "</color><size=15><color=#ffffff> killed by </color></size><color=#5DEC64>" + shooter + "</color>";
-        Invoke(nameof(deathGlobal_hide), 5f);
+        hideGlobalMessagesSection();
+        Death_text.gameObject.SetActive(true);
+        Death_image.SetActive(true);
+        Death_text.text = "<size=30><color=#69e5fe>DEFEATED</color></size>\n<color=#d4354a>" + killed + "</color><size=15><color=#ffffff> killed by </color></size><color=#5DEC64>" + shooter + "</color>";
+        Invoke(nameof(death_hide), 5f);
     }
 
-    private void deathGlobal_hide()
+    private void death_hide()
     {
-        DeathGlobal_text.gameObject.SetActive(false);
-        DeathGlobal_image.SetActive(false);
+        Death_text.gameObject.SetActive(false);
+        Death_image.SetActive(false);
     }
 
-    private void deathGlobal_init()
+    private void death_init()
     {
-        DeathGlobal_text.gameObject.SetActive(false);
-        DeathGlobal_image.SetActive(false);
+        Death_text.gameObject.SetActive(false);
+        Death_image.SetActive(false);
     }
     #endregion
 
@@ -365,6 +364,34 @@ public class HUD : MonoBehaviour
         Bonus_gunSpeedChanger_image.SetActive(false);
     }
     #endregion
+
+    #region Bonus - CarpetBombing [global messages section]
+    public GameObject Bonus_carpetBombing_image;
+    public Text Bonus_carpetBombing_text;
+
+    public void Bonus_carpetBombing_show(string summonerName)
+    {
+        hideGlobalMessagesSection();
+        Bonus_carpetBombing_text.gameObject.SetActive(true);
+        Bonus_carpetBombing_image.SetActive(true);
+        Bonus_carpetBombing_text.text = "<size=30><color=#69e5fe>CARPET BOMBING</color></size>\n<size=15><color=#ffffff> summoned by </color></size><color=#5DEC64>" + summonerName + "</color>";
+        Invoke(nameof(bonus_carpetBombing_hide), 3f);
+    }
+
+    private void bonus_carpetBombing_hide()
+    {
+        Bonus_carpetBombing_text.gameObject.SetActive(false);
+        Bonus_carpetBombing_image.SetActive(false);
+    }
+
+    private void bonus_carpetBombing_init()
+    {
+        Bonus_carpetBombing_text.gameObject.SetActive(false);
+        Bonus_carpetBombing_image.SetActive(false);
+    }
+    #endregion
+
+    #region Damage
     public GameObject Damage_image;
     private Coroutine coroutine;
 
@@ -393,36 +420,31 @@ public class HUD : MonoBehaviour
     {
         Damage_image.SetActive(false);
     }
-    #region Bonus - CarpetBombing
-    public GameObject Bonus_carpetBombing_image;
-    public Text Bonus_carpetBombing_text;
+    #endregion
 
-    public void Bonus_carpetAttack_show(string summonerName)
+    #region PoisonArea
+    public Text PoisonArea_text;
+
+    public void PoisonArea_SetValue(int poisonedAreaNumber, int allAreasNumber)
     {
-        deathGlobal_hide();
-        CancelInvoke(nameof(bonus_carpetAttack_hide));
-        Bonus_carpetBombing_text.gameObject.SetActive(true);
-        Bonus_carpetBombing_image.SetActive(true);
-        Bonus_carpetBombing_text.text = "<size=30><color=#69e5fe>CARPET BOMBING</color></size>\n<size=15><color=#ffffff> summoned by </color></size><color=#5DEC64>" + summonerName + "</color>";
-        Invoke(nameof(bonus_carpetAttack_hide), 3f);
+        PoisonArea_text.text = poisonedAreaNumber.ToString() + "/" + allAreasNumber.ToString();
     }
 
-    private void bonus_carpetAttack_hide()
+    private void poisonArea_init()
     {
-        Bonus_carpetBombing_text.gameObject.SetActive(false);
-        Bonus_carpetBombing_image.SetActive(false);
-    }
-
-    private void bonus_carpetBombing_init()
-    {
-        Bonus_carpetBombing_text.gameObject.SetActive(false);
-        Bonus_carpetBombing_image.SetActive(false);
+        PoisonArea_text.gameObject.SetActive(true);
+        PoisonArea_text.text = "0/0";
     }
     #endregion
 
-    #region Damage
+    private void hideGlobalMessagesSection() //call this method for elements with [global messages section] tag
+    {
+        CancelInvoke(nameof(death_hide));
+        death_hide();
 
-    #endregion
+        CancelInvoke(nameof(bonus_carpetBombing_hide));
+        bonus_carpetBombing_hide();
+    }
 
     private void Awake()
     {
@@ -431,11 +453,12 @@ public class HUD : MonoBehaviour
         kills_init();
         deaths_init();
         hp_init();
-        deathGlobal_init();
+        death_init();
         armor_init();
         bonus_gunSpeedChanger_init();
         bonus_carpetBombing_init();
         damage_init();
+        poisonArea_init();
         style.richText = true;
     }
 }

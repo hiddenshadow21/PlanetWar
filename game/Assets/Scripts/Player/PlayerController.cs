@@ -420,7 +420,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void showDeathInfo(string shooter, string killed)
     {
-        hud.DeathGlobal_show(shooter, killed);
+        hud.Death_show(shooter, killed);
     }
 
     [ClientRpc]
@@ -448,22 +448,20 @@ public class PlayerController : NetworkBehaviour
         hud.Chat_update(chats, playerName);
     }
 
+    [TargetRpc]
+    public void TargetUpdatePoisonArea(NetworkConnection target, int poisonedAreaNumber, int allAreasNumber)
+    {
+        hud.PoisonArea_SetValue(poisonedAreaNumber, allAreasNumber);
+    }
+
     #region Bonus - CarpetBombing
     [ClientRpc]
     public void RpcSendInfoAboutCarpetBombing(string summonerName)
     {
         var cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         StartCoroutine(cameraController.ShakeCamera(0.35f, 1.5f));
-        hud.Bonus_carpetAttack_show(summonerName);
+        hud.Bonus_carpetBombing_show(summonerName);
     }
-
-    /*[ClientRpc]
-    public void RpcSetMeteoriteColor(Color color)
-    {
-        var meteorities = GameObject.GetComponents<MeteoriteRotation>();
-        spawnPoints = spawnPointsContainer.GetComponentsInChildren<BonusSpawnPoint>();
-        //meteorite.GetComponent<SpriteRenderer>().material.SetColor("_Color", color);
-    }*/
     #endregion
 
     private IEnumerator SpawnPlayerWithDelay(float t)
