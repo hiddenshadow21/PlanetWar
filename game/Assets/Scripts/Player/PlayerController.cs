@@ -454,16 +454,6 @@ public class PlayerController : NetworkBehaviour
         hud.PoisonArea_SetValue(poisonedAreaNumber, allAreasNumber);
     }
 
-    #region Bonus - CarpetBombing
-    [ClientRpc]
-    public void RpcSendInfoAboutCarpetBombing(string summonerName)
-    {
-        var cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-        StartCoroutine(cameraController.ShakeCamera(0.35f, 1.5f));
-        hud.Bonus_carpetBombing_show(summonerName);
-    }
-    #endregion
-
     private IEnumerator SpawnPlayerWithDelay(float t)
     {
         yield return new WaitForSeconds(t);
@@ -491,7 +481,7 @@ public class PlayerController : NetworkBehaviour
         {
             StopCoroutine(hudPoisonAreaShieldCoroutine);
         }
-        hudPoisonAreaShieldCoroutine = StartCoroutine(hud.Bonus_gunSpeedChanger_show(time));
+        hudPoisonAreaShieldCoroutine = StartCoroutine(hud.Bonus_poisonAreaShield_show(time));
     }
 
     [Server]
@@ -517,17 +507,27 @@ public class PlayerController : NetworkBehaviour
     [TargetRpc]
     private void showHudCarpetBombingShield(NetworkConnection target, float time)
     {
-        if (hudPoisonAreaShieldCoroutine != null)
+        if (hudCarpetBombingShieldCoroutine != null)
         {
-            StopCoroutine(hudPoisonAreaShieldCoroutine);
+            StopCoroutine(hudCarpetBombingShieldCoroutine);
         }
-        hudPoisonAreaShieldCoroutine = StartCoroutine(hud.Bonus_gunSpeedChanger_show(time));
+        hudCarpetBombingShieldCoroutine = StartCoroutine(hud.Bonus_carpetBombingShield_show(time));
     }
 
     [Server]
     private void stopCarpetBombingShield()
     {
         IsCarpetBombingShieldActive = false;
+    }
+    #endregion
+
+    #region Bonus - CarpetBombing
+    [ClientRpc]
+    public void RpcSendInfoAboutCarpetBombing(string summonerName)
+    {
+        var cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+        StartCoroutine(cameraController.ShakeCamera(0.35f, 1.5f));
+        hud.Bonus_carpetBombing_show(summonerName);
     }
     #endregion
 }

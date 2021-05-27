@@ -437,6 +437,60 @@ public class HUD : MonoBehaviour
     }
     #endregion
 
+    #region Bonus - PoisonAreaShield
+    public Text Bonus_poisonAreaShield_text;
+    public GameObject Bonus_poisonAreaShield_image;
+
+    public IEnumerator Bonus_poisonAreaShield_show(float seconds)
+    {
+        Bonus_poisonAreaShield_text.gameObject.SetActive(true);
+        Bonus_poisonAreaShield_image.SetActive(true);
+
+        while (seconds != 0)
+        {
+            Bonus_poisonAreaShield_text.text = seconds.ToString();
+            seconds--;
+            yield return new WaitForSeconds(1);
+        }
+
+        Bonus_poisonAreaShield_text.gameObject.SetActive(false);
+        Bonus_poisonAreaShield_image.SetActive(false);
+    }
+
+    private void bonus_poisonAreaShield_init()
+    {
+        Bonus_poisonAreaShield_text.gameObject.SetActive(false);
+        Bonus_poisonAreaShield_image.SetActive(false);
+    }
+    #endregion
+
+    #region Bonus - CarpetBombingShield
+    public Text Bonus_carpetBombingShield_text;
+    public GameObject Bonus_carpetBombingShield_image;
+
+    public IEnumerator Bonus_carpetBombingShield_show(float seconds)
+    {
+        Bonus_carpetBombingShield_text.gameObject.SetActive(true);
+        Bonus_carpetBombingShield_image.SetActive(true);
+
+        while (seconds != 0)
+        {
+            Bonus_carpetBombingShield_text.text = seconds.ToString();
+            seconds--;
+            yield return new WaitForSeconds(1);
+        }
+
+        Bonus_carpetBombingShield_text.gameObject.SetActive(false);
+        Bonus_carpetBombingShield_image.SetActive(false);
+    }
+
+    private void bonus_carpetBombingShield_init()
+    {
+        Bonus_carpetBombingShield_text.gameObject.SetActive(false);
+        Bonus_carpetBombingShield_image.SetActive(false);
+    }
+    #endregion
+
     private void hideGlobalMessagesSection() //call this method for elements with [global messages section] tag
     {
         CancelInvoke(nameof(death_hide));
@@ -459,6 +513,8 @@ public class HUD : MonoBehaviour
         bonus_carpetBombing_init();
         damage_init();
         poisonArea_init();
+        bonus_carpetBombingShield_init();
+        bonus_poisonAreaShield_init();
         style.richText = true;
     }
 }
