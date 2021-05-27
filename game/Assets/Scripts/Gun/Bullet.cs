@@ -38,6 +38,8 @@ public class Bullet : NetworkBehaviour
         {
             if (shooterId == player.netId)
                 return;
+            if (player.IsCarpetBombingShieldActive == true && hitPlanet == false)
+                return;
             player.TakeDamage(damage, shooterId);
         }
         NetworkServer.Destroy(gameObject);

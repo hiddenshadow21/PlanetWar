@@ -131,7 +131,9 @@ public class ServerGameplay : NetworkBehaviour
     public GameObject ArmorKit;
     public GameObject GunSpeedChanger;
     public GameObject CarpetBombing;
-    private const int BonusCount = 4;
+    public GameObject CarpetBombingShield;
+    public GameObject PoisonAreaShield;
+    private const int BonusCount = 6;
     private BonusSpawnPoint[] spawnPoints;
 
     [Server]
@@ -177,8 +179,14 @@ public class ServerGameplay : NetworkBehaviour
             case 2: //GunSpeedChanger
                 bonusGameObject = Instantiate(GunSpeedChanger, spawnPoints[selectedId].Coordinates, Quaternion.identity);
                 break;
-            case 3: //CarpetAttack
+            case 3: //CarpetBombing
                 bonusGameObject = Instantiate(CarpetBombing, spawnPoints[selectedId].Coordinates, Quaternion.identity);
+                break;
+            case 4: //CarpetBombingShield
+                bonusGameObject = Instantiate(CarpetBombingShield, spawnPoints[selectedId].Coordinates, Quaternion.identity);
+                break;
+            case 5: //PoisonZoneShield
+                bonusGameObject = Instantiate(PoisonAreaShield, spawnPoints[selectedId].Coordinates, Quaternion.identity);
                 break;
         }
 

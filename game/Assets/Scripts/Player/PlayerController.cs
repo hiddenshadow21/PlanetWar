@@ -470,4 +470,64 @@ public class PlayerController : NetworkBehaviour
         playerRespawnSystem = gameObject.GetComponent<PlayerRespawnSystem>();
         playerRespawnSystem.SpawnPlayerLocal();
     }
+
+    #region Bonus - PoisonAreaShield
+    Coroutine hudPoisonAreaShieldCoroutine;
+    public bool IsPoisonAreaShieldActive { get; private set; } = false;
+
+    [Server]
+    public void StartPoisonAreaShield(float time)
+    {
+        CancelInvoke(nameof(stopPoisonAreaShield));
+        Invoke(nameof(stopPoisonAreaShield), time);
+        IsPoisonAreaShieldActive = true;
+        showHudPoisonAreaShield(connectionToClient, time);
+    }
+
+    [TargetRpc]
+    private void showHudPoisonAreaShield(NetworkConnection target, float time)
+    {
+        if (hudPoisonAreaShieldCoroutine != null)
+        {
+            StopCoroutine(hudPoisonAreaShieldCoroutine);
+        }
+        hudPoisonAreaShieldCoroutine = StartCoroutine(hud.Bonus_gunSpeedChanger_show(time));
+    }
+
+    [Server]
+    private void stopPoisonAreaShield()
+    {
+        IsPoisonAreaShieldActive = false;
+    }
+    #endregion
+
+    #region Bonus - CarpetBombingShield
+    Coroutine hudCarpetBombingShieldCoroutine;
+    public bool IsCarpetBombingShieldActive { get; private set; } = false;
+
+    [Server]
+    public void StartCarpetBombingShield(float time)
+    {
+        CancelInvoke(nameof(stopCarpetBombingShield));
+        Invoke(nameof(stopCarpetBombingShield), time);
+        IsCarpetBombingShieldActive = true;
+        showHudCarpetBombingShield(connectionToClient, time);
+    }
+
+    [TargetRpc]
+    private void showHudCarpetBombingShield(NetworkConnection target, float time)
+    {
+        if (hudPoisonAreaShieldCoroutine != null)
+        {
+            StopCoroutine(hudPoisonAreaShieldCoroutine);
+        }
+        hudPoisonAreaShieldCoroutine = StartCoroutine(hud.Bonus_gunSpeedChanger_show(time));
+    }
+
+    [Server]
+    private void stopCarpetBombingShield()
+    {
+        IsCarpetBombingShieldActive = false;
+    }
+    #endregion
 }

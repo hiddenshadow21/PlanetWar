@@ -59,7 +59,8 @@ public class PoisonArea : NetworkBehaviour
     {
         foreach(PlayerController pc in enteredPlayers)
         {
-            pc.TakeDamage(5, 10);
+            if(pc.IsPoisonAreaShieldActive == false)
+                pc.TakeDamage(5, 10);
         }
 
         yield return new WaitForSeconds(1f);
