@@ -20,10 +20,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/LogReg/PasswordCheck.unity
     guid: 59d1a20d23b2d4d4eb5237fc962f2fd4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OfflineScene.unity
     guid: 00fafc1e24ea4104baadbead34bff784
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/RoomScene.unity
     guid: 1c58c263612d4324a843f8a19fde45a3
   - enabled: 1
