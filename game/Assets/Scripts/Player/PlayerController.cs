@@ -201,7 +201,8 @@ public class PlayerController : NetworkBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 hud.Chat_ReturnAction();
-            }
+            }      
+
         } 
     }
 
@@ -312,11 +313,12 @@ public class PlayerController : NetworkBehaviour
     }
     #endregion
 
-
     [Server]
     public void TakeDamage(float damage, uint shooterId)
     {
-        if(armor > 0)
+       
+
+        if (armor > 0)
         {
             if (armor >= damage)
             {
@@ -330,8 +332,11 @@ public class PlayerController : NetworkBehaviour
             }
         }
         health -= damage;
+
+
         if (health <= 0)
         {
+            
             if (shooterId == 10) //poisonArea
             {
                 showDeathInfo("poison area", playerName);
@@ -343,11 +348,15 @@ public class PlayerController : NetworkBehaviour
                 showDeathInfo(shooterPlayer.playerName, playerName);
                 //rb.velocity = Vector2.zero;
             }
-
+          
             Deaths++;
             DisableComponents();
             Die();
         }
+        else
+            checkGetDmg();
+
+
         Debug.Log(String.Format("H: {0}, A: {1}", health, armor));
     }
 
@@ -383,6 +392,7 @@ public class PlayerController : NetworkBehaviour
     }
     #endregion
 
+
     public void DisableComponents()
     {
         if (isServer)
@@ -396,7 +406,7 @@ public class PlayerController : NetworkBehaviour
         gameObject.GetComponent<PlayerWeaponController>().enabled = false;
         gameObject.GetComponent<GravityBody>().enabled = false;
         gameObject.GetComponent<Collider2D>().enabled = false;
-        gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        animator.SetTrigger("IsDead");
         this.enabled = false;
     }
 
@@ -435,8 +445,14 @@ public class PlayerController : NetworkBehaviour
             StartCoroutine(SpawnPlayerWithDelay(5));
         }
     }
-	
-	[TargetRpc]
+
+    [ClientRpc]
+    public void checkGetDmg()
+    {
+        animator.SetTrigger("IsDamaging");
+    }
+
+    [TargetRpc]
     public void TargetUpdateHudTimer(NetworkConnection targer, int time)
     {
         hud.Timer_update(time);
