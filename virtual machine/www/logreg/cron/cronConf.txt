@@ -1,0 +1,4 @@
+Copy lines below to crontab to activate LogReg services.
+
+//LogReg ADUA:
+0 */6 * * * /usr/bin/php /var/www/logreg/cron/_autoDeleteUnverifiedAccounts.php >> /var/www/logreg/cron/ADUAreports.txt

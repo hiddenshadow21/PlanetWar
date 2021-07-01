@@ -1,0 +1,137 @@
+SERVER:
+	//////////////////////////////////////////////////
+	www/logreg/_init.php:
+		INIT_1 -> Server authorization error
+		INIT_2 -> Database error
+	//////////////////////////////////////////////////
+	
+	
+	//////////////////////////////////////////////////
+	www/logreg/_login.php:
+		L_DDFU_1 -> failed to get email string from Unity
+		
+		L_AU_1 -> invalid username or password
+		L_AU_2 -> user with this email not found in database
+		L_AU_3 -> more than one user with this email found in database
+		L_AU_4 -> the account is not verified
+		L_AU_5 -> select from database error
+		
+		L_AU_SUCCESSFUL$RESTRICTED_MARKIDuserRESTRICTED_MARKusernameRESTRICTED_MARKemail -> authentication successful
+	//////////////////////////////////////////////////
+	
+	
+	//////////////////////////////////////////////////
+	www/logreg/_registration.php:
+		R_DDFU_1 -> failed to get email string from Unity
+		R_DDFU_2 -> failed to get password string from Unity
+		R_DDFU_3 -> failed to get username string from Unity
+		
+		R_CNA_1 -> insert into database error
+		R_CNA_2 -> account with this username already exists
+		R_CNA_3 -> account with this email already exists
+		R_CNA_4 -> select from database error
+		
+		R_DNA_1 -> delete from database error
+		
+		R_SVM_SUCCESSFUL -> new account created succesfully
+	//////////////////////////////////////////////////
+	
+
+	//////////////////////////////////////////////////
+	www/logreg/_newPasswordEmailVerify.php:
+		NPEV_DDFU_1 -> failed to get email string from Unity
+
+		NPEV_SC_1 -> select from database error
+		NPEV_SC_2 -> user with this email not found or more than one user in database
+		NPEV_SC_3 -> update database error
+		NPEV_SC_4 -> the account is not verified
+
+		NPEV_SVM_SUCCESSFUL -> new code updated succesfully
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	www/logreg/_newPasswordCodeVerify.php:
+		NPCV_DDFU_1 -> failed to get code string from Unity
+		NPCV_DDFU_2 -> failed to get email string from Unity
+			
+		NPCV_VC_1 -> select from database error
+		NPCV_VC_2 -> user with this email and code not found or more than one user in database	
+
+		NPCV_VC_SUCCESSFUL -> user passed correct code
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	www/logreg/_newPasswordVerify.php:
+		NPV_DDFU_1 -> failed to get email string from Unity
+		NPV_DDFU_2 -> failed to get password string from Unity
+		NPV_DDFU_3 -> failed to get code string from Unity
+
+		NPV_SP_1 -> select from database error
+		NPV_SP_2 -> user with this email and code not found or more than one user in database
+		NPV_SP_3 -> update database error
+
+		NPV_SP_SUCCESSFUL -> password changed succesfully	
+	//////////////////////////////////////////////////
+	
+	
+	//////////////////////////////////////////////////
+	www/mail/_sendMail.php:
+		SM_SM_1 -> mail sending error
+		
+		SM_SM_SUCCESSFUL_1 -> mail sent successfully
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	www/mail/logreg/_newAccountVerify.php:
+		NAV_DDFU_1 -> failed to get email string from URL
+		NAV_DDFU_2 -> failet do get code string from URL
+
+		NAV_VD_1 -> incorrect data in db
+		NAV_VD_2 -> user with this email not found or more than one user in database
+		NAV_VD_3 -> select from database error
+
+		NAV_UD_1 -> update database error
+
+		NAV_UD_SUCCESSFUL -> authentication process successfully
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	www/logreg/cron/_autoDeleteUnverifiedAccounts.php:
+		ADUA_DA_1 -> delete from database error
+	//////////////////////////////////////////////////
+
+
+CLIENT:
+	//////////////////////////////////////////////////
+	LogReg/Log.cs:
+		L_OI_1 -> incomplete data from server
+	//////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////
+	LogReg/Reg.cs:
+		R_UT_1 -> username is too long
+		R_UT_2 -> restricted mark detected
+
+		R_PT_1 -> password is too short or too long
+		R_PT_2 -> password has no number
+		R_PT_3 -> restricted mark detected
+		R_PT_4 -> both passwords are not equal
+
+		R_ET_1 -> restricted mark detected
+		R_ET_2 -> email is too long
+		R_ET_3 -> email has syntax error
+	//////////////////////////////////////////////////	
+
+
+	//////////////////////////////////////////////////
+	ForgottenPassword/PasswordCheck.cs:
+		PC_PT_1 -> password is too short or too long
+		PC_PT_2 -> password has no number
+		PC_PR_3 -> restricted mark detected
+		PC_PR_4 -> both passwords are not equal
+	//////////////////////////////////////////////////

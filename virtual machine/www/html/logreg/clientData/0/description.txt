@@ -1,0 +1,1 @@
+New interface with information about health and ammo. 
