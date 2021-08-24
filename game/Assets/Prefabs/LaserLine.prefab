@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1508691281530593144}
   - component: {fileID: 1857264217779348458}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LaserLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
