@@ -16,6 +16,8 @@ public class CameraController : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
 
+    private float time = 0.87f;
+
     void LateUpdate()
     {
         if (player == null)
@@ -25,15 +27,19 @@ public class CameraController : MonoBehaviour
 
     private void LockCameraToPlayer()
     {
-        var playerPos = player.transform.position + offset;
-
-        transform.position = Vector3.SmoothDamp(transform.position, playerPos, ref velocity, smoothSpeed);
+        var playerPos = player.transform.position;
+        playerPos.z = -10;
         var pos = transform.position;
         pos.z = -10;
-        transform.position = pos;
+        transform.position = Vector3.Lerp(transform.position, playerPos, time);
+        //transform.position = pos;
         back1.transform.position = new Vector3(pos.x / 1.9f, pos.y / 1.9f, 2);
         back2.transform.position = new Vector3(pos.x / 1.6f, pos.y / 1.6f, 3);
         back3.transform.position = new Vector3(pos.x / 1.3f, pos.y / 1.3f, 4);
+
+
+        //var playerPos = player.transform.position;
+        //transform.position = new Vector3(playerPos.x,playerPos.y,-10);
     }
 
     public IEnumerator ShakeCamera(float power, float length)

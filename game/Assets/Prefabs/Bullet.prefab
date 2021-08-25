@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8925162110475170289}
   - component: {fileID: 415275774185119092}
   - component: {fileID: 2367084396140534253}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,6 +103,8 @@ MonoBehaviour:
   speed: 8
   damage: 10
   lifeTime: 15
+  hitPlanet: 1
+  hitBullet: 1
 --- !u!114 &-7631979962148498566
 MonoBehaviour:
   m_ObjectHideFlags: 0
